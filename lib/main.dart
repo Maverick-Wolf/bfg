@@ -1,21 +1,33 @@
 import 'package:bfg/delete_this_later.dart';
+import 'package:bfg/providers/login_providers/login_provider.dart';
+import 'package:bfg/screens/login/enter_details.dart';
+import 'package:bfg/screens/login/login_page.dart';
+import 'package:bfg/screens/login/sign_up.dart';
+import 'package:bfg/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  OurTheme _theme = OurTheme();
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => LoginProvider(),)
+      ],
+      child: MaterialApp(
+        theme: ThemeData(
+          brightness: Brightness.dark,
+          primaryColorDark: _theme.primaryColor,
+          primaryColor: _theme.primaryColor
+        ),
+        debugShowCheckedModeBanner: false,
+        routes: {
+          '/details': (context) => const LoginPage(),
+          '/signUp': (context) => const SignUp(),
+          '/': (context) => const Details(),
+        },
+      ),
+    ),
+  );
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      routes: {
-        '/': (context) => const LmaoDed(),
-      },
-    );
-  }
-}
