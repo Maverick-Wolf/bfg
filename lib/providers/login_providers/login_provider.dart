@@ -1,7 +1,6 @@
 
 import 'package:flutter/material.dart';
 
-import '../../theme.dart';
 
 class LoginProvider with ChangeNotifier {
 
