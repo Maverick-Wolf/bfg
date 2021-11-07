@@ -20,6 +20,7 @@ class _DetailsState extends State<Details> {
     return GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: Scaffold(
+          backgroundColor: _theme.primaryColor,
           body: CustomScrollView(
             slivers: [
               SliverFillRemaining(
@@ -142,7 +143,7 @@ class _DetailsState extends State<Details> {
     return Center(
       child: ElevatedButton(
         onPressed: (){
-          Navigator.pushReplacementNamed(context, '/');
+          Navigator.pushNamed(context, '/bookCard');
         },
         style: ElevatedButton.styleFrom(
             primary: _theme.secondaryColor.withOpacity(0.8),

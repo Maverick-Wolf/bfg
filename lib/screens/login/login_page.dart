@@ -116,7 +116,7 @@ class _LoginPageState extends State<LoginPage> {
       child: ElevatedButton(
         onPressed: (){
           setState(() {
-            Navigator.pushReplacementNamed(context, '/chatList');
+            Navigator.pushNamed(context, '/signUp');
           });
         },
         style: ElevatedButton.styleFrom(
