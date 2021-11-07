@@ -25,7 +25,7 @@ void main() {
         ),
         debugShowCheckedModeBanner: false,
         routes: {
-          '/': (context) => const UserMenu(),
+          '/': (context) => const Details(),
           '/details': (context) => const LoginPage(),
           '/signUp': (context) => const SignUp(),
         },
