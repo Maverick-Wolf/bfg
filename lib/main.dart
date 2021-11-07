@@ -4,6 +4,7 @@ import 'package:bfg/screens/listings/listings.dart';
 import 'package:bfg/screens/login/enter_details.dart';
 import 'package:bfg/screens/login/login_page.dart';
 import 'package:bfg/screens/login/sign_up.dart';
+import 'package:bfg/screens/user/profile.dart';
 import 'package:bfg/screens/user/user_menu.dart';
 import 'package:bfg/theme.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +27,7 @@ void main() {
         ),
         debugShowCheckedModeBanner: false,
         routes: {
+          '/Profile': (context) => const Profile(),
           '/': (context) => const UserMenu(),
           '/listings': (context) => const Listings(),
           '/signUp': (context) => const SignUp(),

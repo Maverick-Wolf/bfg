@@ -96,7 +96,7 @@ class UserMenu extends StatelessWidget {
                     style: TextStyle(
                         color: _theme.tertiaryColor,
                         fontFamily: _theme.font,
-                        fontSize: 32.0,
+                        fontSize: 24.0,
                         letterSpacing: 1.3,
                         fontWeight: FontWeight.bold),
                   ),

@@ -36,7 +36,7 @@ class _DrawerClassState extends State<DrawerClass> {
               leading: const Icon(Icons.person),
               title: const Text('Profile'),
               onTap: () {
-
+                Navigator.pushNamed(context, '/Profile');
               },
             ),
             const Divider(
