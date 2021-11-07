@@ -29,10 +29,11 @@ void main() {
         debugShowCheckedModeBanner: false,
         routes: {
           '/': (context) => const LoginPage(),
+          '/signUp': (context) => const SignUp(),
+          '/otpClass': (context) => const OtpClass(),
           '/addBook': (context) => const AddBook(),
           '/userMenu': (context) => const UserMenu(),
           '/listings': (context) => const Listings(),
-          '/signUp': (context) => const SignUp(),
           '/enterDetails': (context) => const Details(),
           '/bookCard': (context) => const BookCard(),
           '/Profile': (context) => const Profile(),

@@ -31,7 +31,7 @@ class _AddBookState extends State<AddBook> {
                   onPressed: () {
                     showDialog(
                         context: context,
-                        builder: (BuildContext) => _buildPopupDialogue(context),
+                        builder: (BuildContext) => _buildInfoPopupDialogue(context),
                     );
                   },
                   icon: Icon(Icons.info),
@@ -243,17 +243,89 @@ class _AddBookState extends State<AddBook> {
     );
   }
 
+  Widget _buildInfoPopupDialogue(BuildContext context) {
+    return AlertDialog(
+      backgroundColor: Colors.grey,
+      title: Text("thots", style: TextStyle(fontSize: 24, fontFamily: _theme.font, fontWeight: FontWeight.bold, color: _theme.secondaryColor),textAlign: TextAlign.center,),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _textBox("Book Name", "Enter the complete name of the book, with proper indentations"),
+          SizedBox(height: 5,),
+          _textBox("Author(s)", "Enter the names of the authors with correct spellings"),
+          SizedBox(height: 5,),
+          _textBox("Department", "The department the book belongs to"),
+          SizedBox(height: 5,),
+          _textBox("Edition", "The edition of the book"),
+          SizedBox(height: 5,),
+          _textBox("Semester", "The semester in which the book is part of the curriculum"),
+          SizedBox(height: 5,),
+          _textBox("Listing Price", "The price at which you want to sell the book"),
+          SizedBox(height: 5,),
+          _textBox("Note", "(Optional) Any extra info, regarding the book, or life in general"),
+          SizedBox(height: 5,),
+        ],
+      ),
+    );
+  }
+
+  Widget _textBox(String title, String text) {
+    return RichText(
+      text: TextSpan(
+        text: title + ": ",
+        style: TextStyle(
+          color: _theme.secondaryColor,
+          fontSize: 16.0,
+          fontFamily: _theme.font,
+          fontWeight: FontWeight.w800
+        ),
+        children: <TextSpan>[
+          TextSpan(
+            text: text,
+            style: TextStyle(
+                color: _theme.tertiaryColor,
+                fontFamily: _theme.font,
+            )
+          ),
+        ]
+      ),
+    );
+  }
+
   Widget _buildPopupDialogue(BuildContext context) {
     return AlertDialog(
       backgroundColor: Colors.grey,
-      title: Row(
+      title: Text(
+        "IMPORTANT",
+        textAlign: TextAlign.center,
+        style: TextStyle(
+            color: _theme.secondaryColor,
+            fontSize: 30,
+            fontWeight: FontWeight.bold
+        ),
+      ),
+      content: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text("hahaahahahhaak")
-            ],
-          ),
+          Text("To avoid unnecessary calls, please remove your listing after it has been sold", textAlign: TextAlign.center,),
+          SizedBox(height: 10,),
+          TextButton(
+            onPressed: () {
+              Navigator.pushReplacementNamed(context, "/listings");
+            },
+            child: Text(
+              "Oki",
+              style: TextStyle(
+                fontSize: 24,
+                color: _theme.secondaryColor,
+              ),
+            ),
+            style: TextButton.styleFrom(
+              backgroundColor: Colors.blue
+            ),
+          )
         ],
       ),
     );
