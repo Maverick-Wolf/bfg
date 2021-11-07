@@ -48,7 +48,7 @@ class UserMenu extends StatelessWidget {
                     Icon(
                       Icons.table_view_rounded,
                       color: _theme.secondaryColor,
-                      size: 57,
+                      size: 40,
                     ),
                     const Spacer(),
                     Text(
@@ -56,7 +56,7 @@ class UserMenu extends StatelessWidget {
                       style: TextStyle(
                           color: _theme.tertiaryColor,
                           fontFamily: _theme.font,
-                          fontSize: 32.0,
+                          fontSize: 25.0,
                           letterSpacing: 1.3,
                           fontWeight: FontWeight.bold),
                     ),
@@ -88,7 +88,7 @@ class UserMenu extends StatelessWidget {
                   Icon(
                     Icons.add_circle_outline_rounded,
                     color: _theme.secondaryColor,
-                    size: 57,
+                    size: 40,
                   ),
                   const Spacer(),
                   Text(
@@ -96,7 +96,7 @@ class UserMenu extends StatelessWidget {
                     style: TextStyle(
                         color: _theme.tertiaryColor,
                         fontFamily: _theme.font,
-                        fontSize: 32.0,
+                        fontSize: 25.0,
                         letterSpacing: 1.3,
                         fontWeight: FontWeight.bold),
                   ),

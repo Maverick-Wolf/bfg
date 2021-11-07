@@ -15,13 +15,11 @@ OurTheme _theme = OurTheme();
 class _BookCardState extends State<BookCard> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: const [
-          BookDetailsCard(),
-        ],
-      ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: const [
+        BookDetailsCard(),
+      ],
     );
   }
 }
@@ -35,7 +33,6 @@ class BookDetailsCard extends StatefulWidget {
 
 class _BookDetailsCardState extends State<BookDetailsCard> {
   @override
-
   String nameOfBook = "Elements of the Theory of Computation";
   String priceOfBook = "300";
   String roomNumberOfSeller = "AH 2 - 344";
@@ -53,7 +50,9 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: [
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               Row(
                 children: [
                   SizedBox(width: 4),
@@ -63,7 +62,9 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
                   SizedBox(width: 4),
                 ],
               ),
-              SizedBox(height: 30,),
+              SizedBox(
+                height: 30,
+              ),
               _buildBookTitle(nameOfBook),
               Padding(
                 padding: const EdgeInsets.fromLTRB(10, 32, 10, 20),
@@ -81,7 +82,9 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
                     Column(
                       children: [
                         _buildRichText("Year: ", year, 14),
-                        SizedBox(height: 3,),
+                        SizedBox(
+                          height: 3,
+                        ),
                         _buildRichText("₹ ", priceOfBook, 25),
                       ],
                     ),
@@ -92,15 +95,17 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
               //   padding: const EdgeInsets.fromLTRB(10, 0, 10, 7),
               //   child: _buildRichText("Note: ", "Lorem ipsum ............ my name is khan and i am not a terrorist", 14),
               // ),
-              SizedBox(height: 7,),
+              SizedBox(
+                height: 7,
+              ),
             ],
           ),
         ),
         onTap: () {
           showDialog(
               context: context,
-              builder: (BuildContext) => _buildPopupDialogue(context, nameOfSeller, nameOfBook, priceOfBook, roomNumberOfSeller)
-          );
+              builder: (BuildContext) => _buildPopupDialogue(context,
+                  nameOfSeller, nameOfBook, priceOfBook, roomNumberOfSeller));
         },
       ),
     );
@@ -134,17 +139,15 @@ Widget _buildRichText(String text1, String text2, double _fontSize) {
           TextSpan(
               text: text2,
               style: TextStyle(
-                color: _theme.tertiaryColor,
-                fontFamily: _theme.font,
-                fontWeight: FontWeight.w400
-              )
-          ),
-        ]
-    ),
+                  color: _theme.tertiaryColor,
+                  fontFamily: _theme.font,
+                  fontWeight: FontWeight.w400)),
+        ]),
   );
 }
 
-Widget _buildPopupDialogue(BuildContext context, String _sellerName, String _bookName, String _bookPrice, String _roomNumber) {
+Widget _buildPopupDialogue(BuildContext context, String _sellerName,
+    String _bookName, String _bookPrice, String _roomNumber) {
   return AlertDialog(
     backgroundColor: Colors.grey,
     title: Row(
@@ -158,8 +161,7 @@ Widget _buildPopupDialogue(BuildContext context, String _sellerName, String _boo
                   color: _theme.secondaryColor,
                   letterSpacing: 0.7,
                   fontFamily: _theme.font,
-                  fontWeight: FontWeight.bold
-              ),
+                  fontWeight: FontWeight.bold),
             ),
             Text(
               _roomNumber,
@@ -167,8 +169,7 @@ Widget _buildPopupDialogue(BuildContext context, String _sellerName, String _boo
                   color: _theme.secondaryColor,
                   fontFamily: _theme.font,
                   fontWeight: FontWeight.w600,
-                  fontSize: 16
-              ),
+                  fontSize: 16),
             ),
           ],
         ),
@@ -176,7 +177,7 @@ Widget _buildPopupDialogue(BuildContext context, String _sellerName, String _boo
         Column(
           children: [
             IconButton(
-              onPressed:() {},
+              onPressed: () {},
               icon: Icon(
                 Icons.phone,
                 size: 34,
@@ -186,10 +187,9 @@ Widget _buildPopupDialogue(BuildContext context, String _sellerName, String _boo
             Text(
               "Call",
               style: TextStyle(
-                fontFamily: _theme.font,
-                fontSize: 12,
-                color: _theme.secondaryColor
-              ),
+                  fontFamily: _theme.font,
+                  fontSize: 12,
+                  color: _theme.secondaryColor),
             ),
           ],
         ),
@@ -198,19 +198,22 @@ Widget _buildPopupDialogue(BuildContext context, String _sellerName, String _boo
     content: Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        SizedBox(height: 15,),
+        SizedBox(
+          height: 15,
+        ),
         Text(
           _bookName,
           textAlign: TextAlign.center,
           style: TextStyle(
-            color: Colors.white,
-            letterSpacing: 1,
-            fontSize: 24,
-            fontFamily: _theme.font,
-            fontWeight: FontWeight.bold
-          ),
+              color: Colors.white,
+              letterSpacing: 1,
+              fontSize: 24,
+              fontFamily: _theme.font,
+              fontWeight: FontWeight.bold),
         ),
-        SizedBox(height: 25,),
+        SizedBox(
+          height: 25,
+        ),
         Text(
           "₹ " + _bookPrice,
           style: TextStyle(
@@ -218,8 +221,7 @@ Widget _buildPopupDialogue(BuildContext context, String _sellerName, String _boo
               letterSpacing: 1,
               fontSize: 20,
               fontFamily: _theme.font,
-              fontWeight: FontWeight.bold
-          ),
+              fontWeight: FontWeight.bold),
         ),
       ],
     ),
