@@ -1,3 +1,4 @@
+import 'package:bfg/drawer/drawer.dart';
 import 'package:bfg/theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,11 +15,17 @@ OurTheme _theme = OurTheme();
 class _BookCardState extends State<BookCard> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        BookDetailsCard(),
-      ],
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("List View"),
+      ),
+      drawer: DrawerClass(),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          BookDetailsCard(),
+        ],
+      ),
     );
   }
 }
@@ -44,7 +51,7 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
 
   Widget build(BuildContext context) {
     return Center(
-      child: GestureDetector(
+      child: InkWell(
         child: Card(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
