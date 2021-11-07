@@ -1,3 +1,4 @@
+import 'package:bfg/screens/listings/book_card.dart';
 import 'package:bfg/theme.dart';
 import 'package:flutter/material.dart';
 
@@ -178,11 +179,7 @@ class Listings extends StatelessWidget {
                 Expanded(
                   child: TabBarView(
                     children: [
-                      Center(
-                          child: Text(
-                        "CS",
-                        style: TextStyle(color: _theme.tertiaryColor),
-                      )),
+                      const Center(child: BookCard()),
                       Center(
                           child: Text(
                         "Phoenix",

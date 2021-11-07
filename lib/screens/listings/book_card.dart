@@ -16,13 +16,9 @@ class _BookCardState extends State<BookCard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("List View"),
-      ),
-      drawer: DrawerClass(),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [
+        children: const [
           BookDetailsCard(),
         ],
       ),

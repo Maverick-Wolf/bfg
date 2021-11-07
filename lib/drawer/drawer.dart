@@ -23,52 +23,52 @@ class _DrawerClassState extends State<DrawerClass> {
             ),
             ListTile(
               title: Column(
-                children: [
+                children: const [
                   Text("Rachit Champu"),
                   Text("AH 2 - 344")
                 ],
               ),
             ),
-            Divider(
+            const Divider(
               thickness: 1,
             ),
             ListTile(
-              leading: Icon(Icons.person),
-              title: Text('Profile'),
+              leading: const Icon(Icons.person),
+              title: const Text('Profile'),
               onTap: () {
 
               },
             ),
-            Divider(
+            const Divider(
               thickness: 1,
             ),
             ListTile(
-                title: Text('Your Listings'),
-                leading: Icon(Icons.list_alt_rounded),
+                title: const Text('Your Listings'),
+                leading: const Icon(Icons.list_alt_rounded),
                 onTap: () {
 
                 }
             ),
-            Divider(thickness: 1,),
+            const Divider(thickness: 1,),
             ListTile(
-              leading: Icon(Icons.view_headline_outlined),
-              title: Text('View Books'),
+              leading: const Icon(Icons.view_headline_outlined),
+              title: const Text('View Books'),
               onTap: () {
 
               },
             ),
-            Divider(thickness: 1,),
+            const Divider(thickness: 1,),
             ListTile(
-              leading: Icon(Icons.bookmark_outline_sharp),
-              title: Text('Add a Book'),
+              leading: const Icon(Icons.bookmark_outline_sharp),
+              title: const Text('Add a Book'),
               onTap: () {
 
               },
             ),
-            Divider(thickness: 1,),
+            const Divider(thickness: 1,),
             ListTile(
-              leading: Icon(Icons.logout),
-              title: Text('Sign Out'),
+              leading: const Icon(Icons.logout),
+              title: const Text('Sign Out'),
               onTap: () {
 
               },
