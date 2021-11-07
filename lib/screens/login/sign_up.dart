@@ -20,6 +20,7 @@ class _SignUpState extends State<SignUp> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
+        backgroundColor: _theme.primaryColor,
         resizeToAvoidBottomInset: false,
         body: Column(
           children: [
@@ -62,7 +63,7 @@ class _SignUpState extends State<SignUp> {
     return Center(
       child: ElevatedButton(
         onPressed: (){
-          Navigator.pushReplacementNamed(context, '/');
+          Navigator.pushNamed(context, '/enterDetails');
         },
         style: ElevatedButton.styleFrom(
             primary: _theme.secondaryColor.withOpacity(0.8),

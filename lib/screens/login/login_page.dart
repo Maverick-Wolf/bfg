@@ -19,31 +19,24 @@ class _LoginPageState extends State<LoginPage> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
+
         backgroundColor: _theme.primaryColor,
         resizeToAvoidBottomInset: false,
-        body: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(30.0, 280.0, 30.0, 0.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildRichText(),
-                  _buildSizedBox(30),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _buildUsernameTF(),
-                      _buildSizedBox(17),
-                      _buildPasswordTF(),
-                    ],
-                  ),
-                  _buildSizedBox(70),
-                ],
-              ),
-            ),
-            _buildSignInButton(),
-          ],
+
+        body: Padding(
+          padding: const EdgeInsets.fromLTRB(30.0, 280.0, 30.0, 0.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildRichText(),
+              _buildSizedBox(30),
+              _buildUsernameTF(),
+              _buildSizedBox(17),
+              _buildPasswordTF(),
+              _buildSizedBox(70),
+              _buildSignInButton(),
+            ],
+          ),
         ),
       ),
     );
@@ -123,7 +116,7 @@ class _LoginPageState extends State<LoginPage> {
       child: ElevatedButton(
         onPressed: (){
           setState(() {
-            Navigator.pushReplacementNamed(context, '/chatList');
+            Navigator.pushNamed(context, '/signUp');
           });
         },
         style: ElevatedButton.styleFrom(
