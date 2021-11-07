@@ -20,6 +20,7 @@ class _ProfileState extends State<Profile> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
+        backgroundColor: _theme.primaryColor,
         appBar: AppBar(
           centerTitle: true,
           title: Text("Profile", style: TextStyle(fontFamily: _theme.font),),

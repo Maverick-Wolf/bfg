@@ -65,43 +65,48 @@ class UserMenu extends StatelessWidget {
                 ),
               ),
             ),
-            Container(
-              height: height * 0.16,
-              width: width * 0.75,
-              decoration: BoxDecoration(
-                color: _theme.primaryColor,
-                borderRadius: BorderRadius.circular(17.0),
-                boxShadow: const [
-                  BoxShadow(
-                    color: Colors.white,
-                    blurRadius: 4,
-                    offset: Offset(0, 3),
-                  )
-                ],
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  const SizedBox(
-                    width: 15.0,
-                  ),
-                  Icon(
-                    Icons.add_circle_outline_rounded,
-                    color: _theme.secondaryColor,
-                    size: 57,
-                  ),
-                  const Spacer(),
-                  Text(
-                    "Add New Listing",
-                    style: TextStyle(
-                        color: _theme.tertiaryColor,
-                        fontFamily: _theme.font,
-                        fontSize: 24.0,
-                        letterSpacing: 1.3,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  const Spacer(),
-                ],
+            InkWell(
+              onTap: () {
+                Navigator.pushNamed(context, '/addBook');
+              },
+              child: Container(
+                height: height * 0.16,
+                width: width * 0.75,
+                decoration: BoxDecoration(
+                  color: _theme.primaryColor,
+                  borderRadius: BorderRadius.circular(17.0),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Colors.white,
+                      blurRadius: 4,
+                      offset: Offset(0, 3),
+                    )
+                  ],
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    const SizedBox(
+                      width: 15.0,
+                    ),
+                    Icon(
+                      Icons.add_circle_outline_rounded,
+                      color: _theme.secondaryColor,
+                      size: 57,
+                    ),
+                    const Spacer(),
+                    Text(
+                      "Add New Listing",
+                      style: TextStyle(
+                          color: _theme.tertiaryColor,
+                          fontFamily: _theme.font,
+                          fontSize: 24.0,
+                          letterSpacing: 1.3,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    const Spacer(),
+                  ],
+                ),
               ),
             ),
           ],

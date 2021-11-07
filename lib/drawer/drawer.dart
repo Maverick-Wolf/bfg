@@ -52,17 +52,17 @@ class _DrawerClassState extends State<DrawerClass> {
             const Divider(thickness: 1,),
             ListTile(
               leading: const Icon(Icons.view_headline_outlined),
-              title: const Text('View Books'),
+              title: const Text('View Available Books'),
               onTap: () {
-
+                Navigator.pushNamed(context, '/listings');
               },
             ),
             const Divider(thickness: 1,),
             ListTile(
               leading: const Icon(Icons.bookmark_outline_sharp),
-              title: const Text('Add a Book'),
+              title: const Text('Sell a Book'),
               onTap: () {
-
+                Navigator.pushNamed(context, '/addBook');
               },
             ),
             const Divider(thickness: 1,),

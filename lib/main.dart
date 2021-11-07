@@ -1,4 +1,5 @@
 import 'package:bfg/providers/login_providers/login_provider.dart';
+import 'package:bfg/screens/listings/add_book.dart';
 import 'package:bfg/screens/listings/book_card.dart';
 import 'package:bfg/screens/listings/listings.dart';
 import 'package:bfg/screens/login/enter_details.dart';
@@ -27,12 +28,14 @@ void main() {
         ),
         debugShowCheckedModeBanner: false,
         routes: {
-          '/Profile': (context) => const Profile(),
-          '/': (context) => const UserMenu(),
+          '/': (context) => const LoginPage(),
+          '/addBook': (context) => const AddBook(),
+          '/userMenu': (context) => const UserMenu(),
           '/listings': (context) => const Listings(),
           '/signUp': (context) => const SignUp(),
           '/enterDetails': (context) => const Details(),
           '/bookCard': (context) => const BookCard(),
+          '/Profile': (context) => const Profile(),
         },
       ),
     ),
