@@ -1,4 +1,3 @@
-import 'package:bfg/delete_this_later.dart';
 import 'package:bfg/providers/login_providers/login_provider.dart';
 import 'package:bfg/screens/list_view/book_card.dart';
 import 'package:bfg/screens/login/enter_details.dart';
@@ -13,7 +12,7 @@ void main() {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => LoginProvider(),)
+        ChangeNotifierProvider(create: (_) => LoginProvider()),
       ],
       child: MaterialApp(
         theme: ThemeData(
@@ -23,10 +22,10 @@ void main() {
         ),
         debugShowCheckedModeBanner: false,
         routes: {
-          '/': (context) => const BookCard(),
-          '/details': (context) => const LoginPage(),
+          '/': (context) => const LoginPage(),
           '/signUp': (context) => const SignUp(),
           '/enterDetails': (context) => const Details(),
+          '/bookCard': (context) => const BookCard(),
         },
       ),
     ),
