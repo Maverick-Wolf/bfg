@@ -11,9 +11,9 @@ class SignUp extends StatefulWidget {
   _SignUpState createState() => _SignUpState();
 }
 
-class _SignUpState extends State<SignUp> {
+OurTheme _theme = OurTheme();
 
-  OurTheme _theme = OurTheme();
+class _SignUpState extends State<SignUp> {
 
   @override
   Widget build(BuildContext context) {
@@ -29,12 +29,11 @@ class _SignUpState extends State<SignUp> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildRichText(),
+                  _buildRichText("Sign Up"),
                   _buildSizedBox(30),
                   _buildUsernameTF(),
-                  _buildSizedBox(17),
-                  _buildPasswordTF(),
-                  _buildSizedBox(70),
+                  // _buildPasswordTF(),
+                  _buildSizedBox(200),
                 ],
               ),
             ),
@@ -45,25 +44,11 @@ class _SignUpState extends State<SignUp> {
     );
   }
 
-  Widget _buildRichText() {
-    return RichText(
-      text: TextSpan(
-        text: "Sign Up",
-        style: TextStyle(
-            color: _theme.secondaryColor,
-            fontSize: 30.0,
-            fontFamily: _theme.font,
-            fontWeight: FontWeight.w800
-        ),
-      ),
-    );
-  }
-
   Widget _buildSignUpButton() {
     return Center(
       child: ElevatedButton(
         onPressed: (){
-          Navigator.pushNamed(context, '/enterDetails');
+          Navigator.pushNamed(context, '/otpClass');
         },
         style: ElevatedButton.styleFrom(
             primary: _theme.secondaryColor.withOpacity(0.8),
@@ -74,10 +59,10 @@ class _SignUpState extends State<SignUp> {
         ),
         child: Wrap(
           children: [
-            Icon(Icons.login_rounded),
+            Icon(Icons.send),
             SizedBox(width: 10.0,),
             Text(
-              "VERIFY OTP",
+              "SEND OTP",
               style: TextStyle(
                   fontSize: 18.0,
                   fontFamily: _theme.font,
@@ -111,38 +96,119 @@ class _SignUpState extends State<SignUp> {
       keyboardType: TextInputType.number,
     );
   }
+}
 
-  Widget _buildPasswordTF() {
+class OtpClass extends StatefulWidget {
+  const OtpClass({Key? key}) : super(key: key);
+
+  @override
+  _OtpClassState createState() => _OtpClassState();
+}
+
+class _OtpClassState extends State<OtpClass> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: _theme.primaryColor,
+      resizeToAvoidBottomInset: false,
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(30.0, 200.0, 30.0, 0.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildRichText("Verify OTP"),
+                _buildSizedBox(30),
+                _buildOtpTF(),
+                _buildSizedBox(200),
+              ],
+            ),
+          ),
+          _buildVerifyButton(),
+          _buildSizedBox(10),
+          _buildResendOtpButton(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildOtpTF() {
     return TextFormField(
-      initialValue: context.read<LoginProvider>().password,
-      onChanged: (text) {
-        context.read<LoginProvider>().setPassword(text);
-      },
-      obscureText: context.watch<LoginProvider>().obscurePassword,
+      onChanged: (text) {},
       decoration: InputDecoration(
         border: OutlineInputBorder(),
         labelText: "OTP",
         labelStyle: TextStyle(color: _theme.secondaryColor),
         enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: _theme.tertiaryColor)),
         focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: _theme.secondaryColor, width: 1.3)),
-        suffixIcon: IconButton(
-          color: _theme.tertiaryColor,
-          icon: Icon(Icons.remove_red_eye),
-          onPressed: () {
-            context.read<LoginProvider>().toggleObscurePassword();
-            FocusScope.of(context).unfocus();
-          },
-          splashRadius: 15.0,
-        ),
       ),
       cursorColor: _theme.secondaryColor,
       keyboardType: TextInputType.number,
     );
   }
 
-  Widget _buildSizedBox(double height) {
-    return SizedBox(
-      height: height,
+  Widget _buildVerifyButton() {
+    return Center(
+      child: ElevatedButton(
+        onPressed: (){
+          Navigator.pushNamed(context, '/enterDetails');
+        },
+        style: ElevatedButton.styleFrom(
+            primary: _theme.secondaryColor.withOpacity(0.8),
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15),
+            )
+        ),
+        child: Wrap(
+          children: [
+            Icon(Icons.login_rounded),
+            SizedBox(width: 10.0,),
+            Text(
+              "VERIFY OTP",
+              style: TextStyle(
+                  fontSize: 18.0,
+                  fontFamily: _theme.font,
+                  fontWeight: FontWeight.bold
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
+
+  Widget _buildResendOtpButton() {
+    return TextButton(
+      onPressed: () {},
+      child: Text(
+        "Resend OTP",
+        style: TextStyle(
+          fontFamily: _theme.font,
+          color: _theme.secondaryColor,
+        ),
+      )
+    );
+  }
+}
+
+Widget _buildSizedBox(double height) {
+  return SizedBox(
+    height: height,
+  );
+}
+
+Widget _buildRichText(String title) {
+  return RichText(
+    text: TextSpan(
+      text: title,
+      style: TextStyle(
+          color: _theme.secondaryColor,
+          fontSize: 30.0,
+          fontFamily: _theme.font,
+          fontWeight: FontWeight.w800
+      ),
+    ),
+  );
 }
