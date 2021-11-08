@@ -1,7 +1,9 @@
-import 'package:bfg/drawer/drawer.dart';
+import 'dart:ui';
+
 import 'package:bfg/theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:glassmorphism/glassmorphism.dart';
 
 class BookCard extends StatefulWidget {
   const BookCard({Key? key}) : super(key: key);
@@ -15,16 +17,17 @@ OurTheme _theme = OurTheme();
 class _BookCardState extends State<BookCard> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: const [
-          BookDetailsCard(),
-        ],
-      ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: const [
+        BookDetailsCard(),
+      ],
     );
   }
 }
+
+late double _height;
+late double _width;
 
 class BookDetailsCard extends StatefulWidget {
   const BookDetailsCard({Key? key}) : super(key: key);
@@ -35,7 +38,6 @@ class BookDetailsCard extends StatefulWidget {
 
 class _BookDetailsCardState extends State<BookDetailsCard> {
   @override
-
   String nameOfBook = "Elements of the Theory of Computation";
   String priceOfBook = "300";
   String roomNumberOfSeller = "AH 2 - 344";
@@ -45,64 +47,118 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
   String bookEdition = "2";
   String year = "2";
 
+  @override
   Widget build(BuildContext context) {
-    return Center(
-      child: InkWell(
-        child: Card(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(height: 10,),
-              Row(
-                children: [
-                  SizedBox(width: 4),
-                  _buildRichText("Seller: ", nameOfSeller, 14),
-                  Spacer(),
-                  _buildRichText("", roomNumberOfSeller, 14),
-                  SizedBox(width: 4),
-                ],
-              ),
-              SizedBox(height: 30,),
-              _buildBookTitle(nameOfBook),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(10, 32, 10, 20),
-                child: Row(
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _buildRichText("Author(s): ", bookAuthor, 14),
-                        _buildRichText("Edition: ", bookEdition, 14),
-                        _buildRichText("Department: ", department, 14),
-                      ],
-                    ),
-                    Spacer(),
-                    Column(
-                      children: [
-                        _buildRichText("Year: ", year, 14),
-                        SizedBox(height: 3,),
-                        _buildRichText("₹ ", priceOfBook, 25),
-                      ],
-                    ),
-                  ],
+    _height = MediaQuery.of(context).size.height;
+    _width = MediaQuery.of(context).size.width;
+    return InkWell(
+      child: Center(
+        child: GlassmorphicContainer(
+          height: _height * 0.34,
+          width: _width * 0.93,
+          borderRadius: 15,
+          blur: 15,
+          alignment: Alignment.center,
+          border: 2,
+          linearGradient: LinearGradient(colors: [
+            Colors.white.withOpacity(0.2),
+            Colors.white38.withOpacity(0.2)
+          ], begin: Alignment.topLeft, end: Alignment.bottomRight),
+          borderGradient: LinearGradient(colors: [
+            Colors.white24.withOpacity(0.2),
+            Colors.white70.withOpacity(0.2)
+          ]),
+          child: Container(
+            decoration: BoxDecoration(boxShadow: [
+              BoxShadow(
+                blurRadius: 16,
+                spreadRadius: 16,
+                color: Colors.black.withOpacity(0.1),
+              )
+            ]),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(15.0),
+              child: BackdropFilter(
+                filter: ImageFilter.blur(
+                  sigmaX: 20.0,
+                  sigmaY: 20.0,
                 ),
+                child: Container(
+                    height: _height * 0.7,
+                    width: _width * 0.93,
+                    decoration: BoxDecoration(
+                        color: _theme.tertiaryColor.withOpacity(0.15),
+                        borderRadius: BorderRadius.circular(16.0),
+                        border: Border.all(
+                          width: 1.5,
+                          color: Colors.white.withOpacity(0.2),
+                        )),
+                    child: Padding(
+                      padding: EdgeInsets.all(12.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Row(
+                            children: [
+                              SizedBox(width: 4),
+                              _buildRichText("Seller: ", nameOfSeller, 14),
+                              Spacer(),
+                              _buildRichText("", roomNumberOfSeller, 14),
+                              SizedBox(width: 4),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          _buildBookTitle(nameOfBook),
+                          // _buildRichText("Title: ", nameOfBook, 20),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
+                            child: Row(
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    _buildRichText(
+                                        "Author(s): ", bookAuthor, 12),
+                                    _buildRichText(
+                                        "Edition: ", bookEdition, 12),
+                                    _buildRichText(
+                                        "Department: ", department, 12),
+                                  ],
+                                ),
+                                Spacer(),
+                                Column(
+                                  children: [
+                                    _buildRichText("Year: ", year, 12),
+                                    SizedBox(
+                                      height: 3,
+                                    ),
+                                    _buildRichText("₹ ", priceOfBook, 25),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                          _buildRichText(
+                              "Note: ",
+                              "Lorem ipsum ............ my ackjanckana akjcnajjcn ajbabdabchabcabcakbckaca name is khan and i am not a terrorist",
+                              12),
+                        ],
+                      ),
+                    )),
               ),
-              // Padding(
-              //   padding: const EdgeInsets.fromLTRB(10, 0, 10, 7),
-              //   child: _buildRichText("Note: ", "Lorem ipsum ............ my name is khan and i am not a terrorist", 14),
-              // ),
-              SizedBox(height: 7,),
-            ],
+            ),
           ),
         ),
-        onTap: () {
-          showDialog(
-              context: context,
-              builder: (BuildContext) => _buildPopupDialogue(context, nameOfSeller, nameOfBook, priceOfBook, roomNumberOfSeller)
-          );
-        },
       ),
+      onTap: () {
+        showDialog(
+            context: context,
+            builder: (BuildContext) => _buildPopupDialogue(context,
+                nameOfSeller, nameOfBook, priceOfBook, roomNumberOfSeller));
+      },
     );
   }
 }
@@ -112,7 +168,7 @@ Widget _buildBookTitle(String bookTitle) {
     bookTitle,
     textAlign: TextAlign.center,
     style: TextStyle(
-      fontSize: 25.0,
+      fontSize: 20.0,
       letterSpacing: 1,
       fontFamily: _theme.font,
       fontWeight: FontWeight.bold,
@@ -134,17 +190,15 @@ Widget _buildRichText(String text1, String text2, double _fontSize) {
           TextSpan(
               text: text2,
               style: TextStyle(
-                color: _theme.tertiaryColor,
-                fontFamily: _theme.font,
-                fontWeight: FontWeight.w400
-              )
-          ),
-        ]
-    ),
+                  color: _theme.tertiaryColor,
+                  fontFamily: _theme.font,
+                  fontWeight: FontWeight.w400)),
+        ]),
   );
 }
 
-Widget _buildPopupDialogue(BuildContext context, String _sellerName, String _bookName, String _bookPrice, String _roomNumber) {
+Widget _buildPopupDialogue(BuildContext context, String _sellerName,
+    String _bookName, String _bookPrice, String _roomNumber) {
   return AlertDialog(
     backgroundColor: Colors.grey,
     title: Row(
@@ -158,8 +212,7 @@ Widget _buildPopupDialogue(BuildContext context, String _sellerName, String _boo
                   color: _theme.secondaryColor,
                   letterSpacing: 0.7,
                   fontFamily: _theme.font,
-                  fontWeight: FontWeight.bold
-              ),
+                  fontWeight: FontWeight.bold),
             ),
             Text(
               _roomNumber,
@@ -167,8 +220,7 @@ Widget _buildPopupDialogue(BuildContext context, String _sellerName, String _boo
                   color: _theme.secondaryColor,
                   fontFamily: _theme.font,
                   fontWeight: FontWeight.w600,
-                  fontSize: 16
-              ),
+                  fontSize: 16),
             ),
           ],
         ),
@@ -176,7 +228,7 @@ Widget _buildPopupDialogue(BuildContext context, String _sellerName, String _boo
         Column(
           children: [
             IconButton(
-              onPressed:() {},
+              onPressed: () {},
               icon: Icon(
                 Icons.phone,
                 size: 34,
@@ -186,10 +238,9 @@ Widget _buildPopupDialogue(BuildContext context, String _sellerName, String _boo
             Text(
               "Call",
               style: TextStyle(
-                fontFamily: _theme.font,
-                fontSize: 12,
-                color: _theme.secondaryColor
-              ),
+                  fontFamily: _theme.font,
+                  fontSize: 12,
+                  color: _theme.secondaryColor),
             ),
           ],
         ),
@@ -198,19 +249,22 @@ Widget _buildPopupDialogue(BuildContext context, String _sellerName, String _boo
     content: Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        SizedBox(height: 15,),
+        SizedBox(
+          height: 15,
+        ),
         Text(
           _bookName,
           textAlign: TextAlign.center,
           style: TextStyle(
-            color: Colors.white,
-            letterSpacing: 1,
-            fontSize: 24,
-            fontFamily: _theme.font,
-            fontWeight: FontWeight.bold
-          ),
+              color: Colors.white,
+              letterSpacing: 1,
+              fontSize: 24,
+              fontFamily: _theme.font,
+              fontWeight: FontWeight.bold),
         ),
-        SizedBox(height: 25,),
+        SizedBox(
+          height: 25,
+        ),
         Text(
           "₹ " + _bookPrice,
           style: TextStyle(
@@ -218,8 +272,7 @@ Widget _buildPopupDialogue(BuildContext context, String _sellerName, String _boo
               letterSpacing: 1,
               fontSize: 20,
               fontFamily: _theme.font,
-              fontWeight: FontWeight.bold
-          ),
+              fontWeight: FontWeight.bold),
         ),
       ],
     ),

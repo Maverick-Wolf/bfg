@@ -24,7 +24,7 @@ class _LoginPageState extends State<LoginPage> {
         resizeToAvoidBottomInset: false,
 
         body: Padding(
-          padding: const EdgeInsets.fromLTRB(30.0, 280.0, 30.0, 0.0),
+          padding: const EdgeInsets.fromLTRB(30.0, 200.0, 30.0, 0.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -33,7 +33,7 @@ class _LoginPageState extends State<LoginPage> {
               _buildUsernameTF(),
               _buildSizedBox(17),
               _buildPasswordTF(),
-              _buildSizedBox(70),
+              _buildSizedBox(130),
               _buildSignInButton(),
             ],
           ),

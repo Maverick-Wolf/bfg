@@ -34,13 +34,32 @@ class Listings extends StatelessWidget {
         body: Padding(
           padding: const EdgeInsets.only(top: 10.0),
           child: DefaultTabController(
-            length: 7,
+            length: 8,
             child: Column(
               children: [
                 TabBar(
                   isScrollable: true,
                   indicatorColor: _theme.tertiaryColor,
                   tabs: [
+                    SizedBox(
+                      height: 65.0,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 9.0),
+                        child: Tab(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: const [
+                              CircleAvatar(
+                                backgroundImage:
+                                    AssetImage("assets/images/college.png"),
+                              ),
+                              Text("All"),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
                     SizedBox(
                       height: 65.0,
                       child: Padding(
@@ -179,37 +198,79 @@ class Listings extends StatelessWidget {
                 Expanded(
                   child: TabBarView(
                     children: [
-                      const Center(child: BookCard()),
-                      Center(
-                          child: Text(
-                        "Phoenix",
-                        style: TextStyle(color: _theme.tertiaryColor),
-                      )),
-                      Center(
-                          child: Text(
-                        "Mechanical",
-                        style: TextStyle(color: _theme.tertiaryColor),
-                      )),
-                      Center(
-                          child: Text(
-                        "Chemical",
-                        style: TextStyle(color: _theme.tertiaryColor),
-                      )),
-                      Center(
-                          child: Text(
-                        "Dual Degree",
-                        style: TextStyle(color: _theme.tertiaryColor),
-                      )),
-                      Center(
-                          child: Text(
-                        "Higher Degree",
-                        style: TextStyle(color: _theme.tertiaryColor),
-                      )),
-                      Center(
-                          child: Text(
-                        "Misc",
-                        style: TextStyle(color: _theme.tertiaryColor),
-                      ))
+                      //ALL
+                      ListView.builder(
+                        itemCount: 10,
+                        itemBuilder: (context, index) {
+                          return const Padding(
+                            padding: EdgeInsets.only(bottom: 10.0),
+                            child: BookCard(),
+                          );
+                        },
+                      ),
+                      ListView.builder(
+                        itemCount: 10,
+                        itemBuilder: (context, index) {
+                          return const Padding(
+                            padding: EdgeInsets.only(bottom: 10.0),
+                            child: BookCard(),
+                          );
+                        },
+                      ),
+                      ListView.builder(
+                        itemCount: 10,
+                        itemBuilder: (context, index) {
+                          return const Padding(
+                            padding: EdgeInsets.only(bottom: 10.0),
+                            child: BookCard(),
+                          );
+                        },
+                      ),
+                      ListView.builder(
+                        itemCount: 10,
+                        itemBuilder: (context, index) {
+                          return const Padding(
+                            padding: EdgeInsets.only(bottom: 10.0),
+                            child: BookCard(),
+                          );
+                        },
+                      ),
+                      ListView.builder(
+                        itemCount: 10,
+                        itemBuilder: (context, index) {
+                          return const Padding(
+                            padding: EdgeInsets.only(bottom: 10.0),
+                            child: BookCard(),
+                          );
+                        },
+                      ),
+                      ListView.builder(
+                        itemCount: 10,
+                        itemBuilder: (context, index) {
+                          return const Padding(
+                            padding: EdgeInsets.only(bottom: 10.0),
+                            child: BookCard(),
+                          );
+                        },
+                      ),
+                      ListView.builder(
+                        itemCount: 10,
+                        itemBuilder: (context, index) {
+                          return const Padding(
+                            padding: EdgeInsets.only(bottom: 10.0),
+                            child: BookCard(),
+                          );
+                        },
+                      ),
+                      ListView.builder(
+                        itemCount: 10,
+                        itemBuilder: (context, index) {
+                          return const Padding(
+                            padding: EdgeInsets.only(bottom: 10.0),
+                            child: BookCard(),
+                          );
+                        },
+                      ),
                     ],
                   ),
                 ),
