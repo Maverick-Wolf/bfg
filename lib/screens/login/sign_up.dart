@@ -1,8 +1,6 @@
-import 'package:bfg/providers/login_providers/login_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import 'package:provider/provider.dart';
 import '../../theme.dart';
 
 class SignUp extends StatefulWidget {
@@ -14,7 +12,6 @@ class SignUp extends StatefulWidget {
 
 OurTheme _theme = OurTheme();
 FirebaseAuth _auth = FirebaseAuth.instance;
-// bool isLoading = false;
 late String _verificationId;
 late String _phoneNumber;
 String _otp = "";

@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../theme.dart';
@@ -14,9 +16,20 @@ OurTheme _theme = OurTheme();
 class _DetailsState extends State<Details> {
   String hostelDropdown1 = "AH ";
   String hostelDropdown2 = "1";
+  String _name = "";
+  String _roomNumber= "";
+  String _password= "";
+  String _hostel= "";
+  late CollectionReference users;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  User? _user;
 
   @override
   Widget build(BuildContext context) {
+
+    _user = _auth.currentUser;
+    users = FirebaseFirestore.instance.collection('users');
+
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -39,6 +52,9 @@ class _DetailsState extends State<Details> {
                       flex: 5,
                     ),
                     TextFormField(
+                      onChanged: (value) {
+                        _name = value;
+                      },
                       decoration: InputDecoration(
                         border: const OutlineInputBorder(),
                         labelText: "Name",
@@ -68,6 +84,9 @@ class _DetailsState extends State<Details> {
                       child: Container(
                         width: MediaQuery.of(context).size.width / 2,
                         child: TextFormField(
+                          onChanged: (value) {
+                            _roomNumber = value;
+                          },
                           decoration: InputDecoration(
                             border: const OutlineInputBorder(),
                             labelText: "Room Number",
@@ -92,6 +111,9 @@ class _DetailsState extends State<Details> {
                       flex: 6,
                     ),
                     TextFormField(
+                      onChanged: (value) {
+                        _password = value;
+                      },
                       decoration: InputDecoration(
                         border: const OutlineInputBorder(),
                         labelText: "Password",
@@ -128,23 +150,19 @@ class _DetailsState extends State<Details> {
       ),
     );
   }
-  Widget _buildTextFormField(String label, String hint, TextInputType keyboardType) {
-    return TextFormField(
-      decoration: InputDecoration(
-        border: OutlineInputBorder(),
-        labelText: label,
-        hintText: hint,
-        labelStyle: TextStyle(color: _theme.secondaryColor),
-        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: _theme.tertiaryColor)),
-        focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: _theme.secondaryColor, width: 1.3)),
-      ),
-      cursorColor: _theme.secondaryColor,
-      style: TextStyle(
-        fontFamily: _theme.font,
-        fontWeight: FontWeight.bold,
-      ),
-      keyboardType: keyboardType,
-    );
+
+  Future<void> addUser() {
+    // Call the user's CollectionReference to add a new user
+    return users
+        .add({
+      'name': _name,
+      'hostel': _hostel,
+      'password': _password,
+      'phone_number': "987",
+      'room_number': _roomNumber,
+    })
+        .then((value) => print("User Added"))
+        .catchError((error) => print("Failed to add user: $error"));
   }
 
   Widget _buildRichText() {
@@ -218,7 +236,13 @@ class _DetailsState extends State<Details> {
     return Center(
       child: ElevatedButton(
         onPressed: (){
-          Navigator.pushNamed(context, '/userMenu');
+          _hostel = hostelDropdown1 + hostelDropdown2;
+          try{
+            addUser();
+            Navigator.pushNamed(context, '/userMenu');
+          } catch(e) {
+            print(e);
+          }
         },
         style: ElevatedButton.styleFrom(
             primary: _theme.secondaryColor.withOpacity(0.8),
