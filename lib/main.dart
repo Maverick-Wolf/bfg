@@ -1,4 +1,5 @@
 import 'package:bfg/providers/login_providers/login_provider.dart';
+import 'package:bfg/screens/initialization/initialization.dart';
 import 'package:bfg/screens/listings/add_book.dart';
 import 'package:bfg/screens/listings/book_card.dart';
 import 'package:bfg/screens/listings/listings.dart';
@@ -32,7 +33,8 @@ Future<void> main() async{
         ),
         debugShowCheckedModeBanner: false,
         routes: {
-          '/': (context) => const LoginPage(),
+          '/': (context) => const Initialization(),
+          '/login': (context) => const LoginPage(),
           '/signUp': (context) => const SignUp(),
           '/addBook': (context) => const AddBook(),
           '/userMenu': (context) => UserMenu(),
