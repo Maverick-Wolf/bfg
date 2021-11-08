@@ -35,6 +35,8 @@ class _LoginPageState extends State<LoginPage> {
               _buildPasswordTF(),
               _buildSizedBox(130),
               _buildSignInButton(),
+              _buildSizedBox(17),
+              _buildChangeNumberButton()
             ],
           ),
         ),
@@ -147,6 +149,26 @@ class _LoginPageState extends State<LoginPage> {
   Widget _buildSizedBox(double height) {
     return SizedBox(
       height: height,
+    );
+  }
+
+  Widget _buildChangeNumberButton() {
+    return Center(
+      child: TextButton(
+          onPressed: () {
+            setState(() {
+              FocusScope.of(context).unfocus();
+              Navigator.pushNamed(context, '/signUp');
+            });
+          },
+          child: Text(
+            "New? Tap here to Sign Up",
+            style: TextStyle(
+              fontFamily: _theme.font,
+              color: _theme.secondaryColor,
+            ),
+          )
+      ),
     );
   }
 }

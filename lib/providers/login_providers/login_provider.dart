@@ -8,7 +8,6 @@ class LoginProvider with ChangeNotifier {
   bool _obscureKey = true;
   late String _username = "";
   late String _password = "";
-
   bool get obscureKey => _obscureKey;
   bool get obscurePassword => _obscurePassword;
   String get password => _password;
@@ -41,5 +40,4 @@ class LoginProvider with ChangeNotifier {
     _password = password;
     notifyListeners();
   }
-
 }
