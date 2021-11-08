@@ -1,3 +1,54 @@
+Card(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(height: 10,),
+              Row(
+                children: [
+                  SizedBox(width: 4),
+                  _buildRichText("Seller: ", nameOfSeller, 14),
+                  Spacer(),
+                  _buildRichText("", roomNumberOfSeller, 14),
+                  SizedBox(width: 4),
+                ],
+              ),
+              SizedBox(height: 30,),
+              _buildBookTitle(nameOfBook),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(10, 32, 10, 20),
+                child: Row(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildRichText("Author(s): ", bookAuthor, 14),
+                        _buildRichText("Edition: ", bookEdition, 14),
+                        _buildRichText("Department: ", department, 14),
+                      ],
+                    ),
+                    Spacer(),
+                    Column(
+                      children: [
+                        _buildRichText("Year: ", year, 14),
+                        SizedBox(height: 3,),
+                        _buildRichText("₹ ", priceOfBook, 25),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              // Padding(
+              //   padding: const EdgeInsets.fromLTRB(10, 0, 10, 7),
+              //   child: _buildRichText("Note: ", "Lorem ipsum ............ my name is khan and i am not a terrorist", 14),
+              // ),
+              SizedBox(height: 7,),
+            ],
+          ),
+        ),
+
+
+
 import 'dart:ui';
 
 import 'package:bfg/theme.dart';
@@ -40,7 +91,7 @@ class BookDetailsCard extends StatefulWidget {
 class _BookDetailsCardState extends State<BookDetailsCard> {
   @override
 
-  String nameOfBook = "Elements of the Theory of Computation";
+  String nameOfBook = "Elements of the Theory of Computation and asubfabjf jnj";
   String priceOfBook = "300";
   String roomNumberOfSeller = "AH 2 - 344";
   String nameOfSeller = "Rachit Champu";
@@ -113,9 +164,8 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
                             ),
                             SizedBox(height: 10,),
                             _buildBookTitle(nameOfBook),
-                            // _buildRichText("Title: ", nameOfBook, 20),
                             Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
+                              padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
                               child: Row(
                                 children: [
                                   Column(
@@ -162,7 +212,7 @@ Widget _buildBookTitle(String bookTitle) {
     bookTitle,
     textAlign: TextAlign.center,
     style: TextStyle(
-      fontSize: 20.0,
+      fontSize: 25.0,
       letterSpacing: 1,
       fontFamily: _theme.font,
       fontWeight: FontWeight.bold,
