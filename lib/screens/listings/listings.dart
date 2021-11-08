@@ -179,37 +179,69 @@ class Listings extends StatelessWidget {
                 Expanded(
                   child: TabBarView(
                     children: [
-                      const Center(child: BookCard()),
-                      Center(
-                          child: Text(
-                        "Phoenix",
-                        style: TextStyle(color: _theme.tertiaryColor),
-                      )),
-                      Center(
-                          child: Text(
-                        "Mechanical",
-                        style: TextStyle(color: _theme.tertiaryColor),
-                      )),
-                      Center(
-                          child: Text(
-                        "Chemical",
-                        style: TextStyle(color: _theme.tertiaryColor),
-                      )),
-                      Center(
-                          child: Text(
-                        "Dual Degree",
-                        style: TextStyle(color: _theme.tertiaryColor),
-                      )),
-                      Center(
-                          child: Text(
-                        "Higher Degree",
-                        style: TextStyle(color: _theme.tertiaryColor),
-                      )),
-                      Center(
-                          child: Text(
-                        "Misc",
-                        style: TextStyle(color: _theme.tertiaryColor),
-                      ))
+                      ListView.builder(
+                        itemCount: 10,
+                        itemBuilder: (context, index) {
+                          return const Padding(
+                            padding: EdgeInsets.only(bottom: 10.0),
+                            child: BookCard(),
+                          );
+                        },
+                      ),
+                      ListView.builder(
+                        itemCount: 10,
+                        itemBuilder: (context, index) {
+                          return const Padding(
+                            padding: EdgeInsets.only(bottom: 10.0),
+                            child: BookCard(),
+                          );
+                        },
+                      ),
+                      ListView.builder(
+                        itemCount: 10,
+                        itemBuilder: (context, index) {
+                          return const Padding(
+                            padding: EdgeInsets.only(bottom: 10.0),
+                            child: BookCard(),
+                          );
+                        },
+                      ),
+                      ListView.builder(
+                        itemCount: 10,
+                        itemBuilder: (context, index) {
+                          return const Padding(
+                            padding: EdgeInsets.only(bottom: 10.0),
+                            child: BookCard(),
+                          );
+                        },
+                      ),
+                      ListView.builder(
+                        itemCount: 10,
+                        itemBuilder: (context, index) {
+                          return const Padding(
+                            padding: EdgeInsets.only(bottom: 10.0),
+                            child: BookCard(),
+                          );
+                        },
+                      ),
+                      ListView.builder(
+                        itemCount: 10,
+                        itemBuilder: (context, index) {
+                          return const Padding(
+                            padding: EdgeInsets.only(bottom: 10.0),
+                            child: BookCard(),
+                          );
+                        },
+                      ),
+                      ListView.builder(
+                        itemCount: 10,
+                        itemBuilder: (context, index) {
+                          return const Padding(
+                            padding: EdgeInsets.only(bottom: 10.0),
+                            child: BookCard(),
+                          );
+                        },
+                      ),
                     ],
                   ),
                 ),
