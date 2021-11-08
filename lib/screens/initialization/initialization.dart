@@ -19,7 +19,7 @@ class Initialization extends StatelessWidget {
             if (snapshot.hasData) {
               final FirebaseAuth _auth = FirebaseAuth.instance;
               _user = _auth.currentUser;
-              if (_user!.uid.isNotEmpty) {
+              if (_user != null) {
                 return UserMenu();
               } else {
                 return const LoginPage();
