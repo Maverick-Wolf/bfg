@@ -8,10 +8,14 @@ import 'package:bfg/screens/login/sign_up.dart';
 import 'package:bfg/screens/user/profile.dart';
 import 'package:bfg/screens/user/user_menu.dart';
 import 'package:bfg/theme.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+Future<void> main() async{
+
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   OurTheme _theme = OurTheme();
   runApp(
     MultiProvider(
@@ -30,7 +34,6 @@ void main() {
         routes: {
           '/': (context) => const LoginPage(),
           '/signUp': (context) => const SignUp(),
-          '/otpClass': (context) => const OtpClass(),
           '/addBook': (context) => const AddBook(),
           '/userMenu': (context) => const UserMenu(),
           '/listings': (context) => const Listings(),
