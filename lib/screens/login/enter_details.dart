@@ -153,12 +153,12 @@ class _DetailsState extends State<Details> {
 
   Future<void> addUser() {
     // Call the user's CollectionReference to add a new user
-    return users
-        .add({
+    return users.doc(_user!.uid)
+        .set({
       'name': _name,
       'hostel': _hostel,
       'password': _password,
-      'phone_number': "987",
+      'phone_number': _user!.phoneNumber,
       'room_number': _roomNumber,
     })
         .then((value) => print("User Added"))
