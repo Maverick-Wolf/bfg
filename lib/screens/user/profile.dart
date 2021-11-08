@@ -14,8 +14,6 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
 
   OurTheme _theme = OurTheme();
-  String hostelDropdown1 = 'AH ';
-  String hostelDropdown2 = '2';
   late CollectionReference users;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   User? _user;
@@ -24,7 +22,6 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     _user = _auth.currentUser;
     users = FirebaseFirestore.instance.collection('users');
-    // fetchDataFromFirestore();
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -64,7 +61,7 @@ class _ProfileState extends State<Profile> {
                           ],
                         );
                       }
-                      return Text("loading");
+                      return Center(child: CircularProgressIndicator(color: _theme.secondaryColor,),);
                     },
                   )
                 ),
