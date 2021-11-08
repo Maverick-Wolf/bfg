@@ -123,15 +123,15 @@ class _SignUpState extends State<SignUp> {
         },
         style: ElevatedButton.styleFrom(
             primary: _theme.secondaryColor.withOpacity(0.8),
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15),
             )
         ),
         child: Wrap(
           children: [
-            Icon(Icons.send),
-            SizedBox(width: 10.0,),
+            const Icon(Icons.send),
+            const SizedBox(width: 10.0,),
             Text(
               "SEND OTP",
               style: TextStyle(
@@ -149,11 +149,12 @@ class _SignUpState extends State<SignUp> {
   Widget _buildPhoneNumberTF() {
     return TextFormField(
       initialValue: "",
+      key: UniqueKey(),
       onChanged: (value) {
         _phoneNumber = "+91" + value;
       },
       decoration: InputDecoration(
-        border: OutlineInputBorder(),
+        border: const OutlineInputBorder(),
         labelText: "Phone Number",
         labelStyle: TextStyle(color: _theme.secondaryColor),
         enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: _theme.tertiaryColor)),
@@ -175,7 +176,7 @@ class _SignUpState extends State<SignUp> {
         _otp = text;
       },
       decoration: InputDecoration(
-        border: OutlineInputBorder(),
+        border: const OutlineInputBorder(),
         labelText: "OTP",
         labelStyle: TextStyle(color: _theme.secondaryColor),
         enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: _theme.tertiaryColor)),
@@ -199,15 +200,15 @@ class _SignUpState extends State<SignUp> {
         },
         style: ElevatedButton.styleFrom(
             primary: _theme.secondaryColor.withOpacity(0.8),
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15),
             )
         ),
         child: Wrap(
           children: [
-            Icon(Icons.login_rounded),
-            SizedBox(width: 10.0,),
+            const Icon(Icons.login_rounded),
+            const SizedBox(width: 10.0,),
             Text(
               "VERIFY OTP",
               style: TextStyle(
