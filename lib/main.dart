@@ -9,14 +9,14 @@ import 'package:bfg/screens/login/sign_up.dart';
 import 'package:bfg/screens/user/profile.dart';
 import 'package:bfg/screens/user/user_menu.dart';
 import 'package:bfg/theme.dart';
-import 'package:firebase_core/firebase_core.dart';
+// import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 Future<void> main() async{
 
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  // WidgetsFlutterBinding.ensureInitialized();
+  // await Firebase.initializeApp();
   OurTheme _theme = OurTheme();
   runApp(
     MultiProvider(
