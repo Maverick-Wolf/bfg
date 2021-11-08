@@ -25,6 +25,7 @@ class _BookCardState extends State<BookCard> {
     );
   }
 }
+
 late double _height;
 late double _width;
 
@@ -46,110 +47,118 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
   String bookEdition = "2";
   String year = "2";
 
+  @override
   Widget build(BuildContext context) {
-
     _height = MediaQuery.of(context).size.height;
     _width = MediaQuery.of(context).size.width;
-    return Center(
-      child: InkWell(
-        child: Center(
-          child: GlassmorphicContainer(
-            height: _height * 0.34,
-            width: _width * 0.93,
-            borderRadius: 15,
-            blur: 15,
-            alignment: Alignment.center,
-            border: 2,
-            linearGradient: LinearGradient(colors: [
-              Colors.white.withOpacity(0.2),
-              Colors.white38.withOpacity(0.2)
-            ], begin: Alignment.topLeft, end: Alignment.bottomRight),
-            borderGradient: LinearGradient(colors: [
-              Colors.white24.withOpacity(0.2),
-              Colors.white70.withOpacity(0.2)
+    return InkWell(
+      child: Center(
+        child: GlassmorphicContainer(
+          height: _height * 0.34,
+          width: _width * 0.93,
+          borderRadius: 15,
+          blur: 15,
+          alignment: Alignment.center,
+          border: 2,
+          linearGradient: LinearGradient(colors: [
+            Colors.white.withOpacity(0.2),
+            Colors.white38.withOpacity(0.2)
+          ], begin: Alignment.topLeft, end: Alignment.bottomRight),
+          borderGradient: LinearGradient(colors: [
+            Colors.white24.withOpacity(0.2),
+            Colors.white70.withOpacity(0.2)
+          ]),
+          child: Container(
+            decoration: BoxDecoration(boxShadow: [
+              BoxShadow(
+                blurRadius: 16,
+                spreadRadius: 16,
+                color: Colors.black.withOpacity(0.1),
+              )
             ]),
-            child: Container(
-              decoration: BoxDecoration(boxShadow: [
-                BoxShadow(
-                  blurRadius: 16,
-                  spreadRadius: 16,
-                  color: Colors.black.withOpacity(0.1),
-                )
-              ]),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(15.0),
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(
-                    sigmaX: 20.0,
-                    sigmaY: 20.0,
-                  ),
-                  child: Container(
-                      height: _height * 0.7,
-                      width: _width * 0.93,
-                      decoration: BoxDecoration(
-                          color: _theme.tertiaryColor.withOpacity(0.15),
-                          borderRadius: BorderRadius.circular(16.0),
-                          border: Border.all(
-                            width: 1.5,
-                            color: Colors.white.withOpacity(0.2),
-                          )),
-                      child: Padding(
-                        padding: EdgeInsets.all(12.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Row(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(15.0),
+              child: BackdropFilter(
+                filter: ImageFilter.blur(
+                  sigmaX: 20.0,
+                  sigmaY: 20.0,
+                ),
+                child: Container(
+                    height: _height * 0.7,
+                    width: _width * 0.93,
+                    decoration: BoxDecoration(
+                        color: _theme.tertiaryColor.withOpacity(0.15),
+                        borderRadius: BorderRadius.circular(16.0),
+                        border: Border.all(
+                          width: 1.5,
+                          color: Colors.white.withOpacity(0.2),
+                        )),
+                    child: Padding(
+                      padding: EdgeInsets.all(12.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Row(
+                            children: [
+                              SizedBox(width: 4),
+                              _buildRichText("Seller: ", nameOfSeller, 14),
+                              Spacer(),
+                              _buildRichText("", roomNumberOfSeller, 14),
+                              SizedBox(width: 4),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          _buildBookTitle(nameOfBook),
+                          // _buildRichText("Title: ", nameOfBook, 20),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
+                            child: Row(
                               children: [
-                                SizedBox(width: 4),
-                                _buildRichText("Seller: ", nameOfSeller, 14),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    _buildRichText(
+                                        "Author(s): ", bookAuthor, 12),
+                                    _buildRichText(
+                                        "Edition: ", bookEdition, 12),
+                                    _buildRichText(
+                                        "Department: ", department, 12),
+                                  ],
+                                ),
                                 Spacer(),
-                                _buildRichText("", roomNumberOfSeller, 14),
-                                SizedBox(width: 4),
+                                Column(
+                                  children: [
+                                    _buildRichText("Year: ", year, 12),
+                                    SizedBox(
+                                      height: 3,
+                                    ),
+                                    _buildRichText("₹ ", priceOfBook, 25),
+                                  ],
+                                ),
                               ],
                             ),
-                            SizedBox(height: 10,),
-                            _buildBookTitle(nameOfBook),
-                            // _buildRichText("Title: ", nameOfBook, 20),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
-                              child: Row(
-                                children: [
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      _buildRichText("Author(s): ", bookAuthor, 12),
-                                      _buildRichText("Edition: ", bookEdition, 12),
-                                      _buildRichText("Department: ", department, 12),
-                                    ],
-                                  ),
-                                  Spacer(),
-                                  Column(
-                                    children: [
-                                      _buildRichText("Year: ", year, 12),
-                                      SizedBox(height: 3,),
-                                      _buildRichText("₹ ", priceOfBook, 25),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                            _buildRichText("Note: ", "Lorem ipsum ............ my ackjanckana akjcnajjcn ajbabdabchabcabcakbckaca name is khan and i am not a terrorist", 12),
-                          ],
-                        ),
-                      )),
-                ),
+                          ),
+                          _buildRichText(
+                              "Note: ",
+                              "Lorem ipsum ............ my ackjanckana akjcnajjcn ajbabdabchabcabcakbckaca name is khan and i am not a terrorist",
+                              12),
+                        ],
+                      ),
+                    )),
               ),
             ),
           ),
         ),
-        onTap: () {
-          showDialog(
-              context: context,
-              builder: (BuildContext) => _buildPopupDialogue(context,
-                  nameOfSeller, nameOfBook, priceOfBook, roomNumberOfSeller));
-        },
       ),
+      onTap: () {
+        showDialog(
+            context: context,
+            builder: (BuildContext) => _buildPopupDialogue(context,
+                nameOfSeller, nameOfBook, priceOfBook, roomNumberOfSeller));
+      },
     );
   }
 }
