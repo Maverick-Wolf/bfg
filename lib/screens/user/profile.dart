@@ -1,4 +1,4 @@
-import 'package:bfg/drawer/drawer.dart';
+import 'package:bfg/widgets/drawer.dart';
 import 'package:bfg/theme.dart';
 import 'package:flutter/material.dart';
 
