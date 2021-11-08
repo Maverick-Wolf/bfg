@@ -1,5 +1,7 @@
 import 'package:bfg/widgets/drawer.dart';
 import 'package:bfg/theme.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class Profile extends StatefulWidget {
@@ -14,9 +16,15 @@ class _ProfileState extends State<Profile> {
   OurTheme _theme = OurTheme();
   String hostelDropdown1 = 'AH ';
   String hostelDropdown2 = '2';
+  late CollectionReference users;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  User? _user;
 
   @override
   Widget build(BuildContext context) {
+    _user = _auth.currentUser;
+    users = FirebaseFirestore.instance.collection('users');
+    // fetchDataFromFirestore();
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -31,22 +39,34 @@ class _ProfileState extends State<Profile> {
                 hasScrollBody: false,
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(30.0, 0.0, 30.0, 0.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _buildTextFormField("Name", "Rachit Champu"),
-                      _buildTextFormField("Phone Number", "9876543210"),
-                      _buildDropdownRow(),
-                      Center(
-                        child: Container(
-                          width: MediaQuery.of(context).size.width / 2,
-                          child: _buildTextFormField("Room Number", "344"),
-                        ),
-                      ),
-                      _buildTextFormField("Password", "abracadabra"),
-                    ],
-                  ),
+                  child: FutureBuilder<DocumentSnapshot>(
+                    future: users.doc(_user!.uid).get(),
+                    builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                      if (snapshot.hasError) {
+                        return Text("Something went wrong");
+                      }
+                      if (snapshot.hasData && !snapshot.data!.exists) {
+                        return Text("Document does not exist");
+                      }
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
+                        return Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            _buildRichText("Name", data['name']),
+                            _buildRichText("Phone Number", data['phone_number']),
+                            _buildRichText("Hostel", data['hostel']),
+                            _buildRichText("Room Number", data['room_number']),
+                            _buildRichText("Password", data['password']),
+                            SizedBox(height: 10,),
+                            _buildEditButton(),
+                          ],
+                        );
+                      }
+                      return Text("loading");
+                    },
+                  )
                 ),
               ),
             ],
@@ -54,80 +74,56 @@ class _ProfileState extends State<Profile> {
       ),
     );
   }
-  Widget _buildTextFormField(String label, String _initialValue) {
-    return TextFormField(
-      decoration: InputDecoration(
-        border: const OutlineInputBorder(),
-        labelText: label,
-        labelStyle: TextStyle(color: _theme.secondaryColor),
-        enabledBorder: OutlineInputBorder(
-            borderSide:
-            BorderSide(color: _theme.tertiaryColor)),
-        focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-                color: _theme.secondaryColor, width: 1.3)),
-      ),
-      initialValue: _initialValue,
-      cursorColor: _theme.secondaryColor,
-      style: TextStyle(
-        fontFamily: _theme.font,
-        fontWeight: FontWeight.bold,
-      ),
-      keyboardType: TextInputType.name,
+
+  Widget _buildRichText(String title, String text) {
+    return RichText(
+      text: TextSpan(
+          text: title + ": ",
+          style: TextStyle(
+              color: _theme.secondaryColor,
+              fontSize: 24.0,
+              fontFamily: _theme.font,
+              fontWeight: FontWeight.w800),
+          children: <TextSpan>[
+            TextSpan(
+                text: text,
+                style: TextStyle(
+                    color: _theme.tertiaryColor,
+                    fontFamily: _theme.font,
+                    fontWeight: FontWeight.w800)),
+          ]),
     );
   }
 
-  Widget _buildDropdownRow() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        DropdownButton<String>(
-          value: hostelDropdown1,
-          icon: const Icon(Icons.arrow_downward),
-          iconSize: 24,
-          elevation: 16,
-          style: TextStyle(color: _theme.secondaryColor),
-          underline: Container(
-            height: 2,
-            color: _theme.secondaryColor,
-          ),
-          onChanged: (String? newValue) {
-            setState(() {
-              hostelDropdown1 = newValue!;
-            });
-          },
-          items: <String>['AH ', 'CH ', 'DH ']
-              .map<DropdownMenuItem<String>>((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(value),
-            );
-          }).toList(),
+  Widget _buildEditButton() {
+    return Center(
+      child: ElevatedButton(
+        onPressed: (){
+          FocusScope.of(context).unfocus();
+          Navigator.pushReplacementNamed(context, '/enterDetails');
+        },
+        style: ElevatedButton.styleFrom(
+            primary: _theme.secondaryColor.withOpacity(0.8),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15),
+            )
         ),
-        DropdownButton<String>(
-          value: hostelDropdown2,
-          icon: const Icon(Icons.arrow_downward),
-          iconSize: 24,
-          elevation: 16,
-          style: TextStyle(color: _theme.secondaryColor),
-          underline: Container(
-            height: 2,
-            color: _theme.secondaryColor,
-          ),
-          onChanged: (String? newValue) {
-            setState(() {
-              hostelDropdown2 = newValue!;
-            });
-          },
-          items: <String>['1', '2', '3', '4', '5', '6', '7', '8', '9']
-              .map<DropdownMenuItem<String>>((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(value),
-            );
-          }).toList(),
+        child: Wrap(
+          children: [
+            const Icon(Icons.login_rounded),
+            const SizedBox(width: 10.0,),
+            Text(
+              "Edit Details",
+              style: TextStyle(
+                  fontSize: 18.0,
+                  fontFamily: _theme.font,
+                  fontWeight: FontWeight.bold
+              ),
+            )
+          ],
         ),
-      ],
+      ),
     );
   }
 }
