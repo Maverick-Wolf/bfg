@@ -27,7 +27,15 @@ class _UserMenuState extends State<UserMenu> {
       backgroundColor: _theme.primaryColor,
       appBar: AppBar(
         centerTitle: true,
-        title: Text("BFG"),
+        title: Text(
+          "BFG",
+          style: TextStyle(
+            color: _theme.secondaryColor,
+            fontFamily: _theme.font,
+            fontWeight: FontWeight.bold,
+            letterSpacing: 1.5,
+          ),
+        ),
         backgroundColor: _theme.primaryColor,
       ),
       drawer: const DrawerClass(),
