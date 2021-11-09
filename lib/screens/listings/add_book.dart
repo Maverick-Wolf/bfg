@@ -1,4 +1,6 @@
 import 'package:bfg/theme.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class AddBook extends StatefulWidget {
@@ -8,14 +10,30 @@ class AddBook extends StatefulWidget {
   _AddBookState createState() => _AddBookState();
 }
 
+final FirebaseAuth _auth = FirebaseAuth.instance;
+User? _user;
+
+
 class _AddBookState extends State<AddBook> {
   OurTheme _theme = OurTheme();
   String _edition = "1";
   String _semester = "2";
   String _department = "Misc";
 
+  String _bookTitle = "";
+  String _bookAuthor = "";
+  String _bookPrice = "";
+  String _note = "";
+  late CollectionReference books;
+
+
   @override
   Widget build(BuildContext context) {
+
+    _user = _auth.currentUser;
+    books = FirebaseFirestore.instance.collection('books');
+
+
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -52,20 +70,18 @@ class _AddBookState extends State<AddBook> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    _buildTextFormField("Book Name", "Full Name of Book"),
+                    _buildTextFormField("Book Name", "Full Name of Book", 'title'),
                     _buildTextFormField(
-                        "Author(s)", "Name(s) separated by commas"),
+                        "Author(s)", "Name(s) separated by commas", 'author'),
                     _buildDepartmentDropDown(),
                     _buildDropdownRow(),
                     Center(
                       child: Container(
                         width: MediaQuery.of(context).size.width / 2,
-                        child: _buildTextFormField(
-                            "Listing Price", "Your Selling Price"),
+                        child: _buildTextFormField("Listing Price", "Your Selling Price", 'price'),
                       ),
                     ),
-                    _buildTextFormField(
-                        "Note (Optional)", "Any extra info (if any)"),
+                    _buildTextFormField("Note (Optional)", "Extra info (if any)", 'note'),
                     _buildSellButton(),
                   ],
                 ),
@@ -77,8 +93,22 @@ class _AddBookState extends State<AddBook> {
     );
   }
 
-  Widget _buildTextFormField(String _label, String _hint) {
+  Widget _buildTextFormField(String _label, String _hint, String fillIn) {
     return TextFormField(
+      onChanged: (text) {
+        switch(fillIn) {
+          case 'title': _bookTitle = text;
+          break;
+          case 'author': _bookAuthor = text;
+          break;
+          case 'price': _bookPrice = text;
+          break;
+          case 'note': _note = text;
+          break;
+          default: print("idk");
+          break;
+        }
+      },
       decoration: InputDecoration(
         border: const OutlineInputBorder(),
         labelText: _label,
@@ -237,6 +267,22 @@ class _AddBookState extends State<AddBook> {
     );
   }
 
+  Future<void> addBook() {
+    return books
+        .add({
+      'title': _bookTitle,
+      'author': _bookAuthor,
+      'department': _department,
+      'edition': _edition,
+      'seller_id': _user!.uid,
+      'price': _bookPrice,
+      'semester': _semester,
+      'note': _note,
+    })
+        .then((value) => print("Book Added"))
+        .catchError((error) => print("Failed to add book: $error"));
+  }
+
   Widget _buildSellButton() {
     return Center(
       child: ElevatedButton(
@@ -369,6 +415,7 @@ class _AddBookState extends State<AddBook> {
           ),
           TextButton(
             onPressed: () {
+              addBook();
               Navigator.pushReplacementNamed(context, "/listings");
             },
             child: Text(

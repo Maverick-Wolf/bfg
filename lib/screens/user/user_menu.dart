@@ -1,26 +1,41 @@
 import 'package:bfg/widgets/drawer.dart';
 import 'package:bfg/theme.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class UserMenu extends StatefulWidget {
-  const UserMenu({Key? key}) : super(key: key);
+  UserMenu({Key? key}) : super(key: key);
 
   @override
   _UserMenuState createState() => _UserMenuState();
 }
+
+final FirebaseAuth _auth = FirebaseAuth.instance;
+late User? _user;
 
 class _UserMenuState extends State<UserMenu> {
   OurTheme _theme = OurTheme();
 
   @override
   Widget build(BuildContext context) {
+
+    User? _user = _auth.currentUser;
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
+
     return Scaffold(
       backgroundColor: _theme.primaryColor,
       appBar: AppBar(
         centerTitle: true,
-        title: Text("BFG"),
+        title: Text(
+          "BFG",
+          style: TextStyle(
+            color: _theme.secondaryColor,
+            fontFamily: _theme.font,
+            fontWeight: FontWeight.bold,
+            letterSpacing: 1.5,
+          ),
+        ),
         backgroundColor: _theme.primaryColor,
       ),
       drawer: const DrawerClass(),
