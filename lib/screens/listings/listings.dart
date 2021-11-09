@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+String _semester = "All";
 class Listings extends StatefulWidget {
   Listings({Key? key}) : super(key: key);
 
@@ -15,18 +16,19 @@ class _ListingsState extends State<Listings> {
   late CollectionReference users;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   User? _user;
-  late Stream<QuerySnapshot> _booksStream = FirebaseFirestore.instance.collection('books').snapshots();
+  late Stream<QuerySnapshot> _booksStream =
+      FirebaseFirestore.instance.collection('books').snapshots();
   OurTheme _theme = OurTheme();
 
   @override
   Widget build(BuildContext context) {
     _user = _auth.currentUser;
     users = FirebaseFirestore.instance.collection('users');
-
+    
     return Scaffold(
         backgroundColor: _theme.primaryColor,
         appBar: AppBar(
-          centerTitle: true,
+          // centerTitle: true,
           backgroundColor: _theme.primaryColor,
           title: Text(
             "Book Listings",
@@ -38,12 +40,55 @@ class _ListingsState extends State<Listings> {
             ),
           ),
           actions: <Widget>[
-            Padding(
-                padding: const EdgeInsets.only(right: 16.0),
-                child: Icon(
-                  Icons.menu,
-                  color: _theme.tertiaryColor,
-                )),
+            Row(
+              children: [
+                Text(
+                  "Sem : ",
+                  style: TextStyle(
+                      fontFamily: _theme.font,
+                      fontSize: 18,
+                      color: _theme.secondaryColor,
+                      fontWeight: FontWeight.w600),
+                ),
+                DropdownButton<String>(
+                  value: _semester,
+                  icon: const Icon(Icons.arrow_downward),
+                  iconSize: 22,
+                  elevation: 16,
+                  style: TextStyle(color: _theme.secondaryColor),
+                  underline: Container(
+                    height: 2,
+                    color: _theme.secondaryColor,
+                  ),
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      _semester = newValue!;
+                    });
+                  },
+                  items: <String>[
+                    'All',
+                    '1',
+                    '2',
+                    '3',
+                    '4',
+                    '5',
+                    '6',
+                    '7',
+                    '8',
+                    '9',
+                    '10',
+                  ].map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                ),
+                const SizedBox(
+                  width: 15.0,
+                )
+              ],
+            ),
           ],
         ),
         body: Padding(
@@ -79,22 +124,22 @@ class _ListingsState extends State<Listings> {
                             ),
                             ListView(
                               children: getBooks(snapshot, "Comp Sc"),
-                            ), 
+                            ),
                             ListView(
                               children: getBooks(snapshot, "Phoenix"),
-                            ), 
+                            ),
                             ListView(
                               children: getBooks(snapshot, "Mechanical"),
-                            ), 
+                            ),
                             ListView(
                               children: getBooks(snapshot, "Chemical"),
-                            ), 
+                            ),
                             ListView(
                               children: getBooks(snapshot, "Dual Degree"),
-                            ), 
+                            ),
                             ListView(
                               children: getBooks(snapshot, "Higher Deg"),
-                            ), 
+                            ),
                             ListView(
                               children: getBooks(snapshot, "Misc"),
                             ),
@@ -115,7 +160,7 @@ class _ListingsState extends State<Listings> {
   getBooks(AsyncSnapshot<QuerySnapshot> snapshot, String department) {
     return snapshot.data!.docs.map((DocumentSnapshot document) {
       Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-      if("All" == department)
+      if ("All" == department && _semester == "All") {
         return Padding(
           padding: const EdgeInsets.only(bottom: 5.0, top: 5.0),
           child: BookDetailsCard(
@@ -130,7 +175,7 @@ class _ListingsState extends State<Listings> {
             department: data['department'],
           ),
         );
-      else if(data['department'] == department)
+      } else if (department == "All" && data['semester'] == _semester) {
         return Padding(
           padding: const EdgeInsets.only(bottom: 10.0),
           child: BookDetailsCard(
@@ -145,7 +190,42 @@ class _ListingsState extends State<Listings> {
             department: data['department'],
           ),
         );
-      else return SizedBox(height: 0,);
+      } else if (data['department'] == department && _semester == "All") {
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 10.0),
+          child: BookDetailsCard(
+            bookEdition: data['edition'],
+            roomNumberOfSeller: data['semester'],
+            note: data['note'],
+            semester: data['semester'],
+            priceOfBook: data['price'],
+            nameOfSeller: data['edition'],
+            nameOfBook: data['title'],
+            bookAuthor: data['author'],
+            department: data['department'],
+          ),
+        );
+      }
+       else if (data['department'] == department && _semester == data['semester']) {
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 10.0),
+          child: BookDetailsCard(
+            bookEdition: data['edition'],
+            roomNumberOfSeller: data['semester'],
+            note: data['note'],
+            semester: data['semester'],
+            priceOfBook: data['price'],
+            nameOfSeller: data['edition'],
+            nameOfBook: data['title'],
+            bookAuthor: data['author'],
+            department: data['department'],
+          ),
+        );
+      } else {
+        return const SizedBox(
+          height: 0,
+        );
+      }
     }).toList();
   }
 
@@ -159,11 +239,12 @@ class _ListingsState extends State<Listings> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              CircleAvatar(
-                backgroundImage:
-                AssetImage("assets/images/college.png"),
+              const CircleAvatar(
+                backgroundImage: AssetImage("assets/images/college.png"),
               ),
-              SizedBox(height: 5,),
+              const SizedBox(
+                height: 5,
+              ),
               Text(
                 title,
                 style: TextStyle(
