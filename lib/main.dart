@@ -9,14 +9,11 @@ import 'package:bfg/screens/login/sign_up.dart';
 import 'package:bfg/screens/user/profile.dart';
 import 'package:bfg/screens/user/user_menu.dart';
 import 'package:bfg/theme.dart';
-// import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-Future<void> main() async{
+void main() {
 
-  // WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp();
   OurTheme _theme = OurTheme();
   runApp(
     MultiProvider(
@@ -38,9 +35,8 @@ Future<void> main() async{
           '/signUp': (context) => const SignUp(),
           '/addBook': (context) => const AddBook(),
           '/userMenu': (context) => UserMenu(),
-          '/listings': (context) => const Listings(),
+          '/listings': (context) => Listings(),
           '/enterDetails': (context) => const Details(),
-          '/bookCard': (context) => const BookCard(),
           '/Profile': (context) => const Profile(),
         },
       ),

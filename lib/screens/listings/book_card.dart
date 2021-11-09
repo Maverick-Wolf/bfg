@@ -5,52 +5,41 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:glassmorphism/glassmorphism.dart';
 
-class BookCard extends StatefulWidget {
-  const BookCard({Key? key}) : super(key: key);
-
-  @override
-  _BookCardState createState() => _BookCardState();
-}
-
-OurTheme _theme = OurTheme();
-
-class _BookCardState extends State<BookCard> {
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: const [
-        BookDetailsCard(),
-      ],
-    );
-  }
-}
-
-late double _height;
-late double _width;
 
 class BookDetailsCard extends StatefulWidget {
-  const BookDetailsCard({Key? key}) : super(key: key);
+
+  final String nameOfBook;
+  final String priceOfBook;
+  final String roomNumberOfSeller;
+  final String nameOfSeller;
+  final String bookAuthor;
+  final String department;
+  final String bookEdition;
+  final String semester;
+  final String note;
+
+  const BookDetailsCard({Key? key, required this.nameOfBook, required this.note, required this.roomNumberOfSeller, required this.priceOfBook, required this.nameOfSeller, required this.bookAuthor, required this.bookEdition, required this.department, required this.semester}) : super(key: key);
 
   @override
   _BookDetailsCardState createState() => _BookDetailsCardState();
 }
 
+OurTheme _theme = OurTheme();
+late double _height;
+late double _width;
+
 class _BookDetailsCardState extends State<BookDetailsCard> {
-  @override
-  String nameOfBook = "Elements of the Theory of Computation";
-  String priceOfBook = "300";
-  String roomNumberOfSeller = "AH 2 - 344";
-  String nameOfSeller = "Rachit Champu";
-  String bookAuthor = "Harry Lewis, Christos Papadimitriou";
-  String department = "Comp Sc";
-  String bookEdition = "2";
-  String year = "2";
 
   @override
   Widget build(BuildContext context) {
-    _height = MediaQuery.of(context).size.height;
-    _width = MediaQuery.of(context).size.width;
+    _height = MediaQuery
+        .of(context)
+        .size
+        .height;
+    _width = MediaQuery
+        .of(context)
+        .size
+        .width;
     return InkWell(
       child: Center(
         child: GlassmorphicContainer(
@@ -102,16 +91,17 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
                           Row(
                             children: [
                               SizedBox(width: 4),
-                              _buildRichText("Seller: ", nameOfSeller, 14),
+                              _buildRichText(
+                                  "Seller: ", widget.nameOfSeller, 14),
                               Spacer(),
-                              _buildRichText("", roomNumberOfSeller, 14),
+                              _buildRichText("", widget.roomNumberOfSeller, 14),
                               SizedBox(width: 4),
                             ],
                           ),
                           SizedBox(
                             height: 10,
                           ),
-                          _buildBookTitle(nameOfBook),
+                          _buildBookTitle(widget.nameOfBook),
                           // _buildRichText("Title: ", nameOfBook, 20),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
@@ -121,30 +111,29 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     _buildRichText(
-                                        "Author(s): ", bookAuthor, 12),
+                                        "Author(s): ", widget.bookAuthor, 12),
                                     _buildRichText(
-                                        "Edition: ", bookEdition, 12),
+                                        "Edition: ", widget.bookEdition, 12),
                                     _buildRichText(
-                                        "Department: ", department, 12),
+                                        "Department: ", widget.department, 12),
                                   ],
                                 ),
                                 Spacer(),
                                 Column(
                                   children: [
-                                    _buildRichText("Year: ", year, 12),
+                                    _buildRichText("Sem: ", widget.semester, 12),
                                     SizedBox(
                                       height: 3,
                                     ),
-                                    _buildRichText("₹ ", priceOfBook, 25),
+                                    _buildRichText(
+                                        "₹ ", widget.priceOfBook, 25),
                                   ],
                                 ),
                               ],
                             ),
                           ),
-                          _buildRichText(
-                              "Note: ",
-                              "Lorem ipsum ............ my ackjanckana akjcnajjcn ajbabdabchabcabcakbckaca name is khan and i am not a terrorist",
-                              12),
+                          if(widget.note.isNotEmpty) _buildRichText(
+                              "Note: ", widget.note, 12),
                         ],
                       ),
                     )),
@@ -156,125 +145,128 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
       onTap: () {
         showDialog(
             context: context,
-            builder: (BuildContext) => _buildPopupDialogue(context,
-                nameOfSeller, nameOfBook, priceOfBook, roomNumberOfSeller));
+            builder: (BuildContext) =>
+                _buildPopupDialogue(context,
+                    widget.nameOfSeller, widget.nameOfBook, widget.priceOfBook, widget.roomNumberOfSeller
+                )
+        );
       },
     );
   }
-}
 
-Widget _buildBookTitle(String bookTitle) {
-  return Text(
-    bookTitle,
-    textAlign: TextAlign.center,
-    style: TextStyle(
-      fontSize: 20.0,
-      letterSpacing: 1,
-      fontFamily: _theme.font,
-      fontWeight: FontWeight.bold,
-    ),
-  );
-}
+  Widget _buildBookTitle(String bookTitle) {
+    return Text(
+      bookTitle,
+      textAlign: TextAlign.center,
+      style: TextStyle(
+        fontSize: 20.0,
+        letterSpacing: 1,
+        fontFamily: _theme.font,
+        fontWeight: FontWeight.bold,
+      ),
+    );
+  }
 
-Widget _buildRichText(String text1, String text2, double _fontSize) {
-  return RichText(
-    text: TextSpan(
-        text: text1,
-        style: TextStyle(
-          color: _theme.secondaryColor,
-          fontFamily: _theme.font,
-          fontWeight: FontWeight.w600,
-          fontSize: _fontSize,
-        ),
-        children: <TextSpan>[
-          TextSpan(
-              text: text2,
-              style: TextStyle(
-                  color: _theme.tertiaryColor,
-                  fontFamily: _theme.font,
-                  fontWeight: FontWeight.w400)),
-        ]),
-  );
-}
+  Widget _buildRichText(String text1, String text2, double _fontSize) {
+    return RichText(
+      text: TextSpan(
+          text: text1,
+          style: TextStyle(
+            color: _theme.secondaryColor,
+            fontFamily: _theme.font,
+            fontWeight: FontWeight.w600,
+            fontSize: _fontSize,
+          ),
+          children: <TextSpan>[
+            TextSpan(
+                text: text2,
+                style: TextStyle(
+                    color: _theme.tertiaryColor,
+                    fontFamily: _theme.font,
+                    fontWeight: FontWeight.w400)),
+          ]),
+    );
+  }
 
-Widget _buildPopupDialogue(BuildContext context, String _sellerName,
-    String _bookName, String _bookPrice, String _roomNumber) {
-  return AlertDialog(
-    backgroundColor: Colors.grey,
-    title: Row(
-      children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              _sellerName,
-              style: TextStyle(
-                  color: _theme.secondaryColor,
-                  letterSpacing: 0.7,
-                  fontFamily: _theme.font,
-                  fontWeight: FontWeight.bold),
-            ),
-            Text(
-              _roomNumber,
-              style: TextStyle(
-                  color: _theme.secondaryColor,
-                  fontFamily: _theme.font,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 16),
-            ),
-          ],
-        ),
-        Spacer(),
-        Column(
-          children: [
-            IconButton(
-              onPressed: () {},
-              icon: Icon(
-                Icons.phone,
-                size: 34,
-                color: _theme.secondaryColor,
+  Widget _buildPopupDialogue(BuildContext context, String _sellerName,
+      String _bookName, String _bookPrice, String _roomNumber) {
+    return AlertDialog(
+      backgroundColor: Colors.grey,
+      title: Row(
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                _sellerName,
+                style: TextStyle(
+                    color: _theme.secondaryColor,
+                    letterSpacing: 0.7,
+                    fontFamily: _theme.font,
+                    fontWeight: FontWeight.bold),
               ),
-            ),
-            Text(
-              "Call",
-              style: TextStyle(
-                  fontFamily: _theme.font,
-                  fontSize: 12,
-                  color: _theme.secondaryColor),
-            ),
-          ],
-        ),
-      ],
-    ),
-    content: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        SizedBox(
-          height: 15,
-        ),
-        Text(
-          _bookName,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-              color: Colors.white,
-              letterSpacing: 1,
-              fontSize: 24,
-              fontFamily: _theme.font,
-              fontWeight: FontWeight.bold),
-        ),
-        SizedBox(
-          height: 25,
-        ),
-        Text(
-          "₹ " + _bookPrice,
-          style: TextStyle(
-              color: Colors.white,
-              letterSpacing: 1,
-              fontSize: 20,
-              fontFamily: _theme.font,
-              fontWeight: FontWeight.bold),
-        ),
-      ],
-    ),
-  );
+              Text(
+                _roomNumber,
+                style: TextStyle(
+                    color: _theme.secondaryColor,
+                    fontFamily: _theme.font,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16),
+              ),
+            ],
+          ),
+          Spacer(),
+          Column(
+            children: [
+              IconButton(
+                onPressed: () {},
+                icon: Icon(
+                  Icons.phone,
+                  size: 34,
+                  color: _theme.secondaryColor,
+                ),
+              ),
+              Text(
+                "Call",
+                style: TextStyle(
+                    fontFamily: _theme.font,
+                    fontSize: 12,
+                    color: _theme.secondaryColor),
+              ),
+            ],
+          ),
+        ],
+      ),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SizedBox(
+            height: 15,
+          ),
+          Text(
+            _bookName,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                color: Colors.white,
+                letterSpacing: 1,
+                fontSize: 24,
+                fontFamily: _theme.font,
+                fontWeight: FontWeight.bold),
+          ),
+          SizedBox(
+            height: 25,
+          ),
+          Text(
+            "₹ " + _bookPrice,
+            style: TextStyle(
+                color: Colors.white,
+                letterSpacing: 1,
+                fontSize: 20,
+                fontFamily: _theme.font,
+                fontWeight: FontWeight.bold),
+          ),
+        ],
+      ),
+    );
+  }
 }
