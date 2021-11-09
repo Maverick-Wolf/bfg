@@ -43,7 +43,7 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
     return InkWell(
       child: Center(
         child: GlassmorphicContainer(
-          height: _height * 0.34,
+          height: _height * 0.31,
           width: _width * 0.93,
           borderRadius: 15,
           blur: 15,
