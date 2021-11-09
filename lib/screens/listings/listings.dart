@@ -1,13 +1,30 @@
 import 'package:bfg/screens/listings/book_card.dart';
 import 'package:bfg/theme.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class Listings extends StatelessWidget {
-  const Listings({Key? key}) : super(key: key);
+class Listings extends StatefulWidget {
+  Listings({Key? key}) : super(key: key);
+
+  @override
+  _ListingsState createState() => _ListingsState();
+}
+
+class _ListingsState extends State<Listings> {
+
+  late CollectionReference users;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  User? _user;
+  final Stream<QuerySnapshot> _booksStream = FirebaseFirestore.instance.collection('books').snapshots();
 
   @override
   Widget build(BuildContext context) {
+
+    _user = _auth.currentUser;
+    users = FirebaseFirestore.instance.collection('users');
     OurTheme _theme = OurTheme();
+
     return Scaffold(
         backgroundColor: _theme.primaryColor,
         appBar: AppBar(
@@ -199,12 +216,56 @@ class Listings extends StatelessWidget {
                   child: TabBarView(
                     children: [
                       //ALL
+                      StreamBuilder<QuerySnapshot>(
+                        stream: _booksStream,
+                        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                          if (snapshot.hasError) {
+                            return Text('Something went wrong');
+                          }
+
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return Text("Loading");
+                          }
+                          return ListView.builder(
+                            itemCount: snapshot.data!.docs.length,
+                            itemBuilder: (context, index) {
+                              snapshot.data!.docs.map((DocumentSnapshot document) {
+                                Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+                                return Padding(
+                                  padding: EdgeInsets.only(bottom: 10.0),
+                                  child: BookDetailsCard(
+                                    bookEdition: data['edition'],
+                                    roomNumberOfSeller: data['semester'],
+                                    note: data['note'],
+                                    semester: data['semester'],
+                                    priceOfBook: data['price'],
+                                    nameOfSeller: data['edition'],
+                                    nameOfBook: data['title'],
+                                    bookAuthor: data['author'],
+                                    department: data['department'],
+                                  ),
+                                );
+                              });
+                            }
+                          );
+                        },
+                      ),
+                      // ListView.builder(
+                      //   itemCount: 10,
+                      //   itemBuilder: (context, index) {
+                      //     return const Padding(
+                      //       padding: EdgeInsets.only(bottom: 10.0),
+                      //       child: Text,
+                      //     );
+                      //   },
+                      // ),
                       ListView.builder(
                         itemCount: 10,
                         itemBuilder: (context, index) {
                           return const Padding(
                             padding: EdgeInsets.only(bottom: 10.0),
-                            child: BookCard(),
+                            child: Text("hi"),
                           );
                         },
                       ),
@@ -213,7 +274,7 @@ class Listings extends StatelessWidget {
                         itemBuilder: (context, index) {
                           return const Padding(
                             padding: EdgeInsets.only(bottom: 10.0),
-                            child: BookCard(),
+                            child: Text("hi"),
                           );
                         },
                       ),
@@ -222,7 +283,7 @@ class Listings extends StatelessWidget {
                         itemBuilder: (context, index) {
                           return const Padding(
                             padding: EdgeInsets.only(bottom: 10.0),
-                            child: BookCard(),
+                            child: Text("hi"),
                           );
                         },
                       ),
@@ -231,7 +292,7 @@ class Listings extends StatelessWidget {
                         itemBuilder: (context, index) {
                           return const Padding(
                             padding: EdgeInsets.only(bottom: 10.0),
-                            child: BookCard(),
+                            child: Text("hi"),
                           );
                         },
                       ),
@@ -240,7 +301,7 @@ class Listings extends StatelessWidget {
                         itemBuilder: (context, index) {
                           return const Padding(
                             padding: EdgeInsets.only(bottom: 10.0),
-                            child: BookCard(),
+                            child: Text("hi"),
                           );
                         },
                       ),
@@ -249,7 +310,7 @@ class Listings extends StatelessWidget {
                         itemBuilder: (context, index) {
                           return const Padding(
                             padding: EdgeInsets.only(bottom: 10.0),
-                            child: BookCard(),
+                            child: Text("hi"),
                           );
                         },
                       ),
@@ -258,16 +319,7 @@ class Listings extends StatelessWidget {
                         itemBuilder: (context, index) {
                           return const Padding(
                             padding: EdgeInsets.only(bottom: 10.0),
-                            child: BookCard(),
-                          );
-                        },
-                      ),
-                      ListView.builder(
-                        itemCount: 10,
-                        itemBuilder: (context, index) {
-                          return const Padding(
-                            padding: EdgeInsets.only(bottom: 10.0),
-                            child: BookCard(),
+                            child: Text("hi"),
                           );
                         },
                       ),
