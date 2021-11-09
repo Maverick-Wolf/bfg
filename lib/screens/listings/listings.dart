@@ -46,7 +46,7 @@ class _ListingsState extends State<Listings> {
                   "Sem : ",
                   style: TextStyle(
                       fontFamily: _theme.font,
-                      fontSize: 18,
+                      fontSize: 16,
                       color: _theme.secondaryColor,
                       fontWeight: FontWeight.w600),
                 ),
@@ -77,6 +77,7 @@ class _ListingsState extends State<Listings> {
                     '8',
                     '9',
                     '10',
+                    '-'
                   ].map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,

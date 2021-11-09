@@ -84,22 +84,6 @@ class _ProfileState extends State<Profile> {
     );
   }
 
-  // Widget _buildContainer(String _title,String _name, Color _color) {
-  //   return Container(
-  //     decoration: BoxDecoration(
-  //       borderRadius: BorderRadius.circular(10),
-  //       border: Border.all(
-  //         color: _color,
-  //       )
-  //     ),
-  //     child: Padding(
-  //       child: _buildRichText(_title, _name),
-  //       padding: EdgeInsets.all(20),
-  //     ),
-  //   );
-  // }
-
-
   Widget _buildRichText(String title, String text) {
     return RichText(
       text: TextSpan(
