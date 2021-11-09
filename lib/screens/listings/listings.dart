@@ -16,23 +16,22 @@ class _ListingsState extends State<Listings> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   User? _user;
   late Stream<QuerySnapshot> _booksStream = FirebaseFirestore.instance.collection('books').snapshots();
-  
+  OurTheme _theme = OurTheme();
 
   @override
   Widget build(BuildContext context) {
     _user = _auth.currentUser;
     users = FirebaseFirestore.instance.collection('users');
-    OurTheme _theme = OurTheme();
 
     return Scaffold(
         backgroundColor: _theme.primaryColor,
         appBar: AppBar(
           centerTitle: true,
-          backgroundColor: _theme.secondaryColor.withOpacity(0.8),
+          backgroundColor: _theme.primaryColor,
           title: Text(
             "Book Listings",
             style: TextStyle(
-              color: _theme.tertiaryColor,
+              color: _theme.secondaryColor,
               fontFamily: _theme.font,
               fontWeight: FontWeight.bold,
               letterSpacing: 1.5,
@@ -164,7 +163,15 @@ class _ListingsState extends State<Listings> {
                 backgroundImage:
                 AssetImage("assets/images/college.png"),
               ),
-              Text(title),
+              SizedBox(height: 5,),
+              Text(
+                title,
+                style: TextStyle(
+                  color: _theme.tertiaryColor,
+                  fontFamily: _theme.font,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ],
           ),
         ),

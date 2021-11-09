@@ -111,7 +111,7 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     _buildRichText(
-                                        "Author(s): ", widget.bookAuthor, 12),
+                                        "Author(s): ", widget.bookAuthor, 14),
                                     _buildRichText(
                                         "Edition: ", widget.bookEdition, 12),
                                     _buildRichText(

@@ -90,7 +90,13 @@ class _DrawerClassState extends State<DrawerClass> {
             ),
             ListTile(
               leading: Icon(Icons.person, color: _theme.secondaryColor,),
-              title: const Text('Profile'),
+              title: Text('Profile',
+                style: TextStyle(
+                    fontFamily: _theme.font,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: _theme.tertiaryColor
+                ),),
               onTap: () {
                 Navigator.pushNamed(context, '/Profile');
               },
@@ -99,7 +105,13 @@ class _DrawerClassState extends State<DrawerClass> {
               thickness: 1,
             ),
             ListTile(
-                title: const Text('Your Listings'),
+                title: Text('Your Listings',
+                  style: TextStyle(
+                      fontFamily: _theme.font,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: _theme.tertiaryColor
+                  ),),
                 leading: Icon(Icons.list_alt_rounded, color: _theme.secondaryColor),
                 onTap: () {}),
             const Divider(
@@ -107,7 +119,13 @@ class _DrawerClassState extends State<DrawerClass> {
             ),
             ListTile(
               leading: Icon(Icons.view_headline_outlined, color: _theme.secondaryColor),
-              title: const Text('View Available Books'),
+              title: Text('View Available Books',
+                style: TextStyle(
+                    fontFamily: _theme.font,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: _theme.tertiaryColor
+                ),),
               onTap: () {
                 Navigator.pushNamed(context, '/listings');
               },
@@ -117,7 +135,13 @@ class _DrawerClassState extends State<DrawerClass> {
             ),
             ListTile(
               leading: Icon(Icons.bookmark_outline_sharp, color: _theme.secondaryColor),
-              title: const Text('Sell a Book'),
+              title: Text('Sell a Book',
+                style: TextStyle(
+                    fontFamily: _theme.font,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: _theme.tertiaryColor
+                ),),
               onTap: () {
                 Navigator.pushNamed(context, '/addBook');
               },
@@ -127,7 +151,13 @@ class _DrawerClassState extends State<DrawerClass> {
             ),
             ListTile(
               leading: Icon(Icons.logout, color: _theme.secondaryColor),
-              title: const Text('Sign Out'),
+              title: Text('Sign Out',
+                style: TextStyle(
+                    fontFamily: _theme.font,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: _theme.tertiaryColor
+                ),),
               onTap: () {
                 _signOut();
                 Navigator.pushReplacementNamed(context, '/login');
