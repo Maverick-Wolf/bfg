@@ -12,15 +12,14 @@ class Listings extends StatefulWidget {
 }
 
 class _ListingsState extends State<Listings> {
-
   late CollectionReference users;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   User? _user;
-  final Stream<QuerySnapshot> _booksStream = FirebaseFirestore.instance.collection('books').snapshots();
+  final Stream<QuerySnapshot> _booksStream =
+      FirebaseFirestore.instance.collection('books').snapshots();
 
   @override
   Widget build(BuildContext context) {
-
     _user = _auth.currentUser;
     users = FirebaseFirestore.instance.collection('users');
     OurTheme _theme = OurTheme();
@@ -213,122 +212,68 @@ class _ListingsState extends State<Listings> {
                   ],
                 ),
                 Expanded(
-                  child: TabBarView(
-                    children: [
-                      //ALL
-                      StreamBuilder<QuerySnapshot>(
-                        stream: _booksStream,
-                        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                          if (snapshot.hasError) {
-                            return Text('Something went wrong');
-                          }
-
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return Text("Loading");
-                          }
-                          return ListView.builder(
-                            itemCount: snapshot.data!.docs.length,
-                            itemBuilder: (context, index) {
-                              snapshot.data!.docs.map((DocumentSnapshot document) {
-                                Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-                                return Padding(
-                                  padding: EdgeInsets.only(bottom: 10.0),
-                                  child: BookDetailsCard(
-                                    bookEdition: data['edition'],
-                                    roomNumberOfSeller: data['semester'],
-                                    note: data['note'],
-                                    semester: data['semester'],
-                                    priceOfBook: data['price'],
-                                    nameOfSeller: data['edition'],
-                                    nameOfBook: data['title'],
-                                    bookAuthor: data['author'],
-                                    department: data['department'],
-                                  ),
-                                );
-                              });
-                            }
-                          );
-                        },
-                      ),
-                      // ListView.builder(
-                      //   itemCount: 10,
-                      //   itemBuilder: (context, index) {
-                      //     return const Padding(
-                      //       padding: EdgeInsets.only(bottom: 10.0),
-                      //       child: Text,
-                      //     );
-                      //   },
-                      // ),
-                      ListView.builder(
-                        itemCount: 10,
-                        itemBuilder: (context, index) {
-                          return const Padding(
-                            padding: EdgeInsets.only(bottom: 10.0),
-                            child: Text("hi"),
-                          );
-                        },
-                      ),
-                      ListView.builder(
-                        itemCount: 10,
-                        itemBuilder: (context, index) {
-                          return const Padding(
-                            padding: EdgeInsets.only(bottom: 10.0),
-                            child: Text("hi"),
-                          );
-                        },
-                      ),
-                      ListView.builder(
-                        itemCount: 10,
-                        itemBuilder: (context, index) {
-                          return const Padding(
-                            padding: EdgeInsets.only(bottom: 10.0),
-                            child: Text("hi"),
-                          );
-                        },
-                      ),
-                      ListView.builder(
-                        itemCount: 10,
-                        itemBuilder: (context, index) {
-                          return const Padding(
-                            padding: EdgeInsets.only(bottom: 10.0),
-                            child: Text("hi"),
-                          );
-                        },
-                      ),
-                      ListView.builder(
-                        itemCount: 10,
-                        itemBuilder: (context, index) {
-                          return const Padding(
-                            padding: EdgeInsets.only(bottom: 10.0),
-                            child: Text("hi"),
-                          );
-                        },
-                      ),
-                      ListView.builder(
-                        itemCount: 10,
-                        itemBuilder: (context, index) {
-                          return const Padding(
-                            padding: EdgeInsets.only(bottom: 10.0),
-                            child: Text("hi"),
-                          );
-                        },
-                      ),
-                      ListView.builder(
-                        itemCount: 10,
-                        itemBuilder: (context, index) {
-                          return const Padding(
-                            padding: EdgeInsets.only(bottom: 10.0),
-                            child: Text("hi"),
-                          );
-                        },
-                      ),
-                    ],
+                  child: StreamBuilder(
+                    stream: _booksStream,
+                    builder: (BuildContext context,
+                        AsyncSnapshot<QuerySnapshot> snapshot) {
+                      if (snapshot.hasData) {
+                        return TabBarView(
+                          children: [
+                            ListView(
+                              children: getBooks(snapshot),
+                            ),
+                            ListView(
+                              children: getBooks(snapshot),
+                            ), 
+                            ListView(
+                              children: getBooks(snapshot),
+                            ), 
+                            ListView(
+                              children: getBooks(snapshot),
+                            ), 
+                            ListView(
+                              children: getBooks(snapshot),
+                            ), 
+                            ListView(
+                              children: getBooks(snapshot),
+                            ), 
+                            ListView(
+                              children: getBooks(snapshot),
+                            ), 
+                            ListView(
+                              children: getBooks(snapshot),
+                            ),                           
+                          ],
+                        );
+                      } else {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                    },
                   ),
                 ),
               ],
             ),
           ),
         ));
+  }
+
+  getBooks(AsyncSnapshot<QuerySnapshot> snapshot) {
+    return snapshot.data!.docs.map((DocumentSnapshot document) {
+      Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+      return Padding(
+        padding: const EdgeInsets.only(bottom: 10.0),
+        child: BookDetailsCard(
+          bookEdition: data['edition'],
+          roomNumberOfSeller: data['semester'],
+          note: data['note'],
+          semester: data['semester'],
+          priceOfBook: data['price'],
+          nameOfSeller: data['edition'],
+          nameOfBook: data['title'],
+          bookAuthor: data['author'],
+          department: data['department'],
+        ),
+      );
+    }).toList();
   }
 }
