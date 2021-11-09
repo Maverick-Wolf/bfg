@@ -55,7 +55,7 @@ class _DrawerClassState extends State<DrawerClass> {
                             color: _theme.secondaryColor),
                       ),
                       Text(
-                        data['hostel'],
+                        data['hostel'] + " - " + data['room_number'],
                         style: TextStyle(fontFamily: _theme.font),
                       ),
                     ],

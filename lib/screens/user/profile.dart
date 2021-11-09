@@ -2,6 +2,7 @@ import 'package:bfg/widgets/drawer.dart';
 import 'package:bfg/theme.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Profile extends StatefulWidget {
@@ -47,18 +48,29 @@ class _ProfileState extends State<Profile> {
                       }
                       if (snapshot.connectionState == ConnectionState.done) {
                         Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
-                        return Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            _buildRichText("Name", data['name']),
-                            _buildRichText("Phone Number", data['phone_number']),
-                            _buildRichText("Hostel", data['hostel']),
-                            _buildRichText("Room Number", data['room_number']),
-                            _buildRichText("Password", data['password']),
-                            SizedBox(height: 10,),
-                            _buildEditButton(),
-                          ],
+                        return Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
+                          child: Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(
+                                  color: _theme.secondaryColor,
+                                )
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                _buildRichText("Name", data['name']),
+                                _buildRichText("Phone Number", data['phone_number']),
+                                _buildRichText("Hostel", data['hostel']),
+                                _buildRichText("Room Number", data['room_number']),
+                                _buildRichText("Password", data['password']),
+                                SizedBox(height: 10,),
+                                _buildEditButton(),
+                              ],
+                            ),
+                          ),
                         );
                       }
                       return Center(child: CircularProgressIndicator(color: _theme.secondaryColor,),);
@@ -72,13 +84,29 @@ class _ProfileState extends State<Profile> {
     );
   }
 
+  // Widget _buildContainer(String _title,String _name, Color _color) {
+  //   return Container(
+  //     decoration: BoxDecoration(
+  //       borderRadius: BorderRadius.circular(10),
+  //       border: Border.all(
+  //         color: _color,
+  //       )
+  //     ),
+  //     child: Padding(
+  //       child: _buildRichText(_title, _name),
+  //       padding: EdgeInsets.all(20),
+  //     ),
+  //   );
+  // }
+
+
   Widget _buildRichText(String title, String text) {
     return RichText(
       text: TextSpan(
           text: title + ": ",
           style: TextStyle(
               color: _theme.secondaryColor,
-              fontSize: 24.0,
+              fontSize: 20.0,
               fontFamily: _theme.font,
               fontWeight: FontWeight.w800),
           children: <TextSpan>[

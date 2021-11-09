@@ -69,7 +69,7 @@ class _YourListingsState extends State<YourListings> {
           ),
         );
       } else {
-        return const  Text("No Listings");
+        return const SizedBox(height: 0,);
       }
     }).toList();
   }
