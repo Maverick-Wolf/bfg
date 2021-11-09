@@ -59,11 +59,10 @@ class _YourListingsState extends State<YourListings> {
           padding: const EdgeInsets.only(bottom: 5.0, top: 5.0),
           child: BookDetailsCard(
             bookEdition: data['edition'],
-            roomNumberOfSeller: data['semester'],
             note: data['note'],
+            userIdOfSeller: data['seller_id'],
             semester: data['semester'],
             priceOfBook: data['price'],
-            nameOfSeller: data['edition'],
             nameOfBook: data['title'],
             bookAuthor: data['author'],
             department: data['department'],

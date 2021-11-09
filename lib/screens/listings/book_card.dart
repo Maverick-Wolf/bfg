@@ -1,24 +1,32 @@
 import 'dart:ui';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:bfg/theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:glassmorphism/glassmorphism.dart';
 
-
 class BookDetailsCard extends StatefulWidget {
-
   final String nameOfBook;
   final String priceOfBook;
-  final String roomNumberOfSeller;
-  final String nameOfSeller;
+  final String userIdOfSeller;
   final String bookAuthor;
   final String department;
   final String bookEdition;
   final String semester;
   final String note;
 
-  const BookDetailsCard({Key? key, required this.nameOfBook, required this.note, required this.roomNumberOfSeller, required this.priceOfBook, required this.nameOfSeller, required this.bookAuthor, required this.bookEdition, required this.department, required this.semester}) : super(key: key);
+  const BookDetailsCard(
+      {Key? key,
+      required this.nameOfBook,
+      required this.note,
+      required this.userIdOfSeller,
+      required this.priceOfBook,
+      required this.bookAuthor,
+      required this.bookEdition,
+      required this.department,
+      required this.semester})
+      : super(key: key);
 
   @override
   _BookDetailsCardState createState() => _BookDetailsCardState();
@@ -27,19 +35,29 @@ class BookDetailsCard extends StatefulWidget {
 OurTheme _theme = OurTheme();
 late double _height;
 late double _width;
+String nameOfSeller = "";
+String hostelNumberOfSeller = "";
+String roomNumberOfSeller = "";
+String phoneNumberOfSeller = "";
 
 class _BookDetailsCardState extends State<BookDetailsCard> {
+  @override
+  void initState() {
+    super.initState();
+    getSellerDetails().then((List list) {
+      setState(() {
+        nameOfSeller = list[0];
+        roomNumberOfSeller = list[1];
+        hostelNumberOfSeller = list[2];
+        phoneNumberOfSeller = list[3];
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    _height = MediaQuery
-        .of(context)
-        .size
-        .height;
-    _width = MediaQuery
-        .of(context)
-        .size
-        .width;
+    _height = MediaQuery.of(context).size.height;
+    _width = MediaQuery.of(context).size.width;
     return InkWell(
       child: Center(
         child: GlassmorphicContainer(
@@ -91,10 +109,12 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
                           Row(
                             children: [
                               SizedBox(width: 4),
-                              _buildRichText(
-                                  "Seller: ", widget.nameOfSeller, 14),
+                              _buildRichText("Seller: ", nameOfSeller, 14),
                               Spacer(),
-                              _buildRichText("", widget.roomNumberOfSeller, 14),
+                              _buildRichText(
+                                  "",
+                                  "$hostelNumberOfSeller/$roomNumberOfSeller",
+                                  14),
                               SizedBox(width: 4),
                             ],
                           ),
@@ -121,7 +141,8 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
                                 Spacer(),
                                 Column(
                                   children: [
-                                    _buildRichText("Sem: ", widget.semester, 12),
+                                    _buildRichText(
+                                        "Sem: ", widget.semester, 12),
                                     SizedBox(
                                       height: 3,
                                     ),
@@ -132,8 +153,8 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
                               ],
                             ),
                           ),
-                          if(widget.note.isNotEmpty) _buildRichText(
-                              "Note: ", widget.note, 12),
+                          if (widget.note.isNotEmpty)
+                            _buildRichText("Note: ", widget.note, 12),
                         ],
                       ),
                     )),
@@ -145,11 +166,12 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
       onTap: () {
         showDialog(
             context: context,
-            builder: (BuildContext) =>
-                _buildPopupDialogue(context,
-                    widget.nameOfSeller, widget.nameOfBook, widget.priceOfBook, widget.roomNumberOfSeller
-                )
-        );
+            builder: (BuildContext) => _buildPopupDialogue(
+                context,
+                nameOfSeller,
+                widget.nameOfBook,
+                widget.priceOfBook,
+                "$hostelNumberOfSeller/$roomNumberOfSeller"));
       },
     );
   }
@@ -268,5 +290,23 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
         ],
       ),
     );
+  }
+
+  Future<List> getSellerDetails() async {
+    String? name;
+    String? roomNumber;
+    String? hostelNumber;
+    String? phoneNumber;
+    DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
+        .collection("users")
+        .doc(widget.userIdOfSeller)
+        .get();
+    if (documentSnapshot.exists) {
+      name = (documentSnapshot.data() as dynamic)['name'];
+      roomNumber = (documentSnapshot.data() as dynamic)['room_number'];
+      hostelNumber = (documentSnapshot.data() as dynamic)['hostel'];
+      phoneNumber = (documentSnapshot.data() as dynamic)['phone_number'];
+    }
+    return [name, roomNumber, hostelNumber, phoneNumber];
   }
 }
