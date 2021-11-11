@@ -1,4 +1,4 @@
-import 'package:bfg/screens/login/login_page.dart';
+import 'package:bfg/screens/login/sign_up.dart';
 import 'package:bfg/screens/user/user_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -22,7 +22,7 @@ class Initialization extends StatelessWidget {
               if (_user != null) {
                 return UserMenu();
               } else {
-                return const LoginPage();
+                return const SignUp();
               }
             } else {
               return const Center(child: CircularProgressIndicator());

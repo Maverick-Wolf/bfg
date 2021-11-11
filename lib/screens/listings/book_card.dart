@@ -1,10 +1,10 @@
 import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:bfg/theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:glassmorphism/glassmorphism.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class BookDetailsCard extends StatefulWidget {
   final String nameOfBook;
@@ -15,18 +15,30 @@ class BookDetailsCard extends StatefulWidget {
   final String bookEdition;
   final String semester;
   final String note;
+  final String nameOfSeller;
+  final String roomNumberOfSeller;
+  final String hostelNumberOfSeller;
+  final String phoneNumberOfSeller;
+  final String documentID;
+  final bool longPressBool;
 
-  const BookDetailsCard(
-      {Key? key,
-      required this.nameOfBook,
-      required this.note,
-      required this.userIdOfSeller,
-      required this.priceOfBook,
-      required this.bookAuthor,
-      required this.bookEdition,
-      required this.department,
-      required this.semester})
-      : super(key: key);
+  const BookDetailsCard({
+    Key? key,
+    required this.nameOfBook,
+    required this.note,
+    required this.userIdOfSeller,
+    required this.priceOfBook,
+    required this.bookAuthor,
+    required this.bookEdition,
+    required this.department,
+    required this.semester,
+    required this.nameOfSeller,
+    required this.roomNumberOfSeller,
+    required this.phoneNumberOfSeller,
+    required this.hostelNumberOfSeller,
+    required this.documentID,
+    required this.longPressBool,
+  }) : super(key: key);
 
   @override
   _BookDetailsCardState createState() => _BookDetailsCardState();
@@ -35,25 +47,8 @@ class BookDetailsCard extends StatefulWidget {
 OurTheme _theme = OurTheme();
 late double _height;
 late double _width;
-String nameOfSeller = "";
-String hostelNumberOfSeller = "";
-String roomNumberOfSeller = "";
-String phoneNumberOfSeller = "";
 
 class _BookDetailsCardState extends State<BookDetailsCard> {
-  @override
-  void initState() {
-    super.initState();
-    getSellerDetails().then((List list) {
-      setState(() {
-        nameOfSeller = list[0];
-        roomNumberOfSeller = list[1];
-        hostelNumberOfSeller = list[2];
-        phoneNumberOfSeller = list[3];
-      });
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     _height = MediaQuery.of(context).size.height;
@@ -109,11 +104,12 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
                           Row(
                             children: [
                               SizedBox(width: 4),
-                              _buildRichText("Seller: ", nameOfSeller, 14),
+                              _buildRichText(
+                                  "Seller: ", widget.nameOfSeller, 14),
                               Spacer(),
                               _buildRichText(
                                   "",
-                                  "$hostelNumberOfSeller/$roomNumberOfSeller",
+                                  "${widget.hostelNumberOfSeller}/${widget.roomNumberOfSeller}",
                                   14),
                               SizedBox(width: 4),
                             ],
@@ -122,7 +118,6 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
                             height: 10,
                           ),
                           _buildBookTitle(widget.nameOfBook),
-                          // _buildRichText("Title: ", nameOfBook, 20),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
                             child: Row(
@@ -168,10 +163,17 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
             context: context,
             builder: (BuildContext) => _buildPopupDialogue(
                 context,
-                nameOfSeller,
+                widget.nameOfSeller,
                 widget.nameOfBook,
                 widget.priceOfBook,
-                "$hostelNumberOfSeller/$roomNumberOfSeller"));
+                "${widget.hostelNumberOfSeller}/${widget.roomNumberOfSeller}"));
+      },
+      onLongPress: () {
+        if (widget.longPressBool) {
+          CollectionReference books =
+              FirebaseFirestore.instance.collection('books');
+          deleteBooks(books);
+        }
       },
     );
   }
@@ -241,7 +243,9 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
           Column(
             children: [
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  _makePhoneCall('tel:${widget.phoneNumberOfSeller}');
+                },
                 icon: Icon(
                   Icons.phone,
                   size: 34,
@@ -292,21 +296,18 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
     );
   }
 
-  Future<List> getSellerDetails() async {
-    String? name;
-    String? roomNumber;
-    String? hostelNumber;
-    String? phoneNumber;
-    DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
-        .collection("users")
-        .doc(widget.userIdOfSeller)
-        .get();
-    if (documentSnapshot.exists) {
-      name = (documentSnapshot.data() as dynamic)['name'];
-      roomNumber = (documentSnapshot.data() as dynamic)['room_number'];
-      hostelNumber = (documentSnapshot.data() as dynamic)['hostel'];
-      phoneNumber = (documentSnapshot.data() as dynamic)['phone_number'];
+  Future<void> _makePhoneCall(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
     }
-    return [name, roomNumber, hostelNumber, phoneNumber];
+  }
+  Future<void> deleteBooks(CollectionReference books) {
+    return books
+        .doc(widget.documentID)
+        .delete()
+        .then((value) => print("Book Deleted"))
+        .catchError((error) => print("Failed to delete book: $error"));
   }
 }

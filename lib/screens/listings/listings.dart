@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 String _semester = "All";
+
 class Listings extends StatefulWidget {
   Listings({Key? key}) : super(key: key);
 
@@ -24,7 +25,7 @@ class _ListingsState extends State<Listings> {
   Widget build(BuildContext context) {
     _user = _auth.currentUser;
     users = FirebaseFirestore.instance.collection('users');
-    
+
     return Scaffold(
         backgroundColor: _theme.primaryColor,
         appBar: AppBar(
@@ -46,7 +47,7 @@ class _ListingsState extends State<Listings> {
                   "Sem : ",
                   style: TextStyle(
                       fontFamily: _theme.font,
-                      fontSize: 18,
+                      fontSize: 16,
                       color: _theme.secondaryColor,
                       fontWeight: FontWeight.w600),
                 ),
@@ -77,6 +78,7 @@ class _ListingsState extends State<Listings> {
                     '8',
                     '9',
                     '10',
+                    '-'
                   ].map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
@@ -162,7 +164,7 @@ class _ListingsState extends State<Listings> {
       Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
       if ("All" == department && _semester == "All") {
         return Padding(
-          padding: const EdgeInsets.only(bottom: 5.0, top: 5.0),
+          padding: EdgeInsets.only(bottom: 5.0, top: 7.0),
           child: BookDetailsCard(
             bookEdition: data['edition'],
             note: data['note'],
@@ -172,11 +174,17 @@ class _ListingsState extends State<Listings> {
             nameOfBook: data['title'],
             bookAuthor: data['author'],
             department: data['department'],
+            nameOfSeller: data['seller_name'],
+            roomNumberOfSeller: data['seller_room'],
+            hostelNumberOfSeller: data['seller_hostel'],
+            phoneNumberOfSeller: data['seller_phone'],
+            documentID: document.id,
+            longPressBool: false,
           ),
         );
       } else if (department == "All" && data['semester'] == _semester) {
         return Padding(
-          padding: const EdgeInsets.only(bottom: 10.0),
+          padding: EdgeInsets.only(bottom: 5.0, top: 7.0),
           child: BookDetailsCard(
             bookEdition: data['edition'],
             note: data['note'],
@@ -186,11 +194,17 @@ class _ListingsState extends State<Listings> {
             nameOfBook: data['title'],
             bookAuthor: data['author'],
             department: data['department'],
+            nameOfSeller: data['seller_name'],
+            roomNumberOfSeller: data['seller_room'],
+            hostelNumberOfSeller: data['seller_hostel'],
+            phoneNumberOfSeller: data['seller_phone'],
+            documentID: document.id,
+            longPressBool: false,
           ),
         );
       } else if (data['department'] == department && _semester == "All") {
         return Padding(
-          padding: const EdgeInsets.only(bottom: 10.0),
+          padding: EdgeInsets.only(bottom: 5.0, top: 7.0),
           child: BookDetailsCard(
             bookEdition: data['edition'],
             note: data['note'],
@@ -200,12 +214,18 @@ class _ListingsState extends State<Listings> {
             nameOfBook: data['title'],
             bookAuthor: data['author'],
             department: data['department'],
+            nameOfSeller: data['seller_name'],
+            roomNumberOfSeller: data['seller_room'],
+            hostelNumberOfSeller: data['seller_hostel'],
+            phoneNumberOfSeller: data['seller_phone'],
+            documentID: document.id,
+            longPressBool: false,            
           ),
         );
-      }
-       else if (data['department'] == department && _semester == data['semester']) {
+      } else if (data['department'] == department &&
+          _semester == data['semester']) {
         return Padding(
-          padding: const EdgeInsets.only(bottom: 10.0),
+          padding: EdgeInsets.only(bottom: 5.0, top: 7.0),
           child: BookDetailsCard(
             bookEdition: data['edition'],
             note: data['note'],
@@ -215,6 +235,12 @@ class _ListingsState extends State<Listings> {
             nameOfBook: data['title'],
             bookAuthor: data['author'],
             department: data['department'],
+            nameOfSeller: data['seller_name'],
+            roomNumberOfSeller: data['seller_room'],
+            hostelNumberOfSeller: data['seller_hostel'],
+            phoneNumberOfSeller: data['seller_phone'],
+            documentID: document.id,
+            longPressBool: false,
           ),
         );
       } else {

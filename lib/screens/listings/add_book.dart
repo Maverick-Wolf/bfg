@@ -13,11 +13,10 @@ class AddBook extends StatefulWidget {
 final FirebaseAuth _auth = FirebaseAuth.instance;
 User? _user;
 
-
 class _AddBookState extends State<AddBook> {
   OurTheme _theme = OurTheme();
   String _edition = "1";
-  String _semester = "2";
+  String _semester = "1";
   String _department = "Misc";
 
   String _bookTitle = "";
@@ -26,13 +25,10 @@ class _AddBookState extends State<AddBook> {
   String _note = "";
   late CollectionReference books;
 
-
   @override
   Widget build(BuildContext context) {
-
     _user = _auth.currentUser;
     books = FirebaseFirestore.instance.collection('books');
-
 
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
@@ -70,7 +66,8 @@ class _AddBookState extends State<AddBook> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    _buildTextFormField("Book Name", "Full Name of Book", 'title'),
+                    _buildTextFormField(
+                        "Book Name", "Full Name of Book", 'title'),
                     _buildTextFormField(
                         "Author(s)", "Name(s) separated by commas", 'author'),
                     _buildDepartmentDropDown(),
@@ -78,10 +75,12 @@ class _AddBookState extends State<AddBook> {
                     Center(
                       child: Container(
                         width: MediaQuery.of(context).size.width / 2,
-                        child: _buildTextFormField("Listing Price", "Your Selling Price", 'price'),
+                        child: _buildTextFormField(
+                            "Listing Price", "Your Selling Price", 'price'),
                       ),
                     ),
-                    _buildTextFormField("Note (Optional)", "Extra info (if any)", 'note'),
+                    _buildTextFormField(
+                        "Note (Optional)", "Extra info (if any)", 'note'),
                     _buildSellButton(),
                   ],
                 ),
@@ -96,17 +95,22 @@ class _AddBookState extends State<AddBook> {
   Widget _buildTextFormField(String _label, String _hint, String fillIn) {
     return TextFormField(
       onChanged: (text) {
-        switch(fillIn) {
-          case 'title': _bookTitle = text;
-          break;
-          case 'author': _bookAuthor = text;
-          break;
-          case 'price': _bookPrice = text;
-          break;
-          case 'note': _note = text;
-          break;
-          default: print("idk");
-          break;
+        switch (fillIn) {
+          case 'title':
+            _bookTitle = text;
+            break;
+          case 'author':
+            _bookAuthor = text;
+            break;
+          case 'price':
+            _bookPrice = text;
+            break;
+          case 'note':
+            _note = text;
+            break;
+          default:
+            print("idk");
+            break;
         }
       },
       decoration: InputDecoration(
@@ -267,18 +271,22 @@ class _AddBookState extends State<AddBook> {
     );
   }
 
-  Future<void> addBook() {
+  Future<void> addBook(String sellerName, String sellerRoom, String sellerHostel, String sellerPhone) {
     return books
         .add({
-      'title': _bookTitle,
-      'author': _bookAuthor,
-      'department': _department,
-      'edition': _edition,
-      'seller_id': _user!.uid,
-      'price': _bookPrice,
-      'semester': _semester,
-      'note': _note,
-    })
+          'title': _bookTitle,
+          'author': _bookAuthor,
+          'department': _department,
+          'edition': _edition,
+          'seller_id': _user!.uid,
+          'seller_name': sellerName,
+          'seller_room': sellerRoom,
+          'seller_hostel': sellerHostel,
+          'seller_phone': sellerPhone,
+          'price': _bookPrice,
+          'semester': _semester,
+          'note': _note,
+        })
         .then((value) => print("Book Added"))
         .catchError((error) => print("Failed to add book: $error"));
   }
@@ -414,8 +422,25 @@ class _AddBookState extends State<AddBook> {
             height: 10,
           ),
           TextButton(
-            onPressed: () {
-              addBook();
+            onPressed: () async {
+              String name = "";
+              String roomNumber = "";
+              String hostelNumber = "";
+              String phoneNumber = "";
+              DocumentSnapshot documentSnapshot = await FirebaseFirestore
+                  .instance
+                  .collection("users")
+                  .doc(_user!.uid)
+                  .get();
+              if (documentSnapshot.exists) {
+                name = (documentSnapshot.data() as dynamic)['name'];
+                roomNumber =
+                    (documentSnapshot.data() as dynamic)['room_number'];
+                hostelNumber = (documentSnapshot.data() as dynamic)['hostel'];
+                phoneNumber =
+                    (documentSnapshot.data() as dynamic)['phone_number'];
+              }
+              addBook(name,roomNumber,hostelNumber,phoneNumber);
               Navigator.pushReplacementNamed(context, "/listings");
             },
             child: Text(

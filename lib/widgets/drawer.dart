@@ -55,7 +55,7 @@ class _DrawerClassState extends State<DrawerClass> {
                             color: _theme.secondaryColor),
                       ),
                       Text(
-                        data['hostel'],
+                        data['hostel'] + " - " + data['room_number'],
                         style: TextStyle(fontFamily: _theme.font),
                       ),
                     ],
@@ -166,7 +166,7 @@ class _DrawerClassState extends State<DrawerClass> {
           ),
           onTap: () {
             _signOut();
-            Navigator.pushReplacementNamed(context, '/login');
+            Navigator.pushReplacementNamed(context, '/signUp');
           },
         ),
       ],
