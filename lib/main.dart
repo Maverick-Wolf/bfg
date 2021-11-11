@@ -5,7 +5,6 @@ import 'package:bfg/screens/listings/book_card.dart';
 import 'package:bfg/screens/listings/listings.dart';
 import 'package:bfg/screens/listings/your_listings.dart';
 import 'package:bfg/screens/login/enter_details.dart';
-import 'package:bfg/screens/login/login_page.dart';
 import 'package:bfg/screens/login/sign_up.dart';
 import 'package:bfg/screens/user/profile.dart';
 import 'package:bfg/screens/user/user_menu.dart';

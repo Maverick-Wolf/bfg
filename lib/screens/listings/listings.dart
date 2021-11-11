@@ -178,6 +178,8 @@ class _ListingsState extends State<Listings> {
             roomNumberOfSeller: data['seller_room'],
             hostelNumberOfSeller: data['seller_hostel'],
             phoneNumberOfSeller: data['seller_phone'],
+            documentID: document.id,
+            longPressBool: false,
           ),
         );
       } else if (department == "All" && data['semester'] == _semester) {
@@ -196,6 +198,8 @@ class _ListingsState extends State<Listings> {
             roomNumberOfSeller: data['seller_room'],
             hostelNumberOfSeller: data['seller_hostel'],
             phoneNumberOfSeller: data['seller_phone'],
+            documentID: document.id,
+            longPressBool: false,
           ),
         );
       } else if (data['department'] == department && _semester == "All") {
@@ -214,6 +218,8 @@ class _ListingsState extends State<Listings> {
             roomNumberOfSeller: data['seller_room'],
             hostelNumberOfSeller: data['seller_hostel'],
             phoneNumberOfSeller: data['seller_phone'],
+            documentID: document.id,
+            longPressBool: false,            
           ),
         );
       } else if (data['department'] == department &&
@@ -233,6 +239,8 @@ class _ListingsState extends State<Listings> {
             roomNumberOfSeller: data['seller_room'],
             hostelNumberOfSeller: data['seller_hostel'],
             phoneNumberOfSeller: data['seller_phone'],
+            documentID: document.id,
+            longPressBool: false,
           ),
         );
       } else {

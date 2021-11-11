@@ -19,23 +19,26 @@ class BookDetailsCard extends StatefulWidget {
   final String roomNumberOfSeller;
   final String hostelNumberOfSeller;
   final String phoneNumberOfSeller;
+  final String documentID;
+  final bool longPressBool;
 
-  const BookDetailsCard(
-      {Key? key,
-      required this.nameOfBook,
-      required this.note,
-      required this.userIdOfSeller,
-      required this.priceOfBook,
-      required this.bookAuthor,
-      required this.bookEdition,
-      required this.department,
-      required this.semester,
-      required this.nameOfSeller,
-      required this.roomNumberOfSeller,
-      required this.phoneNumberOfSeller,
-      required this.hostelNumberOfSeller,
-      })
-      : super(key: key);
+  const BookDetailsCard({
+    Key? key,
+    required this.nameOfBook,
+    required this.note,
+    required this.userIdOfSeller,
+    required this.priceOfBook,
+    required this.bookAuthor,
+    required this.bookEdition,
+    required this.department,
+    required this.semester,
+    required this.nameOfSeller,
+    required this.roomNumberOfSeller,
+    required this.phoneNumberOfSeller,
+    required this.hostelNumberOfSeller,
+    required this.documentID,
+    required this.longPressBool,
+  }) : super(key: key);
 
   @override
   _BookDetailsCardState createState() => _BookDetailsCardState();
@@ -101,7 +104,8 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
                           Row(
                             children: [
                               SizedBox(width: 4),
-                              _buildRichText("Seller: ", widget.nameOfSeller, 14),
+                              _buildRichText(
+                                  "Seller: ", widget.nameOfSeller, 14),
                               Spacer(),
                               _buildRichText(
                                   "",
@@ -163,6 +167,13 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
                 widget.nameOfBook,
                 widget.priceOfBook,
                 "${widget.hostelNumberOfSeller}/${widget.roomNumberOfSeller}"));
+      },
+      onLongPress: () {
+        if (widget.longPressBool) {
+          CollectionReference books =
+              FirebaseFirestore.instance.collection('books');
+          deleteBooks(books);
+        }
       },
     );
   }
@@ -232,7 +243,9 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
           Column(
             children: [
               IconButton(
-                onPressed: () { _makePhoneCall('tel:$phoneNumberOfSeller');},
+                onPressed: () {
+                  _makePhoneCall('tel:${widget.phoneNumberOfSeller}');
+                },
                 icon: Icon(
                   Icons.phone,
                   size: 34,
@@ -282,6 +295,7 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
       ),
     );
   }
+
   Future<void> _makePhoneCall(String url) async {
     if (await canLaunch(url)) {
       await launch(url);
@@ -289,22 +303,11 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
       throw 'Could not launch $url';
     }
   }
-
-  Future<List> getSellerDetails() async {
-    String? name;
-    String? roomNumber;
-    String? hostelNumber;
-    String? phoneNumber;
-    DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
-        .collection("users")
-        .doc(widget.userIdOfSeller)
-        .get();
-    if (documentSnapshot.exists) {
-      name = (documentSnapshot.data() as dynamic)['name'];
-      roomNumber = (documentSnapshot.data() as dynamic)['room_number'];
-      hostelNumber = (documentSnapshot.data() as dynamic)['hostel'];
-      phoneNumber = (documentSnapshot.data() as dynamic)['phone_number'];
-    }
-    return [name, roomNumber, hostelNumber, phoneNumber];
+  Future<void> deleteBooks(CollectionReference books) {
+    return books
+        .doc(widget.documentID)
+        .delete()
+        .then((value) => print("Book Deleted"))
+        .catchError((error) => print("Failed to delete book: $error"));
   }
 }

@@ -70,6 +70,8 @@ class _YourListingsState extends State<YourListings> {
             roomNumberOfSeller: data['seller_room'],
             hostelNumberOfSeller: data['seller_hostel'],
             phoneNumberOfSeller: data['seller_phone'],
+            documentID: document.id,
+            longPressBool: true,
           ),
         );
       } else {
