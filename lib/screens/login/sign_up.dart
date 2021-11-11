@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -36,7 +37,7 @@ class _SignUpState extends State<SignUp> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildRichText("Sign Up"),
+                  _buildRichText("Sign In"),
                   _buildSizedBox(30),
                   isPhoneNumberTfVisible ? _buildPhoneNumberTF() : _buildOtpTF(),
                   _buildSizedBox(200),
@@ -82,11 +83,11 @@ class _SignUpState extends State<SignUp> {
     try {
       await _auth.verifyPhoneNumber(
           phoneNumber: _phoneNumber,
-          timeout: const Duration(seconds: 5),
+          timeout: const Duration(seconds: 60),
           verificationCompleted: verificationCompleted,
           verificationFailed: verificationFailed,
           codeSent: codeSent,
-          codeAutoRetrievalTimeout: codeAutoRetrievalTimeout);
+          codeAutoRetrievalTimeout: codeAutoRetrievalTimeout,);
     } catch (e) {
       print("Failed to Verify Phone Number: ${e}");
     }
@@ -100,11 +101,26 @@ class _SignUpState extends State<SignUp> {
       );
 
       final User? user = (await _auth.signInWithCredential(credential)).user;
-      Navigator.pushNamed(_context, '/enterDetails');
+      _checkIfUserExists(user);
+      isPhoneNumberTfVisible = !isPhoneNumberTfVisible;
 
       print("Successfully signed in UID: ${user!.uid}");
     } catch (e) {
       print("Failed to sign in: " + e.toString());
+    }
+  }
+
+  Future _checkIfUserExists(User? user) async {
+    DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance.collection('users').doc(user!.uid).get();
+    try{
+      if(((documentSnapshot.data() as dynamic)['name']).toString().isNotEmpty){
+        Navigator.pushNamed(_context, '/userMenu');
+        print("welcome back, old friend");
+      }
+    } catch(e) {
+      print(e);
+      Navigator.pushNamed(_context, '/enterDetails');
+      print("new user spotted in the wild");
     }
   }
 

@@ -17,7 +17,7 @@ User? _user;
 class _AddBookState extends State<AddBook> {
   OurTheme _theme = OurTheme();
   String _edition = "1";
-  String _semester = "2";
+  String _semester = "1";
   String _department = "Misc";
 
   String _bookTitle = "";
