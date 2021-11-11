@@ -36,7 +36,7 @@ void main() {
           '/listings': (context) => Listings(),
           '/enterDetails': (context) => const Details(),
           '/Profile': (context) => const Profile(),
-          '/yourListings': (context) => const YourListings(),
+          '/yourListings': (context) => YourListings(),
         },
       ),
     ),

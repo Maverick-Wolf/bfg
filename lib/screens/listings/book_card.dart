@@ -109,7 +109,7 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
                               Spacer(),
                               _buildRichText(
                                   "",
-                                  "${widget.hostelNumberOfSeller}/${widget.roomNumberOfSeller}",
+                                  "${widget.hostelNumberOfSeller} - ${widget.roomNumberOfSeller}",
                                   14),
                               SizedBox(width: 4),
                             ],
@@ -172,7 +172,10 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
         if (widget.longPressBool) {
           CollectionReference books =
               FirebaseFirestore.instance.collection('books');
-          deleteBooks(books);
+          showDialog(
+              context: context,
+              builder: (BuildContext) => _deleteBookConfirmationPopUp(context, books)
+          );
         }
       },
     );
@@ -244,7 +247,7 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
             children: [
               IconButton(
                 onPressed: () {
-                  _makePhoneCall('tel:${widget.phoneNumberOfSeller}');
+                  _makePhoneCall('tel::${widget.phoneNumberOfSeller}');
                 },
                 icon: Icon(
                   Icons.phone,
@@ -296,18 +299,72 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
     );
   }
 
+  Widget _deleteBookConfirmationPopUp(BuildContext context, CollectionReference books) {
+    return AlertDialog(
+      backgroundColor: Colors.grey,
+      title: Center(
+        child: Text(
+        "!!!!",
+        style: TextStyle(
+            color: _theme.secondaryColor,
+            letterSpacing: 0.7,
+            fontFamily: _theme.font,
+            fontWeight: FontWeight.bold),
+        ),
+      ),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            "Tapping proceed will delete all instances of your listing",
+            style: TextStyle(
+              color: _theme.tertiaryColor,
+              letterSpacing: 0.7,
+              fontFamily: _theme.font,
+              fontWeight: FontWeight.bold
+            ),
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(height: 20,),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              primary: Colors.blue,
+              onPrimary: _theme.tertiaryColor
+            ),
+            onPressed: () {
+              deleteBooks(books);
+              Navigator.pop(context);
+            } ,
+            child: Text("Proceed"),
+          )
+        ],
+      ),
+    );
+  }
+
   Future<void> _makePhoneCall(String url) async {
     if (await canLaunch(url)) {
       await launch(url);
     } else {
-      throw 'Could not launch $url';
+      final snackBar = SnackBar(content: Text('Could not launch $url'));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
   Future<void> deleteBooks(CollectionReference books) {
     return books
         .doc(widget.documentID)
         .delete()
-        .then((value) => print("Book Deleted"))
-        .catchError((error) => print("Failed to delete book: $error"));
+        .then(
+            (value) {
+              final snackBar = SnackBar(content: Text('Your listing was succesfully deleted :D'));
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          }
+        )
+        .catchError(
+        (error) {
+          final snackBar = SnackBar(content: Text("Failed to delete book ;-; ... $error"));
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        }
+    );
   }
 }

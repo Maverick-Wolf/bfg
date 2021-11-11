@@ -87,6 +87,7 @@ class _DetailsState extends State<Details> {
                           onChanged: (value) {
                             _roomNumber = value;
                           },
+                          maxLength: 3,
                           decoration: InputDecoration(
                             border: const OutlineInputBorder(),
                             labelText: "Room Number",
@@ -239,7 +240,7 @@ class _DetailsState extends State<Details> {
           _hostel = hostelDropdown1 + hostelDropdown2;
           try{
             addUser();
-            Navigator.pushNamed(context, '/userMenu');
+            Navigator.pushReplacementNamed(context, '/userMenu');
           } catch(e) {
             print(e);
           }

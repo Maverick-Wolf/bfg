@@ -287,8 +287,17 @@ class _AddBookState extends State<AddBook> {
           'semester': _semester,
           'note': _note,
         })
-        .then((value) => print("Book Added"))
-        .catchError((error) => print("Failed to add book: $error"));
+        .then(
+            (value) {
+              final snackBar = SnackBar(content: Text("Your listing was added successfully"));
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              }
+            )
+        .catchError((error) {
+              final snackBar = SnackBar(content: Text("Failed to add book: $error"));
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
+    );
   }
 
   Widget _buildSellButton() {
@@ -441,7 +450,7 @@ class _AddBookState extends State<AddBook> {
                     (documentSnapshot.data() as dynamic)['phone_number'];
               }
               addBook(name,roomNumber,hostelNumber,phoneNumber);
-              Navigator.pushReplacementNamed(context, "/listings");
+              Navigator.popAndPushNamed(context, '/userMenu');
             },
             child: Text(
               "Oki",

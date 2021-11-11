@@ -148,7 +148,7 @@ class _DrawerClassState extends State<DrawerClass> {
                 color: _theme.tertiaryColor),
           ),
           onTap: () {
-            Navigator.pushNamed(context, '/addBook');
+            Navigator.popAndPushNamed(context, '/addBook');
           },
         ),
         const Divider(
@@ -166,7 +166,7 @@ class _DrawerClassState extends State<DrawerClass> {
           ),
           onTap: () {
             _signOut();
-            Navigator.pushReplacementNamed(context, '/signUp');
+            Navigator.popAndPushNamed(context, '/signUp');
           },
         ),
       ],
