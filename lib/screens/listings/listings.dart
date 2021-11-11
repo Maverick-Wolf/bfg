@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 String _semester = "All";
+
 class Listings extends StatefulWidget {
   Listings({Key? key}) : super(key: key);
 
@@ -24,7 +25,7 @@ class _ListingsState extends State<Listings> {
   Widget build(BuildContext context) {
     _user = _auth.currentUser;
     users = FirebaseFirestore.instance.collection('users');
-    
+
     return Scaffold(
         backgroundColor: _theme.primaryColor,
         appBar: AppBar(
@@ -172,6 +173,10 @@ class _ListingsState extends State<Listings> {
             nameOfBook: data['title'],
             bookAuthor: data['author'],
             department: data['department'],
+            nameOfSeller: data['seller_name'],
+            roomNumberOfSeller: data['seller_room'],
+            hostelNumberOfSeller: data['seller_hostel'],
+            phoneNumberOfSeller: data['seller_phone'],
           ),
         );
       } else if (department == "All" && data['semester'] == _semester) {
@@ -186,6 +191,10 @@ class _ListingsState extends State<Listings> {
             nameOfBook: data['title'],
             bookAuthor: data['author'],
             department: data['department'],
+            nameOfSeller: data['seller_name'],
+            roomNumberOfSeller: data['seller_room'],
+            hostelNumberOfSeller: data['seller_hostel'],
+            phoneNumberOfSeller: data['seller_phone'],
           ),
         );
       } else if (data['department'] == department && _semester == "All") {
@@ -200,10 +209,14 @@ class _ListingsState extends State<Listings> {
             nameOfBook: data['title'],
             bookAuthor: data['author'],
             department: data['department'],
+            nameOfSeller: data['seller_name'],
+            roomNumberOfSeller: data['seller_room'],
+            hostelNumberOfSeller: data['seller_hostel'],
+            phoneNumberOfSeller: data['seller_phone'],
           ),
         );
-      }
-       else if (data['department'] == department && _semester == data['semester']) {
+      } else if (data['department'] == department &&
+          _semester == data['semester']) {
         return Padding(
           padding: const EdgeInsets.only(bottom: 10.0),
           child: BookDetailsCard(
@@ -215,6 +228,10 @@ class _ListingsState extends State<Listings> {
             nameOfBook: data['title'],
             bookAuthor: data['author'],
             department: data['department'],
+            nameOfSeller: data['seller_name'],
+            roomNumberOfSeller: data['seller_room'],
+            hostelNumberOfSeller: data['seller_hostel'],
+            phoneNumberOfSeller: data['seller_phone'],
           ),
         );
       } else {

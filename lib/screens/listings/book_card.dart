@@ -15,6 +15,10 @@ class BookDetailsCard extends StatefulWidget {
   final String bookEdition;
   final String semester;
   final String note;
+  final String nameOfSeller;
+  final String roomNumberOfSeller;
+  final String hostelNumberOfSeller;
+  final String phoneNumberOfSeller;
 
   const BookDetailsCard(
       {Key? key,
@@ -25,7 +29,12 @@ class BookDetailsCard extends StatefulWidget {
       required this.bookAuthor,
       required this.bookEdition,
       required this.department,
-      required this.semester})
+      required this.semester,
+      required this.nameOfSeller,
+      required this.roomNumberOfSeller,
+      required this.phoneNumberOfSeller,
+      required this.hostelNumberOfSeller,
+      })
       : super(key: key);
 
   @override
@@ -35,25 +44,8 @@ class BookDetailsCard extends StatefulWidget {
 OurTheme _theme = OurTheme();
 late double _height;
 late double _width;
-String nameOfSeller = "";
-String hostelNumberOfSeller = "";
-String roomNumberOfSeller = "";
-String phoneNumberOfSeller = "";
 
 class _BookDetailsCardState extends State<BookDetailsCard> {
-  @override
-  void initState() {
-    super.initState();
-    getSellerDetails().then((List list) {
-      setState(() {
-        nameOfSeller = list[0];
-        roomNumberOfSeller = list[1];
-        hostelNumberOfSeller = list[2];
-        phoneNumberOfSeller = list[3];
-      });
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     _height = MediaQuery.of(context).size.height;
@@ -109,11 +101,11 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
                           Row(
                             children: [
                               SizedBox(width: 4),
-                              _buildRichText("Seller: ", nameOfSeller, 14),
+                              _buildRichText("Seller: ", widget.nameOfSeller, 14),
                               Spacer(),
                               _buildRichText(
                                   "",
-                                  "$hostelNumberOfSeller/$roomNumberOfSeller",
+                                  "${widget.hostelNumberOfSeller}/${widget.roomNumberOfSeller}",
                                   14),
                               SizedBox(width: 4),
                             ],
@@ -168,10 +160,10 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
             context: context,
             builder: (BuildContext) => _buildPopupDialogue(
                 context,
-                nameOfSeller,
+                widget.nameOfSeller,
                 widget.nameOfBook,
                 widget.priceOfBook,
-                "$hostelNumberOfSeller/$roomNumberOfSeller"));
+                "${widget.hostelNumberOfSeller}/${widget.roomNumberOfSeller}"));
       },
     );
   }
@@ -290,23 +282,5 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
         ],
       ),
     );
-  }
-
-  Future<List> getSellerDetails() async {
-    String? name;
-    String? roomNumber;
-    String? hostelNumber;
-    String? phoneNumber;
-    DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
-        .collection("users")
-        .doc(widget.userIdOfSeller)
-        .get();
-    if (documentSnapshot.exists) {
-      name = (documentSnapshot.data() as dynamic)['name'];
-      roomNumber = (documentSnapshot.data() as dynamic)['room_number'];
-      hostelNumber = (documentSnapshot.data() as dynamic)['hostel'];
-      phoneNumber = (documentSnapshot.data() as dynamic)['phone_number'];
-    }
-    return [name, roomNumber, hostelNumber, phoneNumber];
   }
 }
