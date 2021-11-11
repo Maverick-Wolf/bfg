@@ -45,7 +45,7 @@ class _DetailsState extends State<Details> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Spacer(
-                      flex: 6,
+                      flex: 5,
                     ),
                     _buildRichText(),
                     const Spacer(
@@ -250,20 +250,12 @@ class _DetailsState extends State<Details> {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15),
             )),
-        child: Wrap(
-          children: [
-            const Icon(Icons.login_rounded),
-            const SizedBox(
-              width: 10.0,
-            ),
-            Text(
-              "SIGNUP",
-              style: TextStyle(
-                  fontSize: 18.0,
-                  fontFamily: _theme.font,
-                  fontWeight: FontWeight.bold),
-            )
-          ],
+        child: Text(
+          "Lets Gooo!",
+          style: TextStyle(
+              fontSize: 18.0,
+              fontFamily: _theme.font,
+              fontWeight: FontWeight.bold),
         ),
       ),
     );

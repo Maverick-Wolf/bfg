@@ -1,10 +1,10 @@
 import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:bfg/theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:glassmorphism/glassmorphism.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class BookDetailsCard extends StatefulWidget {
   final String nameOfBook;
@@ -114,7 +114,6 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
                             height: 10,
                           ),
                           _buildBookTitle(widget.nameOfBook),
-                          // _buildRichText("Title: ", nameOfBook, 20),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
                             child: Row(
@@ -233,7 +232,7 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
           Column(
             children: [
               IconButton(
-                onPressed: () {},
+                onPressed: () { _makePhoneCall('tel:$phoneNumberOfSeller');},
                 icon: Icon(
                   Icons.phone,
                   size: 34,
@@ -282,5 +281,30 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
         ],
       ),
     );
+  }
+  Future<void> _makePhoneCall(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+  Future<List> getSellerDetails() async {
+    String? name;
+    String? roomNumber;
+    String? hostelNumber;
+    String? phoneNumber;
+    DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
+        .collection("users")
+        .doc(widget.userIdOfSeller)
+        .get();
+    if (documentSnapshot.exists) {
+      name = (documentSnapshot.data() as dynamic)['name'];
+      roomNumber = (documentSnapshot.data() as dynamic)['room_number'];
+      hostelNumber = (documentSnapshot.data() as dynamic)['hostel'];
+      phoneNumber = (documentSnapshot.data() as dynamic)['phone_number'];
+    }
+    return [name, roomNumber, hostelNumber, phoneNumber];
   }
 }

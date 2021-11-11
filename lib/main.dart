@@ -32,7 +32,6 @@ void main() {
         debugShowCheckedModeBanner: false,
         routes: {
           '/': (context) => const Initialization(),
-          '/login': (context) => const LoginPage(),
           '/signUp': (context) => const SignUp(),
           '/addBook': (context) => const AddBook(),
           '/userMenu': (context) => UserMenu(),
