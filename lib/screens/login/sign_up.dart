@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -18,11 +20,18 @@ late String _phoneNumber;
 String _otp = "";
 bool isPhoneNumberTfVisible = true;
 late BuildContext _context;
+late Timer _timer ;
+int _start = 60;
+bool resendOtpButtonActivated = false;
 
 
 class _SignUpState extends State<SignUp> {
 
   @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
   Widget build(BuildContext context) {
     _context = context;
     return GestureDetector(
@@ -31,22 +40,26 @@ class _SignUpState extends State<SignUp> {
         backgroundColor: _theme.primaryColor,
         resizeToAvoidBottomInset: false,
         body: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(30.0, 200.0, 30.0, 0.0),
+              padding: const EdgeInsets.fromLTRB(30.0, 0.0, 30.0, 0.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _buildRichText("Sign In"),
                   _buildSizedBox(30),
                   isPhoneNumberTfVisible ? _buildPhoneNumberTF() : _buildOtpTF(),
-                  _buildSizedBox(200),
                 ],
               ),
             ),
-            isPhoneNumberTfVisible ? _buildSendOtpButton() : _buildVerifyOtpButton(),
-            if (!isPhoneNumberTfVisible) _buildResendOtpButton(),
-            if (!isPhoneNumberTfVisible) _buildChangeNumberButton(),
+            Column(
+              children: [
+                isPhoneNumberTfVisible ? _buildSendOtpButton() : _buildVerifyOtpButton(),
+                if (!isPhoneNumberTfVisible) _buildResendOtpButton(),
+                if (!isPhoneNumberTfVisible) _buildChangeNumberButton(),
+              ],
+            ),
           ],
         ),
       ),
@@ -114,12 +127,12 @@ class _SignUpState extends State<SignUp> {
     DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance.collection('users').doc(user!.uid).get();
     try{
       if(((documentSnapshot.data() as dynamic)['name']).toString().isNotEmpty){
-        Navigator.pushNamed(_context, '/userMenu');
+        Navigator.pushReplacementNamed(_context, '/userMenu');
         print("welcome back, old friend");
       }
     } catch(e) {
       print(e);
-      Navigator.pushNamed(_context, '/enterDetails');
+      Navigator.pushReplacementNamed(_context, '/enterDetails');
       print("new user spotted in the wild");
     }
   }
@@ -129,6 +142,7 @@ class _SignUpState extends State<SignUp> {
       child: ElevatedButton(
         onPressed: () async {
           verifyPhoneNumber();
+          startTimer();
           setState(() {
             isPhoneNumberTfVisible = !isPhoneNumberTfVisible;
             FocusScope.of(context).unfocus();
@@ -162,7 +176,7 @@ class _SignUpState extends State<SignUp> {
   Widget _buildPhoneNumberTF() {
     return TextFormField(
       initialValue: "",
-      key: UniqueKey(),
+      key: ValueKey("test"),
       onChanged: (value) {
         _phoneNumber = "+91" + value;
       },
@@ -239,17 +253,57 @@ class _SignUpState extends State<SignUp> {
   Widget _buildResendOtpButton() {
     return TextButton(
         onPressed: () {
+          if(_start == 0){
+            setState(() {
+              _start = 60;
+              resendOtpButtonActivated = false;
+            });
+            verifyPhoneNumber();
+            startTimer();
+          }
           setState(() {
             FocusScope.of(context).unfocus();
           });
         },
-        child: Text(
-          "Resend OTP",
-          style: TextStyle(
-            fontFamily: _theme.font,
-            color: _theme.secondaryColor,
-          ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "Resend OTP in",
+              style: TextStyle(
+                fontFamily: _theme.font,
+                color: resendOtpButtonActivated ? _theme.secondaryColor : Colors.white54,
+              ),
+            ),
+            SizedBox(width: 5,),
+            Text(
+              "$_start",
+              style: TextStyle(
+                fontFamily: _theme.font,
+                color: _theme.secondaryColor,
+              ),
+            ),
+          ],
         )
+    );
+  }
+
+  void startTimer() {
+    const oneSec = const Duration(seconds: 1);
+    _timer = new Timer.periodic(
+      oneSec,
+          (Timer timer) {
+        if (_start == 0) {
+          setState(() {
+            timer.cancel();
+            resendOtpButtonActivated = true;
+          });
+        } else {
+          setState(() {
+            _start--;
+          });
+        }
+      },
     );
   }
 

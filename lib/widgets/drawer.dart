@@ -166,7 +166,7 @@ class _DrawerClassState extends State<DrawerClass> {
           ),
           onTap: () {
             _signOut();
-            Navigator.pushReplacementNamed(context, '/login');
+            Navigator.pushReplacementNamed(context, '/signUp');
           },
         ),
       ],

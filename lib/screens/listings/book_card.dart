@@ -232,7 +232,7 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
           Column(
             children: [
               IconButton(
-                onPressed: () { _makePhoneCall('tel:$phoneNumberOfSeller');},
+                onPressed: () { _makePhoneCall('tel:$widget.phoneNumberOfSeller');},
                 icon: Icon(
                   Icons.phone,
                   size: 34,
