@@ -15,7 +15,7 @@ class YourListings extends StatefulWidget {
 
 class _YourListingsState extends State<YourListings> {
   late Stream<QuerySnapshot> _booksStream =
-        FirebaseFirestore.instance.collection('books').snapshots();
+      FirebaseFirestore.instance.collection('books').snapshots();
 
   @override
   Widget build(BuildContext context) {
@@ -66,10 +66,14 @@ class _YourListingsState extends State<YourListings> {
             nameOfBook: data['title'],
             bookAuthor: data['author'],
             department: data['department'],
+            nameOfSeller: data['seller_name'],
+            roomNumberOfSeller: data['seller_room'],
+            hostelNumberOfSeller: data['seller_hostel'],
+            phoneNumberOfSeller: data['seller_phone'],
           ),
         );
       } else {
-        return const SizedBox(height: 0,);
+        return const SizedBox();
       }
     }).toList();
   }
