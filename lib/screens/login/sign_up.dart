@@ -24,9 +24,7 @@ late Timer _timer ;
 int _start = 60;
 bool resendOtpButtonActivated = false;
 
-
 class _SignUpState extends State<SignUp> {
-
   @override
   void dispose() {
     _timer.cancel();
@@ -70,13 +68,15 @@ class _SignUpState extends State<SignUp> {
   PhoneVerificationCompleted verificationCompleted =
       (PhoneAuthCredential phoneAuthCredential) async {
     await _auth.signInWithCredential(phoneAuthCredential);
-    print('Phone number automatically verified and user signed in: ${_auth.currentUser!.uid}');
+    print(
+        'Phone number automatically verified and user signed in: ${_auth.currentUser!.uid}');
   };
 
   //Listens for errors with verification, such as too many attempts
   PhoneVerificationFailed verificationFailed =
       (FirebaseAuthException authException) {
-    print('Phone number verification failed. Code: ${authException.code}. Message: ${authException.message}');
+    print(
+        'Phone number verification failed. Code: ${authException.code}. Message: ${authException.message}');
   };
 
   //Callback for when the code is sent
@@ -95,12 +95,13 @@ class _SignUpState extends State<SignUp> {
   verifyPhoneNumber() async {
     try {
       await _auth.verifyPhoneNumber(
-          phoneNumber: _phoneNumber,
-          timeout: const Duration(seconds: 60),
-          verificationCompleted: verificationCompleted,
-          verificationFailed: verificationFailed,
-          codeSent: codeSent,
-          codeAutoRetrievalTimeout: codeAutoRetrievalTimeout,);
+        phoneNumber: _phoneNumber,
+        timeout: const Duration(seconds: 60),
+        verificationCompleted: verificationCompleted,
+        verificationFailed: verificationFailed,
+        codeSent: codeSent,
+        codeAutoRetrievalTimeout: codeAutoRetrievalTimeout,
+      );
     } catch (e) {
       print("Failed to Verify Phone Number: ${e}");
     }
@@ -130,7 +131,7 @@ class _SignUpState extends State<SignUp> {
         Navigator.pushReplacementNamed(_context, '/userMenu');
         print("welcome back, old friend");
       }
-    } catch(e) {
+    } catch (e) {
       print(e);
       Navigator.pushReplacementNamed(_context, '/enterDetails');
       print("new user spotted in the wild");
@@ -141,7 +142,7 @@ class _SignUpState extends State<SignUp> {
     return Center(
       child: ElevatedButton(
         onPressed: () async {
-          verifyPhoneNumber();
+          await verifyPhoneNumber();
           startTimer();
           setState(() {
             isPhoneNumberTfVisible = !isPhoneNumberTfVisible;
@@ -153,19 +154,19 @@ class _SignUpState extends State<SignUp> {
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15),
-            )
-        ),
+            )),
         child: Wrap(
           children: [
             const Icon(Icons.send),
-            const SizedBox(width: 10.0,),
+            const SizedBox(
+              width: 10.0,
+            ),
             Text(
               "SEND OTP",
               style: TextStyle(
                   fontSize: 18.0,
                   fontFamily: _theme.font,
-                  fontWeight: FontWeight.bold
-              ),
+                  fontWeight: FontWeight.bold),
             )
           ],
         ),
@@ -176,7 +177,7 @@ class _SignUpState extends State<SignUp> {
   Widget _buildPhoneNumberTF() {
     return TextFormField(
       initialValue: "",
-      key: ValueKey("test"),
+      key: const ValueKey("test"),
       onChanged: (value) {
         _phoneNumber = "+91" + value;
       },
@@ -184,8 +185,10 @@ class _SignUpState extends State<SignUp> {
         border: const OutlineInputBorder(),
         labelText: "Phone Number",
         labelStyle: TextStyle(color: _theme.secondaryColor),
-        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: _theme.tertiaryColor)),
-        focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: _theme.secondaryColor, width: 1.3)),
+        enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: _theme.tertiaryColor)),
+        focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: _theme.secondaryColor, width: 1.3)),
       ),
       cursorColor: _theme.secondaryColor,
       style: TextStyle(
@@ -206,8 +209,10 @@ class _SignUpState extends State<SignUp> {
         border: const OutlineInputBorder(),
         labelText: "OTP",
         labelStyle: TextStyle(color: _theme.secondaryColor),
-        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: _theme.tertiaryColor)),
-        focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: _theme.secondaryColor, width: 1.3)),
+        enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: _theme.tertiaryColor)),
+        focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: _theme.secondaryColor, width: 1.3)),
       ),
       style: TextStyle(
         fontFamily: _theme.font,
@@ -221,7 +226,7 @@ class _SignUpState extends State<SignUp> {
   Widget _buildVerifyOtpButton() {
     return Center(
       child: ElevatedButton(
-        onPressed: (){
+        onPressed: () {
           FocusScope.of(context).unfocus();
           signInWithPhoneNumber();
         },
@@ -230,19 +235,19 @@ class _SignUpState extends State<SignUp> {
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15),
-            )
-        ),
+            )),
         child: Wrap(
           children: [
             const Icon(Icons.login_rounded),
-            const SizedBox(width: 10.0,),
+            const SizedBox(
+              width: 10.0,
+            ),
             Text(
               "VERIFY OTP",
               style: TextStyle(
                   fontSize: 18.0,
                   fontFamily: _theme.font,
-                  fontWeight: FontWeight.bold
-              ),
+                  fontWeight: FontWeight.bold),
             )
           ],
         ),
@@ -321,8 +326,7 @@ class _SignUpState extends State<SignUp> {
             fontFamily: _theme.font,
             color: _theme.secondaryColor,
           ),
-        )
-    );
+        ));
   }
 }
 
@@ -340,12 +344,7 @@ Widget _buildRichText(String title) {
           color: _theme.secondaryColor,
           fontSize: 30.0,
           fontFamily: _theme.font,
-          fontWeight: FontWeight.w800
-      ),
+          fontWeight: FontWeight.w800),
     ),
   );
 }
-
-
-
-
