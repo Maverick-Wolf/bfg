@@ -1,7 +1,6 @@
 import 'package:bfg/providers/login_providers/login_provider.dart';
 import 'package:bfg/screens/initialization/initialization.dart';
 import 'package:bfg/screens/listings/add_book.dart';
-import 'package:bfg/screens/listings/book_card.dart';
 import 'package:bfg/screens/listings/listings.dart';
 import 'package:bfg/screens/listings/your_listings.dart';
 import 'package:bfg/screens/login/enter_details.dart';

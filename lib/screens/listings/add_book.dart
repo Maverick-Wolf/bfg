@@ -23,10 +23,6 @@ class _AddBookState extends State<AddBook> {
   String _bookAuthor = "";
   String _bookPrice = "";
   String _note = "";
-  // String _sellerName = "";
-  // String _sellerRoomNumber = "";
-  // String _sellerHostelNumber = "";
-  // String _sellerPhoneNumber = "";
   late CollectionReference books;
 
   @override
