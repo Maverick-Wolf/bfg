@@ -4,6 +4,7 @@ import 'package:bfg/screens/listings/listings.dart';
 import 'package:bfg/screens/listings/your_listings.dart';
 import 'package:bfg/screens/login/enter_details.dart';
 import 'package:bfg/screens/login/sign_up.dart';
+import 'package:bfg/screens/initialization/logooo.dart';
 import 'package:bfg/screens/user/profile.dart';
 import 'package:bfg/screens/user/user_menu.dart';
 import 'package:bfg/theme.dart';
@@ -22,7 +23,8 @@ void main() {
       ),
       debugShowCheckedModeBanner: false,
       routes: {
-        '/': (context) => const Initialization(),
+        '/': (context) => logooo(),
+        '/c': (context) => const Initialization(),
         '/signUp': (context) => const SignUp(),
         '/addBook': (context) => const AddBook(),
         '/userMenu': (context) => UserMenu(),
