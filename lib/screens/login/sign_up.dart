@@ -103,7 +103,8 @@ class _SignUpState extends State<SignUp> {
         codeAutoRetrievalTimeout: codeAutoRetrievalTimeout,
       );
     } catch (e) {
-      print("Failed to Verify Phone Number: ${e}");
+      final snackBar = SnackBar(content: Text("Failed to Verify Phone Number: ${e}"));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
 
@@ -119,8 +120,12 @@ class _SignUpState extends State<SignUp> {
       isPhoneNumberTfVisible = !isPhoneNumberTfVisible;
 
       print("Successfully signed in UID: ${user!.uid}");
+      final snackBar = SnackBar(content: Text("Successfully signed in"));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     } catch (e) {
       print("Failed to sign in: " + e.toString());
+      final snackBar = SnackBar(content: Text("Failed to sign in"));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
 
@@ -128,13 +133,15 @@ class _SignUpState extends State<SignUp> {
     DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance.collection('users').doc(user!.uid).get();
     try{
       if(((documentSnapshot.data() as dynamic)['name']).toString().isNotEmpty){
-        Navigator.pushReplacementNamed(_context, '/userMenu');
+        Navigator.pushNamed(_context, '/userMenu');
         print("welcome back, old friend");
+        final snackBar = SnackBar(content: Text("aur bhai ki haal chaal"));
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
     } catch (e) {
       print(e);
-      Navigator.pushReplacementNamed(_context, '/enterDetails');
-      print("new user spotted in the wild");
+      Navigator.pushNamed(_context, '/enterDetails');
+      print("ghot spotted");
     }
   }
 
@@ -142,13 +149,19 @@ class _SignUpState extends State<SignUp> {
     return Center(
       child: ElevatedButton(
         onPressed: () async {
-          await verifyPhoneNumber();
-          startTimer();
-          setState(() {
-            isPhoneNumberTfVisible = !isPhoneNumberTfVisible;
-            FocusScope.of(context).unfocus();
-          });
+          if(_phoneNumber.length==13){
+            verifyPhoneNumber();
+            startTimer();
+            setState(() {
+              isPhoneNumberTfVisible = !isPhoneNumberTfVisible;
+              FocusScope.of(context).unfocus();
+            });
+          } else {
+            final snackBar = SnackBar(content: Text("Invalid phone number"));
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          }
         },
+
         style: ElevatedButton.styleFrom(
             primary: _theme.secondaryColor.withOpacity(0.8),
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -178,6 +191,7 @@ class _SignUpState extends State<SignUp> {
     return TextFormField(
       initialValue: "",
       key: const ValueKey("test"),
+      maxLength: 10,
       onChanged: (value) {
         _phoneNumber = "+91" + value;
       },
@@ -202,6 +216,7 @@ class _SignUpState extends State<SignUp> {
   Widget _buildOtpTF() {
     return TextFormField(
       initialValue: "",
+      maxLength: 6,
       onChanged: (text) {
         _otp = text;
       },

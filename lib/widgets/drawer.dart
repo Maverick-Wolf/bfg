@@ -103,7 +103,7 @@ class _DrawerClassState extends State<DrawerClass> {
         ),
         ListTile(
             title: Text(
-              'Your Listings',
+              'My Listings',
               style: TextStyle(
                   fontFamily: _theme.font,
                   fontSize: 18,
@@ -114,6 +114,8 @@ class _DrawerClassState extends State<DrawerClass> {
             onTap: () {
               Navigator.pop(context);
               Navigator.pushNamed(context, '/yourListings');
+              final snackBar = SnackBar(content: Text("Tap and hold a listing for 2 seconds to delete it", style: TextStyle(color: _theme.tertiaryColor)), backgroundColor: Colors.blue,);
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
             }),
         const Divider(
           thickness: 1,
@@ -148,7 +150,7 @@ class _DrawerClassState extends State<DrawerClass> {
                 color: _theme.tertiaryColor),
           ),
           onTap: () {
-            Navigator.pushNamed(context, '/addBook');
+            Navigator.popAndPushNamed(context, '/addBook');
           },
         ),
         const Divider(
@@ -166,7 +168,7 @@ class _DrawerClassState extends State<DrawerClass> {
           ),
           onTap: () {
             _signOut();
-            Navigator.pushReplacementNamed(context, '/signUp');
+            Navigator.popAndPushNamed(context, '/signUp');
           },
         ),
       ],

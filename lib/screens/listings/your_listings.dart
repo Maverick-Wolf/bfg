@@ -4,14 +4,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-String? _user;
-
 class YourListings extends StatefulWidget {
-  const YourListings({Key? key}) : super(key: key);
-
+  YourListings({Key? key}) : super(key: key);
   @override
   State<YourListings> createState() => _YourListingsState();
 }
+
+String? _user;
+OurTheme _theme = OurTheme();
 
 class _YourListingsState extends State<YourListings> {
   late Stream<QuerySnapshot> _booksStream =
@@ -25,8 +25,9 @@ class _YourListingsState extends State<YourListings> {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: _theme.primaryColor,
+          centerTitle: true,
           title: Text(
-            "Your Listings",
+            "My Listings",
             style: TextStyle(
               color: _theme.secondaryColor,
               fontFamily: _theme.font,
@@ -34,6 +35,21 @@ class _YourListingsState extends State<YourListings> {
               letterSpacing: 1.5,
             ),
           ),
+          actions: <Widget>[
+            Padding(
+                padding: const EdgeInsets.only(right: 16.0),
+                child: IconButton(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext) =>
+                          _buildInfoPopupDialogue(context),
+                    );
+                  },
+                  icon: Icon(Icons.info),
+                  color: _theme.tertiaryColor,
+                )),
+          ],
         ),
         body: StreamBuilder(
             stream: _booksStream,
@@ -78,5 +94,35 @@ class _YourListingsState extends State<YourListings> {
         return const SizedBox();
       }
     }).toList();
+  }
+
+
+  Widget _buildInfoPopupDialogue(BuildContext context) {
+    return AlertDialog(
+      backgroundColor: Colors.grey,
+      title: Text(
+        "thots",
+        style: TextStyle(
+            fontSize: 24,
+            fontFamily: _theme.font,
+            fontWeight: FontWeight.bold,
+            color: _theme.secondaryColor),
+        textAlign: TextAlign.center,
+      ),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "\nThese are books you have put up to sell \n\nRemember to remove books that have already been sold to avoid unnecessary calls\n\n\nTo delete a listing, hold down on the item for 2 seconds and tap 'Delete' on the pop up box",
+            style: TextStyle(
+              color: _theme.tertiaryColor,
+              fontFamily: _theme.font,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
   }
 }

@@ -45,116 +45,102 @@ class BookDetailsCard extends StatefulWidget {
 }
 
 OurTheme _theme = OurTheme();
-late double _height;
 late double _width;
 
 class _BookDetailsCardState extends State<BookDetailsCard> {
   @override
   Widget build(BuildContext context) {
-    _height = MediaQuery.of(context).size.height;
     _width = MediaQuery.of(context).size.width;
     return InkWell(
       child: Center(
-        child: GlassmorphicContainer(
-          height: _height * 0.31,
-          width: _width * 0.93,
-          borderRadius: 15,
-          blur: 15,
-          alignment: Alignment.center,
-          border: 2,
-          linearGradient: LinearGradient(colors: [
-            Colors.white.withOpacity(0.2),
-            Colors.white38.withOpacity(0.2)
-          ], begin: Alignment.topLeft, end: Alignment.bottomRight),
-          borderGradient: LinearGradient(colors: [
-            Colors.white24.withOpacity(0.2),
-            Colors.white70.withOpacity(0.2)
-          ]),
-          child: Container(
-            decoration: BoxDecoration(boxShadow: [
+        child: Container(
+          width: _width*0.96,
+          decoration: BoxDecoration(
+              boxShadow: [
               BoxShadow(
                 blurRadius: 16,
                 spreadRadius: 16,
                 color: Colors.black.withOpacity(0.1),
               )
-            ]),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(15.0),
-              child: BackdropFilter(
-                filter: ImageFilter.blur(
-                  sigmaX: 20.0,
-                  sigmaY: 20.0,
-                ),
-                child: Container(
-                    height: _height * 0.7,
-                    width: _width * 0.93,
-                    decoration: BoxDecoration(
-                        color: _theme.tertiaryColor.withOpacity(0.15),
-                        borderRadius: BorderRadius.circular(16.0),
-                        border: Border.all(
-                          width: 1.5,
-                          color: Colors.white.withOpacity(0.2),
-                        )),
-                    child: Padding(
-                      padding: EdgeInsets.all(12.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            ],
+            borderRadius: BorderRadius.circular(15),
+            gradient: LinearGradient(
+              colors: [
+                Colors.black12.withOpacity(0.5),
+                Colors.grey.withOpacity(0.45),
+              ],
+              begin: Alignment.topLeft, end: Alignment.bottomRight
+            ),
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(15.0),
+            child: Container(
+                decoration: BoxDecoration(
+                    color: _theme.tertiaryColor.withOpacity(0.15),
+                    borderRadius: BorderRadius.circular(15.0),
+                    border: Border.all(
+                      width: 1.5,
+                      color: _theme.tertiaryColor.withOpacity(0.4)
+                    )),
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(12.0, 20.0, 12.0, 20.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Row(
                         children: [
-                          Row(
-                            children: [
-                              SizedBox(width: 4),
-                              _buildRichText(
-                                  "Seller: ", widget.nameOfSeller, 14),
-                              Spacer(),
-                              _buildRichText(
-                                  "",
-                                  "${widget.hostelNumberOfSeller}/${widget.roomNumberOfSeller}",
-                                  14),
-                              SizedBox(width: 4),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          _buildBookTitle(widget.nameOfBook),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
-                            child: Row(
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    _buildRichText(
-                                        "Author(s): ", widget.bookAuthor, 14),
-                                    _buildRichText(
-                                        "Edition: ", widget.bookEdition, 12),
-                                    _buildRichText(
-                                        "Department: ", widget.department, 12),
-                                  ],
-                                ),
-                                Spacer(),
-                                Column(
-                                  children: [
-                                    _buildRichText(
-                                        "Sem: ", widget.semester, 12),
-                                    SizedBox(
-                                      height: 3,
-                                    ),
-                                    _buildRichText(
-                                        "₹ ", widget.priceOfBook, 25),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                          if (widget.note.isNotEmpty)
-                            _buildRichText("Note: ", widget.note, 12),
+                          SizedBox(width: 4),
+                          _buildRichText(
+                              "Seller: ", widget.nameOfSeller, 15),
+                          Spacer(),
+                          _buildRichText(
+                              "",
+                              "${widget.hostelNumberOfSeller} - ${widget.roomNumberOfSeller}",
+                              15),
+                          SizedBox(width: 4),
                         ],
                       ),
-                    )),
-              ),
-            ),
+                      SizedBox(
+                        height: 30,
+                      ),
+                      _buildBookTitle(widget.nameOfBook),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 30, 0, 25),
+                        child: Row(
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                _buildRichText(
+                                    "Author(s): ", widget.bookAuthor, 14),
+                                _buildRichText(
+                                    "Edition: ", widget.bookEdition, 13),
+                                _buildRichText(
+                                    "Department: ", widget.department, 13),
+                              ],
+                            ),
+                            Spacer(),
+                            Column(
+                              children: [
+                                _buildRichText(
+                                    "Sem: ", widget.semester, 13),
+                                SizedBox(
+                                  height: 3,
+                                ),
+                                _buildRichText(
+                                    "₹ ", widget.priceOfBook, 25),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      if (widget.note.isNotEmpty)
+                        _buildRichText("Note: ", widget.note, 12),
+                    ],
+                  ),
+                )),
           ),
         ),
       ),
@@ -166,13 +152,16 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
                 widget.nameOfSeller,
                 widget.nameOfBook,
                 widget.priceOfBook,
-                "${widget.hostelNumberOfSeller}/${widget.roomNumberOfSeller}"));
+                "${widget.hostelNumberOfSeller} - ${widget.roomNumberOfSeller}"));
       },
       onLongPress: () {
         if (widget.longPressBool) {
           CollectionReference books =
               FirebaseFirestore.instance.collection('books');
-          deleteBooks(books);
+          showDialog(
+              context: context,
+              builder: (BuildContext) => _deleteBookConfirmationPopUp(context, books)
+          );
         }
       },
     );
@@ -183,7 +172,7 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
       bookTitle,
       textAlign: TextAlign.center,
       style: TextStyle(
-        fontSize: 20.0,
+        fontSize: 22.0,
         letterSpacing: 1,
         fontFamily: _theme.font,
         fontWeight: FontWeight.bold,
@@ -248,7 +237,7 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
                 },
                 icon: Icon(
                   Icons.phone,
-                  size: 34,
+                  size: 36,
                   color: _theme.secondaryColor,
                 ),
               ),
@@ -256,7 +245,8 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
                 "Call",
                 style: TextStyle(
                     fontFamily: _theme.font,
-                    fontSize: 12,
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
                     color: _theme.secondaryColor),
               ),
             ],
@@ -296,18 +286,72 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
     );
   }
 
+  Widget _deleteBookConfirmationPopUp(BuildContext context, CollectionReference books) {
+    return AlertDialog(
+      backgroundColor: Colors.grey,
+      title: Center(
+        child: Text(
+        "DELETE?",
+        style: TextStyle(
+            color: _theme.secondaryColor,
+            letterSpacing: 0.7,
+            fontFamily: _theme.font,
+            fontWeight: FontWeight.bold),
+        ),
+      ),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            "Tapping delete will remove all instances of this listing\nThis action cannot be undone",
+            style: TextStyle(
+              color: _theme.tertiaryColor,
+              letterSpacing: 0.7,
+              fontFamily: _theme.font,
+              fontWeight: FontWeight.bold
+            ),
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(height: 20,),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              primary: Colors.red.withOpacity(0.8),
+              onPrimary: _theme.tertiaryColor
+            ),
+            onPressed: () {
+              deleteBooks(books);
+              Navigator.pop(context);
+            } ,
+            child: Text("Delete"),
+          )
+        ],
+      ),
+    );
+  }
+
   Future<void> _makePhoneCall(String url) async {
     if (await canLaunch(url)) {
       await launch(url);
     } else {
-      throw 'Could not launch $url';
+      final snackBar = SnackBar(content: Text('Could not launch $url'));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
   Future<void> deleteBooks(CollectionReference books) {
     return books
         .doc(widget.documentID)
         .delete()
-        .then((value) => print("Book Deleted"))
-        .catchError((error) => print("Failed to delete book: $error"));
+        .then(
+            (value) {
+              final snackBar = SnackBar(content: Text('Your listing was succesfully deleted :D'));
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          }
+        )
+        .catchError(
+        (error) {
+          final snackBar = SnackBar(content: Text("Failed to delete book ;-; ... $error"));
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        }
+    );
   }
 }

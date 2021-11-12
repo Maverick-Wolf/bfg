@@ -87,7 +87,7 @@ class _ListingsState extends State<Listings> {
                   }).toList(),
                 ),
                 const SizedBox(
-                  width: 15.0,
+                  width: 20.0,
                 )
               ],
             ),
@@ -164,7 +164,7 @@ class _ListingsState extends State<Listings> {
       Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
       if ("All" == department && _semester == "All") {
         return Padding(
-          padding: EdgeInsets.only(bottom: 5.0, top: 7.0),
+          padding: EdgeInsets.only(bottom: 3.0, top: 7.0),
           child: BookDetailsCard(
             bookEdition: data['edition'],
             note: data['note'],

@@ -65,7 +65,6 @@ class _ProfileState extends State<Profile> {
                                 _buildRichText("Phone Number", data['phone_number']),
                                 _buildRichText("Hostel", data['hostel']),
                                 _buildRichText("Room Number", data['room_number']),
-                                _buildRichText("Password", data['password']),
                                 SizedBox(height: 10,),
                                 _buildEditButton(),
                               ],
@@ -109,7 +108,7 @@ class _ProfileState extends State<Profile> {
       child: ElevatedButton(
         onPressed: (){
           FocusScope.of(context).unfocus();
-          Navigator.pushReplacementNamed(context, '/enterDetails');
+          Navigator.pushNamed(context, '/enterDetails');
         },
         style: ElevatedButton.styleFrom(
             primary: _theme.secondaryColor.withOpacity(0.8),
@@ -120,7 +119,7 @@ class _ProfileState extends State<Profile> {
         ),
         child: Wrap(
           children: [
-            const Icon(Icons.login_rounded),
+            const Icon(Icons.edit),
             const SizedBox(width: 10.0,),
             Text(
               "Edit Details",
