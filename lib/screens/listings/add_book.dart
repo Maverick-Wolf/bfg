@@ -67,20 +67,20 @@ class _AddBookState extends State<AddBook> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     _buildTextFormField(
-                        "Book Name", "Full Name of Book", 'title'),
+                        "Book Name", "Full Name of Book", 'title', TextInputType.name),
                     _buildTextFormField(
-                        "Author(s)", "Name(s) separated by commas", 'author'),
+                        "Author(s)", "Name(s) separated by commas", 'author', TextInputType.name),
                     _buildDepartmentDropDown(),
                     _buildDropdownRow(),
                     Center(
                       child: Container(
                         width: MediaQuery.of(context).size.width / 2,
                         child: _buildTextFormField(
-                            "Listing Price", "Your Selling Price", 'price'),
+                            "Listing Price", "Your Selling Price", 'price', TextInputType.number),
                       ),
                     ),
                     _buildTextFormField(
-                        "Note (Optional)", "Extra info (if any)", 'note'),
+                        "Note (Optional)", "Extra info (if any)", 'note', TextInputType.name),
                     _buildSellButton(),
                   ],
                 ),
@@ -92,7 +92,7 @@ class _AddBookState extends State<AddBook> {
     );
   }
 
-  Widget _buildTextFormField(String _label, String _hint, String fillIn) {
+  Widget _buildTextFormField(String _label, String _hint, String fillIn, TextInputType inputType) {
     return TextFormField(
       onChanged: (text) {
         switch (fillIn) {
@@ -128,7 +128,7 @@ class _AddBookState extends State<AddBook> {
         fontFamily: _theme.font,
         fontWeight: FontWeight.bold,
       ),
-      keyboardType: TextInputType.name,
+      keyboardType: inputType,
     );
   }
 
@@ -304,10 +304,15 @@ class _AddBookState extends State<AddBook> {
     return Center(
       child: ElevatedButton(
         onPressed: () {
-          showDialog(
-            context: context,
-            builder: (BuildContext) => _buildPopupDialogue(context),
-          );
+          if(_bookTitle.isEmpty || _bookAuthor.isEmpty || _bookPrice.isEmpty) {
+            final snackBar = SnackBar(content: Text("Please fill the required fields"));
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          } else {
+            showDialog(
+              context: context,
+              builder: (BuildContext) => _buildPopupDialogue(context),
+            );
+          }
         },
         style: ElevatedButton.styleFrom(
             primary: _theme.secondaryColor.withOpacity(0.8),
@@ -444,12 +449,12 @@ class _AddBookState extends State<AddBook> {
               if (documentSnapshot.exists) {
                 name = (documentSnapshot.data() as dynamic)['name'];
                 roomNumber =
-                    (documentSnapshot.data() as dynamic)['room_number'];
+                (documentSnapshot.data() as dynamic)['room_number'];
                 hostelNumber = (documentSnapshot.data() as dynamic)['hostel'];
                 phoneNumber =
-                    (documentSnapshot.data() as dynamic)['phone_number'];
+                (documentSnapshot.data() as dynamic)['phone_number'];
               }
-              addBook(name,roomNumber,hostelNumber,phoneNumber);
+              addBook(name, roomNumber, hostelNumber, phoneNumber);
               Navigator.popAndPushNamed(context, '/userMenu');
             },
             child: Text(

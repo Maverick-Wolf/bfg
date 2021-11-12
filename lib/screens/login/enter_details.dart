@@ -18,7 +18,6 @@ class _DetailsState extends State<Details> {
   String hostelDropdown2 = "1";
   String _name = "";
   String _roomNumber= "";
-  String _password= "";
   String _hostel= "";
   late CollectionReference users;
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -111,30 +110,6 @@ class _DetailsState extends State<Details> {
                     const Spacer(
                       flex: 6,
                     ),
-                    TextFormField(
-                      onChanged: (value) {
-                        _password = value;
-                      },
-                      decoration: InputDecoration(
-                        border: const OutlineInputBorder(),
-                        labelText: "Password",
-                        hintText: "This will be used to log in to your account",
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                        labelStyle: TextStyle(color: _theme.secondaryColor),
-                        enabledBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: _theme.tertiaryColor)),
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: _theme.secondaryColor, width: 1.3)),
-                      ),
-                      cursorColor: _theme.secondaryColor,
-                      style: TextStyle(
-                        fontFamily: _theme.font,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      keyboardType: TextInputType.visiblePassword,
-                    ),
                     const Spacer(
                       flex: 4,
                     ),
@@ -158,7 +133,6 @@ class _DetailsState extends State<Details> {
         .set({
       'name': _name,
       'hostel': _hostel,
-      'password': _password,
       'phone_number': _user!.phoneNumber,
       'room_number': _roomNumber,
     })

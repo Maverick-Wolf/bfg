@@ -1,4 +1,3 @@
-import 'package:bfg/providers/login_providers/login_provider.dart';
 import 'package:bfg/screens/initialization/initialization.dart';
 import 'package:bfg/screens/listings/add_book.dart';
 import 'package:bfg/screens/listings/listings.dart';
@@ -15,30 +14,23 @@ void main() {
 
   OurTheme _theme = OurTheme();
   runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-          create: (_) => LoginProvider(),
-        )
-      ],
-      child: MaterialApp(
-        theme: ThemeData(
-          brightness: Brightness.dark,
-          primaryColorDark: _theme.primaryColor,
-          primaryColor: _theme.primaryColor,
-        ),
-        debugShowCheckedModeBanner: false,
-        routes: {
-          '/': (context) => const Initialization(),
-          '/signUp': (context) => const SignUp(),
-          '/addBook': (context) => const AddBook(),
-          '/userMenu': (context) => UserMenu(),
-          '/listings': (context) => Listings(),
-          '/enterDetails': (context) => const Details(),
-          '/Profile': (context) => const Profile(),
-          '/yourListings': (context) => YourListings(),
-        },
+    MaterialApp(
+      theme: ThemeData(
+        brightness: Brightness.dark,
+        primaryColorDark: _theme.primaryColor,
+        primaryColor: _theme.primaryColor,
       ),
+      debugShowCheckedModeBanner: false,
+      routes: {
+        '/': (context) => const Initialization(),
+        '/signUp': (context) => const SignUp(),
+        '/addBook': (context) => const AddBook(),
+        '/userMenu': (context) => UserMenu(),
+        '/listings': (context) => Listings(),
+        '/enterDetails': (context) => const Details(),
+        '/Profile': (context) => const Profile(),
+        '/yourListings': (context) => YourListings(),
+      },
     ),
   );
 }

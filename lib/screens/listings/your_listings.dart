@@ -27,7 +27,7 @@ class _YourListingsState extends State<YourListings> {
           backgroundColor: _theme.primaryColor,
           centerTitle: true,
           title: Text(
-            "Your Listings",
+            "My Listings",
             style: TextStyle(
               color: _theme.secondaryColor,
               fontFamily: _theme.font,
@@ -114,7 +114,7 @@ class _YourListingsState extends State<YourListings> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "\nThese are books you have put up to sell \n\nRemember to remove books that have already been sold to avoid unnecessary calls\n\n\nTo delete a listing, hold down on the item for 2 seconds and tap 'Proceed' on the pop up box",
+            "\nThese are books you have put up to sell \n\nRemember to remove books that have already been sold to avoid unnecessary calls\n\n\nTo delete a listing, hold down on the item for 2 seconds and tap 'Delete' on the pop up box",
             style: TextStyle(
               color: _theme.tertiaryColor,
               fontFamily: _theme.font,
