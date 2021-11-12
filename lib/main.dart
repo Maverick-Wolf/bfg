@@ -9,7 +9,6 @@ import 'package:bfg/screens/user/profile.dart';
 import 'package:bfg/screens/user/user_menu.dart';
 import 'package:bfg/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 void main() {
 

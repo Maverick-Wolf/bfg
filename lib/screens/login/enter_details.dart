@@ -235,5 +235,42 @@ class _DetailsState extends State<Details> {
       ),
     );
   }
+
+  Widget _buildInfoPopupDialogue(BuildContext context) {
+    return AlertDialog(
+      backgroundColor: Colors.grey,
+      title: Text(
+        "for privacy ke chode",
+        style: TextStyle(
+            fontSize: 24,
+            fontFamily: _theme.font,
+            fontWeight: FontWeight.bold,
+            color: _theme.secondaryColor),
+        textAlign: TextAlign.center,
+      ),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text("Your details won't be shared unless you list a book\n\n"
+              "On listing a book, your name and hostel room number will be displayed\n\n"
+              "Your phone number wont be displayed in the app itself, but an interested buyer can view it in their phone app"),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text(
+              "Oki",
+              style: TextStyle(
+                fontSize: 24,
+                color: _theme.secondaryColor,
+              ),
+            ),
+            style: TextButton.styleFrom(backgroundColor: Colors.blue),
+          )
+        ],
+      ),
+    );
+  }
 }
 
