@@ -212,11 +212,14 @@ class _DetailsState extends State<Details> {
       child: ElevatedButton(
         onPressed: (){
           _hostel = hostelDropdown1 + hostelDropdown2;
-          try{
-            addUser();
-            Navigator.pushReplacementNamed(context, '/userMenu');
-          } catch(e) {
-            print(e);
+          if(_name.isEmpty || _roomNumber.isEmpty) {
+            final snackBar = SnackBar(content: Text("Please fill the required fields", style: TextStyle(color: _theme.tertiaryColor)), backgroundColor: Colors.blue,);
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          } else {
+            showDialog(
+              context: context,
+              builder: (BuildContext) => _buildInfoPopupDialogue(context),
+            );
           }
         },
         style: ElevatedButton.styleFrom(
@@ -240,7 +243,7 @@ class _DetailsState extends State<Details> {
     return AlertDialog(
       backgroundColor: Colors.grey,
       title: Text(
-        "for privacy ke chode",
+        "google se zyaada privacy",
         style: TextStyle(
             fontSize: 24,
             fontFamily: _theme.font,
@@ -250,14 +253,22 @@ class _DetailsState extends State<Details> {
       ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text("Your details won't be shared unless you list a book\n\n"
               "On listing a book, your name and hostel room number will be displayed\n\n"
               "Your phone number wont be displayed in the app itself, but an interested buyer can view it in their phone app"),
+          SizedBox(height: 25,),
           TextButton(
             onPressed: () {
-              Navigator.pop(context);
+              try{
+                addUser();
+                Navigator.pushReplacementNamed(context, '/userMenu');
+                final snackBar = SnackBar(content: Text("Successfully updated info", style: TextStyle(color: _theme.tertiaryColor)), backgroundColor: Colors.blue,);
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              } catch(e) {
+                print(e);
+              }
             },
             child: Text(
               "Oki",
@@ -266,7 +277,7 @@ class _DetailsState extends State<Details> {
                 color: _theme.secondaryColor,
               ),
             ),
-            style: TextButton.styleFrom(backgroundColor: Colors.blue),
+            style: TextButton.styleFrom(backgroundColor: Colors.blue.withOpacity(0.8)),
           )
         ],
       ),

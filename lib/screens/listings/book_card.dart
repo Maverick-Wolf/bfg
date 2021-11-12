@@ -342,7 +342,7 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
         .delete()
         .then(
             (value) {
-              final snackBar = SnackBar(content: Text('Your listing was succesfully deleted :D'));
+              final snackBar = SnackBar(content: Text('Your listing was deleted successfully :D'));
               ScaffoldMessenger.of(context).showSnackBar(snackBar);
           }
         )

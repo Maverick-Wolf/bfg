@@ -46,7 +46,7 @@ class _UserMenuState extends State<UserMenu> {
           children: [
             _buildListingsContainer(context, height, width),
             _buildSellContainer(context, height, width),
-            _buildYourListingsContainer(context, height, width)
+            _buildMyListingsContainer(context, height, width)
           ],
         ),
       ),
@@ -57,7 +57,14 @@ class _UserMenuState extends State<UserMenu> {
     return InkWell(
       onTap: () {
         Navigator.pushNamed(context, '/listings');
-        final snackBar = SnackBar(content: Text("Tap on a card to view more details about the seller", style: TextStyle(color: Colors.white),), duration: Duration(seconds: 3), backgroundColor: Colors.blue,);
+        final snackBar = SnackBar(
+          content: Text(
+            "Tap on a card to view more details about the seller",
+            style: TextStyle(color: Colors.white),
+          ),
+          duration: Duration(seconds: 5),
+          backgroundColor: Colors.blue,
+        );
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       },
       child: Container(
@@ -75,7 +82,7 @@ class _UserMenuState extends State<UserMenu> {
               width: 15.0,
             ),
             Icon(
-              Icons.table_view_rounded,
+              Icons.view_headline_outlined,
               color: _theme.secondaryColor,
               size: 50,
             ),
@@ -137,11 +144,18 @@ class _UserMenuState extends State<UserMenu> {
     );
   }
 
-  Widget _buildYourListingsContainer(BuildContext context, double height, double width) {
+  Widget _buildMyListingsContainer(BuildContext context, double height, double width) {
     return InkWell(
       onTap: () {
-        Navigator.pushNamed(context, '/yourListings');
-        final snackBar = SnackBar(content: Text("Tap and hold a listing for 2 seconds to delete it", style: TextStyle(color: _theme.tertiaryColor)), backgroundColor: Colors.blue,);
+        Navigator.pushNamed(context, '/myListings');
+        final snackBar = SnackBar(
+          content: Text(
+              "Tap and hold a listing for 2 seconds to delete it",
+              style: TextStyle(color: _theme.tertiaryColor
+              )
+          ),
+          backgroundColor: Colors.blue,
+        );
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       },
       child: Container(
@@ -159,7 +173,7 @@ class _UserMenuState extends State<UserMenu> {
               width: 15.0,
             ),
             Icon(
-              Icons.table_view_rounded,
+              Icons.list_alt_rounded,
               color: _theme.secondaryColor,
               size: 50,
             ),

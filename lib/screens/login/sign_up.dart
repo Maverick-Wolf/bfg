@@ -142,6 +142,8 @@ class _SignUpState extends State<SignUp> {
       print(e);
       Navigator.pushNamed(_context, '/enterDetails');
       print("ghot spotted");
+      final snackBar = SnackBar(content: Text("ghot spotted"));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
 
