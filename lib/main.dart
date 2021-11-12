@@ -23,8 +23,7 @@ void main() {
       ),
       debugShowCheckedModeBanner: false,
       routes: {
-        '/': (context) => logooo(),
-        '/c': (context) => const Initialization(),
+        '/': (context) => const Initialization(),
         '/signUp': (context) => const SignUp(),
         '/addBook': (context) => const AddBook(),
         '/userMenu': (context) => UserMenu(),
