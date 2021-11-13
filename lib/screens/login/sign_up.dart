@@ -118,9 +118,6 @@ class _SignUpState extends State<SignUp> {
       final User? user = (await _auth.signInWithCredential(credential)).user;
       _checkIfUserExists(user);
       isPhoneNumberTfVisible = !isPhoneNumberTfVisible;
-
-      const snackBar = SnackBar(content: Text("Successfully signed in"));
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     } catch (e) {
       const snackBar = SnackBar(content: Text("Failed to sign in"));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -132,7 +129,7 @@ class _SignUpState extends State<SignUp> {
     try{
       if(((documentSnapshot.data() as dynamic)['name']).toString().isNotEmpty){
         Navigator.pushReplacementNamed(_context, '/userMenu');
-        const snackBar = SnackBar(content: Text("aur bhai ki haal chaal"));
+        const snackBar = SnackBar(content: Text("aur bhai ki haal chaal"), duration: Duration(seconds: 2),);
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
     } catch (e) {

@@ -57,12 +57,12 @@ class _UserMenuState extends State<UserMenu> {
     return InkWell(
       onTap: () {
         Navigator.pushNamed(context, '/listings');
-        final snackBar = SnackBar(
+        const snackBar = SnackBar(
           content: Text(
             "Tap on a card to view more details about the seller",
             style: TextStyle(color: Colors.white),
           ),
-          duration: Duration(seconds: 5),
+          duration: Duration(seconds: 4),
           backgroundColor: Colors.blue,
         );
         ScaffoldMessenger.of(context).showSnackBar(snackBar);

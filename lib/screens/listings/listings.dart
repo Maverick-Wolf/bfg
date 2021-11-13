@@ -373,11 +373,12 @@ class _ListingsState extends State<Listings> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 25,),
+                  const SizedBox(height: 25,),
                   TextButton(
                     onPressed: () {
                       setFilter(semFilter, orderByFilter);
                       Navigator.pop(context);
+                      ScaffoldMessenger.of(context).hideCurrentSnackBar(reason: SnackBarClosedReason.dismiss);
                       const snackBar = SnackBar(
                         content: Text("Filter applied >_<"),
                         duration: Duration(milliseconds: 800),

@@ -357,6 +357,7 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
     if (await canLaunch(url)) {
       await launch(url);
     } else {
+      ScaffoldMessenger.of(context).hideCurrentSnackBar(reason: SnackBarClosedReason.dismiss);
       Clipboard.setData(ClipboardData(text: widget.phoneNumberOfSeller));
       const snackBar = SnackBar(content: Text('Seller phone number copied to clipboard'), duration: Duration(seconds: 4),);
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
