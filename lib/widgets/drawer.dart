@@ -178,7 +178,8 @@ class _DrawerClassState extends State<DrawerClass> {
             ),
             onTap: () {
               _signOut();
-              Navigator.popAndPushNamed(context, '/signUp');
+              Navigator.popUntil(context, ModalRoute.withName('/'));
+              Navigator.pushNamed(context, '/signUp');
             },
           ),
           const Spacer(),

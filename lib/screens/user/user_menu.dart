@@ -57,19 +57,19 @@ class _UserMenuState extends State<UserMenu> {
     return InkWell(
       onTap: () {
         Navigator.pushNamed(context, '/listings');
-        final snackBar = SnackBar(
+        const snackBar = SnackBar(
           content: Text(
             "Tap on a card to view more details about the seller",
             style: TextStyle(color: Colors.white),
           ),
-          duration: Duration(seconds: 5),
+          duration: Duration(seconds: 4),
           backgroundColor: Colors.blue,
         );
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       },
       child: Container(
         height: height * 0.16,
-        width: width * 0.75,
+        width: width * 0.8,
         decoration: BoxDecoration(
           color: _theme.primaryColor,
           borderRadius: BorderRadius.circular(10.0),
@@ -84,7 +84,7 @@ class _UserMenuState extends State<UserMenu> {
             Icon(
               Icons.view_headline_outlined,
               color: _theme.secondaryColor,
-              size: 50,
+              size: 40,
             ),
             const Spacer(),
             Text(
@@ -92,7 +92,7 @@ class _UserMenuState extends State<UserMenu> {
               style: TextStyle(
                   color: _theme.tertiaryColor,
                   fontFamily: _theme.font,
-                  fontSize: 32.0,
+                  fontSize: 28.0,
                   letterSpacing: 1.3,
                   fontWeight: FontWeight.bold),
             ),
@@ -110,7 +110,7 @@ class _UserMenuState extends State<UserMenu> {
       },
       child: Container(
         height: height * 0.16,
-        width: width * 0.75,
+        width: width * 0.8,
         decoration: BoxDecoration(
           color: _theme.primaryColor,
           borderRadius: BorderRadius.circular(10.0),
@@ -125,7 +125,7 @@ class _UserMenuState extends State<UserMenu> {
             Icon(
               Icons.bookmark_outline,
               color: _theme.secondaryColor,
-              size: 50,
+              size: 40,
             ),
             const Spacer(),
             Text(
@@ -133,7 +133,7 @@ class _UserMenuState extends State<UserMenu> {
               style: TextStyle(
                   color: _theme.tertiaryColor,
                   fontFamily: _theme.font,
-                  fontSize: 32.0,
+                  fontSize: 28.0,
                   letterSpacing: 1.3,
                   fontWeight: FontWeight.bold),
             ),
@@ -160,7 +160,7 @@ class _UserMenuState extends State<UserMenu> {
       },
       child: Container(
         height: height * 0.16,
-        width: width * 0.75,
+        width: width * 0.8,
         decoration: BoxDecoration(
           color: _theme.primaryColor,
           borderRadius: BorderRadius.circular(10.0),
@@ -175,7 +175,7 @@ class _UserMenuState extends State<UserMenu> {
             Icon(
               Icons.list_alt_rounded,
               color: _theme.secondaryColor,
-              size: 50,
+              size: 40,
             ),
             const Spacer(),
             Text(
@@ -183,7 +183,7 @@ class _UserMenuState extends State<UserMenu> {
               style: TextStyle(
                   color: _theme.tertiaryColor,
                   fontFamily: _theme.font,
-                  fontSize: 32.0,
+                  fontSize: 28.0,
                   letterSpacing: 1.3,
                   fontWeight: FontWeight.bold),
             ),
