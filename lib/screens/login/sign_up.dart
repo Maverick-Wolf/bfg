@@ -133,14 +133,14 @@ class _SignUpState extends State<SignUp> {
     DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance.collection('users').doc(user!.uid).get();
     try{
       if(((documentSnapshot.data() as dynamic)['name']).toString().isNotEmpty){
-        Navigator.pushNamed(_context, '/userMenu');
+        Navigator.pushReplacementNamed(_context, '/userMenu');
         print("welcome back, old friend");
         final snackBar = SnackBar(content: Text("aur bhai ki haal chaal"));
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
     } catch (e) {
       print(e);
-      Navigator.pushNamed(_context, '/enterDetails');
+      Navigator.pushReplacementNamed(_context, '/enterDetails');
       print("ghot spotted");
       final snackBar = SnackBar(content: Text("ghot spotted"));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
