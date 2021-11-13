@@ -18,7 +18,6 @@ class _DetailsState extends State<Details> {
   String hostelDropdown2 = "1";
   String _name = "";
   String _roomNumber= "";
-  String _password= "";
   String _hostel= "";
   late CollectionReference users;
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -87,6 +86,7 @@ class _DetailsState extends State<Details> {
                           onChanged: (value) {
                             _roomNumber = value;
                           },
+                          maxLength: 3,
                           decoration: InputDecoration(
                             border: const OutlineInputBorder(),
                             labelText: "Room Number",
@@ -109,30 +109,6 @@ class _DetailsState extends State<Details> {
                     ),
                     const Spacer(
                       flex: 6,
-                    ),
-                    TextFormField(
-                      onChanged: (value) {
-                        _password = value;
-                      },
-                      decoration: InputDecoration(
-                        border: const OutlineInputBorder(),
-                        labelText: "Password",
-                        hintText: "This will be used to log in to your account",
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                        labelStyle: TextStyle(color: _theme.secondaryColor),
-                        enabledBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: _theme.tertiaryColor)),
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: _theme.secondaryColor, width: 1.3)),
-                      ),
-                      cursorColor: _theme.secondaryColor,
-                      style: TextStyle(
-                        fontFamily: _theme.font,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      keyboardType: TextInputType.visiblePassword,
                     ),
                     const Spacer(
                       flex: 4,
@@ -157,7 +133,6 @@ class _DetailsState extends State<Details> {
         .set({
       'name': _name,
       'hostel': _hostel,
-      'password': _password,
       'phone_number': _user!.phoneNumber,
       'room_number': _roomNumber,
     })
@@ -237,11 +212,14 @@ class _DetailsState extends State<Details> {
       child: ElevatedButton(
         onPressed: (){
           _hostel = hostelDropdown1 + hostelDropdown2;
-          try{
-            addUser();
-            Navigator.pushNamed(context, '/userMenu');
-          } catch(e) {
-            print(e);
+          if(_name.isEmpty || _roomNumber.isEmpty) {
+            final snackBar = SnackBar(content: Text("Please fill the required fields", style: TextStyle(color: _theme.tertiaryColor)), backgroundColor: Colors.blue,);
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          } else {
+            showDialog(
+              context: context,
+              builder: (BuildContext) => _buildInfoPopupDialogue(context),
+            );
           }
         },
         style: ElevatedButton.styleFrom(
@@ -257,6 +235,51 @@ class _DetailsState extends State<Details> {
               fontFamily: _theme.font,
               fontWeight: FontWeight.bold),
         ),
+      ),
+    );
+  }
+
+  Widget _buildInfoPopupDialogue(BuildContext context) {
+    return AlertDialog(
+      backgroundColor: Colors.grey,
+      title: Text(
+        "google se zyaada privacy",
+        style: TextStyle(
+            fontSize: 24,
+            fontFamily: _theme.font,
+            fontWeight: FontWeight.bold,
+            color: _theme.secondaryColor),
+        textAlign: TextAlign.center,
+      ),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text("Your details won't be shared unless you list a book\n\n"
+              "On listing a book, your name and hostel room number will be displayed\n\n"
+              "Your phone number wont be displayed in the app itself, but an interested buyer can view it in their phone app"),
+          SizedBox(height: 25,),
+          TextButton(
+            onPressed: () {
+              try{
+                addUser();
+                Navigator.pushReplacementNamed(context, '/userMenu');
+                final snackBar = SnackBar(content: Text("Successfully updated info", style: TextStyle(color: _theme.tertiaryColor)), backgroundColor: Colors.blue,);
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              } catch(e) {
+                print(e);
+              }
+            },
+            child: Text(
+              "Oki",
+              style: TextStyle(
+                fontSize: 24,
+                color: _theme.secondaryColor,
+              ),
+            ),
+            style: TextButton.styleFrom(backgroundColor: Colors.blue.withOpacity(0.8)),
+          )
+        ],
       ),
     );
   }

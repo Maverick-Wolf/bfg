@@ -46,6 +46,7 @@ class _UserMenuState extends State<UserMenu> {
           children: [
             _buildListingsContainer(context, height, width),
             _buildSellContainer(context, height, width),
+            _buildMyListingsContainer(context, height, width)
           ],
         ),
       ),
@@ -56,6 +57,15 @@ class _UserMenuState extends State<UserMenu> {
     return InkWell(
       onTap: () {
         Navigator.pushNamed(context, '/listings');
+        final snackBar = SnackBar(
+          content: Text(
+            "Tap on a card to view more details about the seller",
+            style: TextStyle(color: Colors.white),
+          ),
+          duration: Duration(seconds: 5),
+          backgroundColor: Colors.blue,
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
       },
       child: Container(
         height: height * 0.16,
@@ -72,7 +82,7 @@ class _UserMenuState extends State<UserMenu> {
               width: 15.0,
             ),
             Icon(
-              Icons.table_view_rounded,
+              Icons.view_headline_outlined,
               color: _theme.secondaryColor,
               size: 50,
             ),
@@ -120,6 +130,56 @@ class _UserMenuState extends State<UserMenu> {
             const Spacer(),
             Text(
               "Sell a Book",
+              style: TextStyle(
+                  color: _theme.tertiaryColor,
+                  fontFamily: _theme.font,
+                  fontSize: 32.0,
+                  letterSpacing: 1.3,
+                  fontWeight: FontWeight.bold),
+            ),
+            const Spacer(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMyListingsContainer(BuildContext context, double height, double width) {
+    return InkWell(
+      onTap: () {
+        Navigator.pushNamed(context, '/myListings');
+        final snackBar = SnackBar(
+          content: Text(
+              "Tap and hold a listing for 2 seconds to delete it",
+              style: TextStyle(color: _theme.tertiaryColor
+              )
+          ),
+          backgroundColor: Colors.blue,
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      },
+      child: Container(
+        height: height * 0.16,
+        width: width * 0.75,
+        decoration: BoxDecoration(
+          color: _theme.primaryColor,
+          borderRadius: BorderRadius.circular(10.0),
+          border: Border.all(color: _theme.secondaryColor),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            const SizedBox(
+              width: 15.0,
+            ),
+            Icon(
+              Icons.list_alt_rounded,
+              color: _theme.secondaryColor,
+              size: 50,
+            ),
+            const Spacer(),
+            Text(
+              "My Listings",
               style: TextStyle(
                   color: _theme.tertiaryColor,
                   fontFamily: _theme.font,
