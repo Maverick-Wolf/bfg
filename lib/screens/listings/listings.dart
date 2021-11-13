@@ -60,14 +60,14 @@ class _ListingsState extends State<Listings> {
                   isScrollable: true,
                   indicatorColor: _theme.tertiaryColor,
                   tabs: [
-                    _buildTab("All"),
-                    _buildTab("Comp Sc"),
-                    _buildTab("Phoenix"),
-                    _buildTab("Mechanical"),
-                    _buildTab("Chemical"),
-                    _buildTab("Dual Degree"),
-                    _buildTab("Higher Degree"),
-                    _buildTab("Misc"),
+                    _buildTab("All", "college"),
+                    _buildTab("Comp Sc", "cs"),
+                    _buildTab("Phoenix", "phx"),
+                    _buildTab("Mechanical", "mech"),
+                    _buildTab("Chemical", "chem"),
+                    _buildTab("Dual Degree", "dual"),
+                    _buildTab("Higher Degree", "college"),
+                    _buildTab("Misc", "bfg"),
                   ],
                 ),
                 Expanded(
@@ -208,7 +208,7 @@ class _ListingsState extends State<Listings> {
     }).toList();
   }
 
-  Widget _buildTab(String title) {
+  Widget _buildTab(String title, String logo) {
     return SizedBox(
       height: 75.0,
       child: Padding(
@@ -218,9 +218,13 @@ class _ListingsState extends State<Listings> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const CircleAvatar(
-                backgroundImage: AssetImage("assets/images/college.png"),
-              ),
+              if(logo == "college") const CircleAvatar(backgroundImage: AssetImage("assets/images/college.png"),),
+              if(logo == "cs") const CircleAvatar(backgroundImage: AssetImage("assets/images/cs.png"),),
+              if(logo == "phx") const CircleAvatar(backgroundImage: AssetImage("assets/images/phx.png"),),
+              if(logo == "mech") const CircleAvatar(backgroundImage: AssetImage("assets/images/mech.png"),),
+              if(logo == "chem") const CircleAvatar(backgroundImage: AssetImage("assets/images/chem.png"),),
+              if(logo == "dual") const CircleAvatar(backgroundImage: AssetImage("assets/images/dual.png"),),
+              if(logo == "bfg") const CircleAvatar(backgroundImage: AssetImage("assets/images/bfg.png"),),
               const SizedBox(
                 height: 5,
               ),
