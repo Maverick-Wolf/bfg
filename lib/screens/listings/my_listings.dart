@@ -14,7 +14,7 @@ String? _user;
 OurTheme _theme = OurTheme();
 
 class _MyListingsState extends State<MyListings> {
-  late Stream<QuerySnapshot> _booksStream =
+  final Stream<QuerySnapshot> _booksStream =
       FirebaseFirestore.instance.collection('books').snapshots();
 
   @override

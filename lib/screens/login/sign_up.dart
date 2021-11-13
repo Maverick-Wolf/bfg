@@ -119,12 +119,10 @@ class _SignUpState extends State<SignUp> {
       _checkIfUserExists(user);
       isPhoneNumberTfVisible = !isPhoneNumberTfVisible;
 
-      print("Successfully signed in UID: ${user!.uid}");
-      final snackBar = SnackBar(content: Text("Successfully signed in"));
+      const snackBar = SnackBar(content: Text("Successfully signed in"));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     } catch (e) {
-      print("Failed to sign in: " + e.toString());
-      final snackBar = SnackBar(content: Text("Failed to sign in"));
+      const snackBar = SnackBar(content: Text("Failed to sign in"));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
@@ -134,15 +132,12 @@ class _SignUpState extends State<SignUp> {
     try{
       if(((documentSnapshot.data() as dynamic)['name']).toString().isNotEmpty){
         Navigator.pushReplacementNamed(_context, '/userMenu');
-        print("welcome back, old friend");
-        final snackBar = SnackBar(content: Text("aur bhai ki haal chaal"));
+        const snackBar = SnackBar(content: Text("aur bhai ki haal chaal"));
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
     } catch (e) {
-      print(e);
       Navigator.pushReplacementNamed(_context, '/enterDetails');
-      print("ghot spotted");
-      final snackBar = SnackBar(content: Text("ghot spotted"));
+      const snackBar = SnackBar(content: Text("ghot spotted"));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
@@ -152,15 +147,15 @@ class _SignUpState extends State<SignUp> {
       child: ElevatedButton(
         onPressed: () async {
           if(_phoneNumber.length==13){
-            verifyPhoneNumber();
-            _start = 60;
-            startTimer();
+            showDialog(
+                context: context,
+                builder: (BuildContext) => _buildPopupDialogue(context)
+            );
             setState(() {
-              isPhoneNumberTfVisible = !isPhoneNumberTfVisible;
               FocusScope.of(context).unfocus();
             });
           } else {
-            final snackBar = SnackBar(content: Text("Invalid phone number"));
+            const snackBar = SnackBar(content: Text("Invalid phone number"));
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
           }
         },
@@ -298,7 +293,7 @@ class _SignUpState extends State<SignUp> {
                 color: resendOtpButtonActivated ? _theme.secondaryColor : Colors.white54,
               ),
             ),
-            SizedBox(width: 5,),
+            const SizedBox(width: 5,),
             Text(
               "$_start",
               style: TextStyle(
@@ -311,9 +306,68 @@ class _SignUpState extends State<SignUp> {
     );
   }
 
+  Widget _buildPopupDialogue(BuildContext context) {
+    return AlertDialog(
+      backgroundColor: Colors.grey,
+      title: Text(
+        "IMPORTANT",
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: _theme.secondaryColor,
+          fontFamily: _theme.font,
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            "You may be prompted to open a browser\n\nKindly allow and wait for a few secs",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                color: Colors.white,
+                letterSpacing: 1,
+                fontSize: 18,
+                fontFamily: _theme.font,
+                fontWeight: FontWeight.bold),
+          ),
+          Text(
+            "\n\nThe process is used to verify your phone number and will not last more than a few seconds",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                color: Colors.black54,
+                letterSpacing: 1,
+                fontSize: 10,
+                fontFamily: _theme.font,
+                fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 20,),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                primary: Colors.red.withOpacity(0.8),
+                onPrimary: _theme.tertiaryColor
+            ),
+            onPressed: () {
+              setState(() {
+                isPhoneNumberTfVisible = !isPhoneNumberTfVisible;
+                _start = 60;
+              });
+              verifyPhoneNumber();
+              startTimer();
+              Navigator.pop(context);
+            } ,
+            child: const Text("OK"),
+          )
+
+        ],
+      ),
+    );
+  }
+
   void startTimer() {
-    const oneSec = const Duration(seconds: 1);
-    _timer = new Timer.periodic(
+    const oneSec = Duration(seconds: 1);
+    _timer = Timer.periodic(
       oneSec,
           (Timer timer) {
         if (_start == 0) {
