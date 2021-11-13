@@ -16,7 +16,7 @@ User? _user;
 class _AddBookState extends State<AddBook> {
   OurTheme _theme = OurTheme();
   String _edition = "1";
-  String _semester = "1";
+  String _semester = "1-1";
   String _department = "Misc";
 
   String _bookTitle = "";
@@ -75,8 +75,8 @@ class _AddBookState extends State<AddBook> {
                     Center(
                       child: Container(
                         width: MediaQuery.of(context).size.width / 2,
-                        child: _buildTextFormField(
-                            "Listing Price", "Your Selling Price", 'price', TextInputType.number),
+                        child: _buildPriceTextFormField(
+                            "Listing Price", "Your Selling Price", TextInputType.number),
                       ),
                     ),
                     _buildTextFormField(
@@ -113,6 +113,31 @@ class _AddBookState extends State<AddBook> {
             break;
         }
       },
+      decoration: InputDecoration(
+        border: const OutlineInputBorder(),
+        labelText: _label,
+        hintText: _hint,
+        labelStyle: TextStyle(color: _theme.secondaryColor),
+        enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: _theme.tertiaryColor)),
+        focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: _theme.secondaryColor, width: 1.3)),
+      ),
+      cursorColor: _theme.secondaryColor,
+      style: TextStyle(
+        fontFamily: _theme.font,
+        fontWeight: FontWeight.bold,
+      ),
+      keyboardType: inputType,
+    );
+  }
+
+  Widget _buildPriceTextFormField(String _label, String _hint, TextInputType inputType) {
+    return TextFormField(
+      onChanged: (text) {
+        _bookPrice = text;
+      },
+      maxLength: 5,
       decoration: InputDecoration(
         border: const OutlineInputBorder(),
         labelText: _label,
@@ -234,7 +259,7 @@ class _AddBookState extends State<AddBook> {
           "Department: ",
           style: TextStyle(fontFamily: _theme.font, fontSize: 16),
         ),
-        SizedBox(
+        const SizedBox(
           width: 5,
         ),
         DropdownButton<String>(
@@ -289,7 +314,7 @@ class _AddBookState extends State<AddBook> {
         })
         .then(
             (value) {
-              final snackBar = SnackBar(content: Text("Your listing was added successfully"));
+              const snackBar = SnackBar(content: Text("Your listing was added successfully"));
               ScaffoldMessenger.of(context).showSnackBar(snackBar);
               }
             )
@@ -305,7 +330,7 @@ class _AddBookState extends State<AddBook> {
       child: ElevatedButton(
         onPressed: () {
           if(_bookTitle.isEmpty || _bookAuthor.isEmpty || _bookPrice.isEmpty) {
-            final snackBar = SnackBar(content: Text("Please fill the required fields"));
+            const snackBar = SnackBar(content: Text("Please fill the required fields"));
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
           } else {
             showDialog(
