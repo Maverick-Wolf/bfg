@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:bfg/theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class BookDetailsCard extends StatefulWidget {
@@ -356,7 +357,8 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
     if (await canLaunch(url)) {
       await launch(url);
     } else {
-      final snackBar = SnackBar(content: Text('Could not launch $url'));
+      Clipboard.setData(ClipboardData(text: widget.phoneNumberOfSeller));
+      const snackBar = SnackBar(content: Text('Seller phone number copied to clipboard'), duration: Duration(seconds: 4),);
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
