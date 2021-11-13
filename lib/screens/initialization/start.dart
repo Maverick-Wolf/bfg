@@ -43,13 +43,13 @@ class _StartState extends State<Start> {
                         color: _theme.secondaryColor,
                         fontSize: 32,
                         fontWeight: FontWeight.bold),
-                    speed: const Duration(milliseconds: 160),
+                    speed: const Duration(milliseconds: 150),
                   )
                 ],
                 totalRepeatCount: 1,
                 displayFullTextOnTap: true,
                 onFinished: () {
-                  Future.delayed(const Duration(milliseconds: 35));
+                  Future.delayed(const Duration(milliseconds: 20));
                   Navigator.pushReplacementNamed(context, '/initialization');
                 },
               ),
