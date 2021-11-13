@@ -5,6 +5,7 @@ import 'package:bfg/screens/listings/my_listings.dart';
 import 'package:bfg/screens/login/enter_details.dart';
 import 'package:bfg/screens/login/sign_up.dart';
 import 'package:bfg/screens/initialization/start.dart';
+import 'package:bfg/screens/user/feedback.dart';
 import 'package:bfg/screens/user/profile.dart';
 import 'package:bfg/screens/user/user_menu.dart';
 import 'package:bfg/theme.dart';
@@ -21,15 +22,16 @@ void main() {
       ),
       debugShowCheckedModeBanner: false,
       routes: {
-        '/': (context) => Start(),
+        '/': (context) => const Start(),
         '/initialization': (context) => const Initialization(),
         '/signUp': (context) => const SignUp(),
         '/addBook': (context) => const AddBook(),
         '/userMenu': (context) => UserMenu(),
-        '/listings': (context) => Listings(),
+        '/listings': (context) => const Listings(),
         '/enterDetails': (context) => const Details(),
         '/Profile': (context) => const Profile(),
         '/myListings': (context) => MyListings(),
+        '/feedbackPage':(context) => const FeedbackPage(),
       },
     ),
   );

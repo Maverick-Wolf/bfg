@@ -35,10 +35,11 @@ class _AddBookState extends State<AddBook> {
       child: Scaffold(
         backgroundColor: _theme.primaryColor,
         appBar: AppBar(
+          backgroundColor: _theme.primaryColor,
           centerTitle: true,
           title: Text(
             "Sell a Book",
-            style: TextStyle(fontFamily: _theme.font),
+            style: TextStyle(fontFamily: _theme.font, fontWeight: FontWeight.bold, color: _theme.secondaryColor),
           ),
           actions: <Widget>[
             Padding(

@@ -167,6 +167,24 @@ class _DrawerClassState extends State<DrawerClass> {
             thickness: 1,
           ),
           ListTile(
+            leading: Icon(Icons.feedback_outlined,
+                color: _theme.secondaryColor),
+            title: Text(
+              'Send feedback',
+              style: TextStyle(
+                  fontFamily: _theme.font,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: _theme.tertiaryColor),
+            ),
+            onTap: () {
+              Navigator.pushNamed(context, '/feedbackPage');
+            },
+          ),
+          const Divider(
+            thickness: 1,
+          ),
+          ListTile(
             leading: Icon(Icons.logout, color: _theme.secondaryColor),
             title: Text(
               'Sign Out',
