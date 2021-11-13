@@ -153,6 +153,7 @@ class _SignUpState extends State<SignUp> {
         onPressed: () async {
           if(_phoneNumber.length==13){
             verifyPhoneNumber();
+            _start = 60;
             startTimer();
             setState(() {
               isPhoneNumberTfVisible = !isPhoneNumberTfVisible;
