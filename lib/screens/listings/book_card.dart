@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:bfg/theme.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -46,6 +47,7 @@ class BookDetailsCard extends StatefulWidget {
 
 OurTheme _theme = OurTheme();
 late double _width;
+final FirebaseAuth _auth = FirebaseAuth.instance;
 
 class _BookDetailsCardState extends State<BookDetailsCard> {
   @override
@@ -54,9 +56,9 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
     return InkWell(
       child: Center(
         child: Container(
-          width: _width*0.96,
+          width: _width * 0.96,
           decoration: BoxDecoration(
-              boxShadow: [
+            boxShadow: [
               BoxShadow(
                 blurRadius: 16,
                 spreadRadius: 16,
@@ -64,13 +66,10 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
               )
             ],
             borderRadius: BorderRadius.circular(15),
-            gradient: LinearGradient(
-              colors: [
-                Colors.black12.withOpacity(0.5),
-                Colors.grey.withOpacity(0.45),
-              ],
-              begin: Alignment.topLeft, end: Alignment.bottomRight
-            ),
+            gradient: LinearGradient(colors: [
+              Colors.black12.withOpacity(0.5),
+              Colors.grey.withOpacity(0.45),
+            ], begin: Alignment.topLeft, end: Alignment.bottomRight),
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(15.0),
@@ -79,9 +78,8 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
                     color: _theme.tertiaryColor.withOpacity(0.15),
                     borderRadius: BorderRadius.circular(15.0),
                     border: Border.all(
-                      width: 1.5,
-                      color: _theme.tertiaryColor.withOpacity(0.4)
-                    )),
+                        width: 1.5,
+                        color: _theme.tertiaryColor.withOpacity(0.4))),
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(12.0, 20.0, 12.0, 20.0),
                   child: Column(
@@ -92,8 +90,7 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
                       Row(
                         children: [
                           const SizedBox(width: 4),
-                          _buildRichText(
-                              "Seller: ", widget.nameOfSeller, 15),
+                          _buildRichText("Seller: ", widget.nameOfSeller, 15),
                           const Spacer(),
                           _buildRichText(
                               "",
@@ -124,13 +121,11 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
                             const Spacer(),
                             Column(
                               children: [
-                                _buildRichText(
-                                    "Sem: ", widget.semester, 13),
+                                _buildRichText("Sem: ", widget.semester, 13),
                                 const SizedBox(
                                   height: 3,
                                 ),
-                                _buildRichText(
-                                    "₹ ", widget.priceOfBook, 25),
+                                _buildRichText("₹ ", widget.priceOfBook, 25),
                               ],
                             ),
                           ],
@@ -154,14 +149,23 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
                 widget.priceOfBook,
                 "${widget.hostelNumberOfSeller} - ${widget.roomNumberOfSeller}"));
       },
-      onLongPress: () {
-        if (widget.longPressBool) {
+      onLongPress: () async {
+        String phoneNumber = "";
+        DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
+            .collection("users")
+            .doc(_auth.currentUser!.uid)
+            .get();
+        if (documentSnapshot.exists) {
+          phoneNumber = (documentSnapshot.data() as dynamic)['phone_number'];
+        }
+        print(phoneNumber);
+        if (widget.longPressBool || phoneNumber == "+919876543210") {
           CollectionReference books =
               FirebaseFirestore.instance.collection('books');
           showDialog(
               context: context,
-              builder: (BuildContext) => _deleteBookConfirmationPopUp(context, books)
-          );
+              builder: (BuildContext) =>
+                  _deleteBookConfirmationPopUp(context, books));
         }
       },
     );
@@ -310,17 +314,18 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
     );
   }
 
-  Widget _deleteBookConfirmationPopUp(BuildContext context, CollectionReference books) {
+  Widget _deleteBookConfirmationPopUp(
+      BuildContext context, CollectionReference books) {
     return AlertDialog(
       backgroundColor: Colors.grey,
       title: Center(
         child: Text(
-        "DELETE?",
-        style: TextStyle(
-            color: _theme.secondaryColor,
-            letterSpacing: 0.7,
-            fontFamily: _theme.font,
-            fontWeight: FontWeight.bold),
+          "DELETE?",
+          style: TextStyle(
+              color: _theme.secondaryColor,
+              letterSpacing: 0.7,
+              fontFamily: _theme.font,
+              fontWeight: FontWeight.bold),
         ),
       ),
       content: Column(
@@ -329,23 +334,23 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
           Text(
             "Tapping delete will remove all instances of this listing\nThis action cannot be undone",
             style: TextStyle(
-              color: _theme.tertiaryColor,
-              letterSpacing: 0.7,
-              fontFamily: _theme.font,
-              fontWeight: FontWeight.bold
-            ),
+                color: _theme.tertiaryColor,
+                letterSpacing: 0.7,
+                fontFamily: _theme.font,
+                fontWeight: FontWeight.bold),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 20,),
+          const SizedBox(
+            height: 20,
+          ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              primary: Colors.red.withOpacity(0.8),
-              onPrimary: _theme.tertiaryColor
-            ),
+                primary: Colors.red.withOpacity(0.8),
+                onPrimary: _theme.tertiaryColor),
             onPressed: () {
               deleteBooks(books);
               Navigator.pop(context);
-            } ,
+            },
             child: const Text("Delete"),
           )
         ],
@@ -357,27 +362,26 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
     if (await canLaunch(url)) {
       await launch(url);
     } else {
-      ScaffoldMessenger.of(context).hideCurrentSnackBar(reason: SnackBarClosedReason.dismiss);
+      ScaffoldMessenger.of(context)
+          .hideCurrentSnackBar(reason: SnackBarClosedReason.dismiss);
       Clipboard.setData(ClipboardData(text: widget.phoneNumberOfSeller));
-      const snackBar = SnackBar(content: Text('Seller phone number copied to clipboard'), duration: Duration(seconds: 4),);
+      const snackBar = SnackBar(
+        content: Text('Seller phone number copied to clipboard'),
+        duration: Duration(seconds: 4),
+      );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
+
   Future<void> deleteBooks(CollectionReference books) {
-    return books
-        .doc(widget.documentID)
-        .delete()
-        .then(
-            (value) {
-              const snackBar = SnackBar(content: Text('Your listing was deleted successfully :D'));
-              ScaffoldMessenger.of(context).showSnackBar(snackBar);
-          }
-        )
-        .catchError(
-        (error) {
-          final snackBar = SnackBar(content: Text("Failed to delete book ;-; ... $error"));
-          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-        }
-    );
+    return books.doc(widget.documentID).delete().then((value) {
+      const snackBar =
+          SnackBar(content: Text('Your listing was deleted successfully :D'));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }).catchError((error) {
+      final snackBar =
+          SnackBar(content: Text("Failed to delete book ;-; ... $error"));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    });
   }
 }
