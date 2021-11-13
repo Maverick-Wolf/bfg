@@ -67,6 +67,14 @@ flutter:
   assets:
     - assets/images/college.png
     - assets/images/bfg.png
+    - assets/images/cs.png
+    - assets/images/phx.png
+    - assets/images/mech.png
+    - assets/images/chem.png
+    - assets/images/dual.png
+    - assets/images/book.png
+    - assets/images/college_white.png
+    - assets/images/high.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

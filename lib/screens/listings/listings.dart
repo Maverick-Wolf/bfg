@@ -28,6 +28,10 @@ class _ListingsState extends State<Listings> {
       _booksStream = FirebaseFirestore.instance.collection('books').snapshots();
     } else if (_orderBy == "Alphabetical") {
       _booksStream = FirebaseFirestore.instance.collection('books').orderBy('title').snapshots();
+    } else if (_orderBy == "Seller Name Ascending") {
+      _booksStream = FirebaseFirestore.instance.collection('books').orderBy('seller_name', descending: false).snapshots();
+    } else if (_orderBy == "Seller Name Descending") {
+      _booksStream = FirebaseFirestore.instance.collection('books').orderBy('seller_name', descending: true).snapshots();
     }
     _user = _auth.currentUser;
     users = FirebaseFirestore.instance.collection('users');
@@ -60,14 +64,14 @@ class _ListingsState extends State<Listings> {
                   isScrollable: true,
                   indicatorColor: _theme.tertiaryColor,
                   tabs: [
-                    _buildTab("All"),
-                    _buildTab("Comp Sc"),
-                    _buildTab("Phoenix"),
-                    _buildTab("Mechanical"),
-                    _buildTab("Chemical"),
-                    _buildTab("Dual Degree"),
-                    _buildTab("Higher Degree"),
-                    _buildTab("Misc"),
+                    _buildTab("All", "college"),
+                    _buildTab("Comp Sc", "cs"),
+                    _buildTab("Phoenix", "phx"),
+                    _buildTab("Mechanical", "mech"),
+                    _buildTab("Chemical", "chem"),
+                    _buildTab("Dual Degree", "dual"),
+                    _buildTab("Higher Degree", "high"),
+                    _buildTab("Misc", "misc"),
                   ],
                 ),
                 Expanded(
@@ -208,7 +212,7 @@ class _ListingsState extends State<Listings> {
     }).toList();
   }
 
-  Widget _buildTab(String title) {
+  Widget _buildTab(String title, String logo) {
     return SizedBox(
       height: 75.0,
       child: Padding(
@@ -218,9 +222,14 @@ class _ListingsState extends State<Listings> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const CircleAvatar(
-                backgroundImage: AssetImage("assets/images/college.png"),
-              ),
+              if(logo == "college") const CircleAvatar(backgroundImage: AssetImage("assets/images/college_white.png"),),
+              if(logo == "cs") const CircleAvatar(backgroundImage: AssetImage("assets/images/cs.png"), ),
+              if(logo == "phx") const CircleAvatar(backgroundImage: AssetImage("assets/images/phx.png"),),
+              if(logo == "mech") const CircleAvatar(backgroundImage: AssetImage("assets/images/mech.png"),),
+              if(logo == "chem") const CircleAvatar(backgroundImage: AssetImage("assets/images/chem.png"),),
+              if(logo == "dual") const CircleAvatar(backgroundImage: AssetImage("assets/images/dual.png"),),
+              if(logo == "high") const CircleAvatar(backgroundImage: AssetImage("assets/images/high.png"),),
+              if(logo == "misc") const CircleAvatar(backgroundImage: AssetImage("assets/images/book.png"),),
               const SizedBox(
                 height: 5,
               ),
@@ -350,6 +359,8 @@ class _ListingsState extends State<Listings> {
                         items: <String>[
                           'Most Recent',
                           'Alphabetical',
+                          'Seller Name Ascending',
+                          'Seller Name Descending'
                         ].map<DropdownMenuItem<String>>((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
@@ -418,49 +429,6 @@ class _ListingsState extends State<Listings> {
                 fontWeight: FontWeight.w600),
           ),
           Icon(Icons.filter_alt_rounded),
-          // Text(
-          //   "Sem : ",
-          //   style: TextStyle(
-          //       fontFamily: _theme.font,
-          //       fontSize: 16,
-          //       color: _theme.secondaryColor,
-          //       fontWeight: FontWeight.w600),
-          // ),
-          // DropdownButton<String>(
-          //   value: _semester,
-          //   icon: const Icon(Icons.arrow_downward),
-          //   iconSize: 22,
-          //   elevation: 16,
-          //   style: TextStyle(color: _theme.secondaryColor),
-          //   underline: Container(
-          //     height: 2,
-          //     color: _theme.secondaryColor,
-          //   ),
-          //   onChanged: (String? newValue) {
-          //     setState(() {
-          //       _semester = newValue!;
-          //     });
-          //   },
-          //   items: <String>[
-          //     'All',
-          //     '1',
-          //     '2',
-          //     '3',
-          //     '4',
-          //     '5',
-          //     '6',
-          //     '7',
-          //     '8',
-          //     '9',
-          //     '10',
-          //     '-'
-          //   ].map<DropdownMenuItem<String>>((String value) {
-          //     return DropdownMenuItem<String>(
-          //       value: value,
-          //       child: Text(value),
-          //     );
-          //   }).toList(),
-          // ),
           const SizedBox(
             width: 20.0,
           )
