@@ -4,16 +4,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class YourListings extends StatefulWidget {
-  YourListings({Key? key}) : super(key: key);
+class MyListings extends StatefulWidget {
+  MyListings({Key? key}) : super(key: key);
   @override
-  State<YourListings> createState() => _YourListingsState();
+  State<MyListings> createState() => _MyListingsState();
 }
 
 String? _user;
 OurTheme _theme = OurTheme();
 
-class _YourListingsState extends State<YourListings> {
+class _MyListingsState extends State<MyListings> {
   late Stream<QuerySnapshot> _booksStream =
       FirebaseFirestore.instance.collection('books').snapshots();
 
