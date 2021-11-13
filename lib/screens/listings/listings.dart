@@ -8,7 +8,7 @@ String _semester = "All";
 String _orderBy = "Most Recent";
 
 class Listings extends StatefulWidget {
-  Listings({Key? key}) : super(key: key);
+  const Listings({Key? key}) : super(key: key);
 
   @override
   _ListingsState createState() => _ListingsState();
@@ -19,7 +19,7 @@ class _ListingsState extends State<Listings> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   User? _user;
   late Stream<QuerySnapshot> _booksStream;
-  OurTheme _theme = OurTheme();
+  final OurTheme _theme = OurTheme();
 
   @override
   Widget build(BuildContext context) {
@@ -302,16 +302,16 @@ class _ListingsState extends State<Listings> {
                         },
                         items: <String>[
                           'All',
-                          '1',
-                          '2',
-                          '3',
-                          '4',
-                          '5',
-                          '6',
-                          '7',
-                          '8',
-                          '9',
-                          '10',
+                          '1-1',
+                          '1-2',
+                          '2-1',
+                          '2-2',
+                          '3-1',
+                          '3-2',
+                          '4-1',
+                          '4-2',
+                          '5-1',
+                          '5-2',
                           '-'
                         ].map<DropdownMenuItem<String>>((String value) {
                           return DropdownMenuItem<String>(
@@ -373,12 +373,13 @@ class _ListingsState extends State<Listings> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 25,),
+                  const SizedBox(height: 25,),
                   TextButton(
                     onPressed: () {
                       setFilter(semFilter, orderByFilter);
                       Navigator.pop(context);
-                      final snackBar = SnackBar(
+                      ScaffoldMessenger.of(context).hideCurrentSnackBar(reason: SnackBarClosedReason.dismiss);
+                      const snackBar = SnackBar(
                         content: Text("Filter applied >_<"),
                         duration: Duration(milliseconds: 800),
                       );
@@ -428,7 +429,7 @@ class _ListingsState extends State<Listings> {
                 color: _theme.secondaryColor,
                 fontWeight: FontWeight.w600),
           ),
-          Icon(Icons.filter_alt_rounded),
+          const Icon(Icons.filter_alt_rounded),
           const SizedBox(
             width: 20.0,
           )

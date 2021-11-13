@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:bfg/theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class BookDetailsCard extends StatefulWidget {
@@ -82,7 +83,7 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
                       color: _theme.tertiaryColor.withOpacity(0.4)
                     )),
                 child: Padding(
-                  padding: EdgeInsets.fromLTRB(12.0, 20.0, 12.0, 20.0),
+                  padding: const EdgeInsets.fromLTRB(12.0, 20.0, 12.0, 20.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -90,18 +91,18 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
                     children: [
                       Row(
                         children: [
-                          SizedBox(width: 4),
+                          const SizedBox(width: 4),
                           _buildRichText(
                               "Seller: ", widget.nameOfSeller, 15),
-                          Spacer(),
+                          const Spacer(),
                           _buildRichText(
                               "",
                               "${widget.hostelNumberOfSeller} - ${widget.roomNumberOfSeller}",
                               15),
-                          SizedBox(width: 4),
+                          const SizedBox(width: 4),
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 30,
                       ),
                       _buildBookTitle(widget.nameOfBook),
@@ -112,7 +113,7 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                _buildRichText(
+                                _buildAuthorRichText(
                                     "Author(s): ", widget.bookAuthor, 14),
                                 _buildRichText(
                                     "Edition: ", widget.bookEdition, 13),
@@ -120,12 +121,12 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
                                     "Department: ", widget.department, 13),
                               ],
                             ),
-                            Spacer(),
+                            const Spacer(),
                             Column(
                               children: [
                                 _buildRichText(
                                     "Sem: ", widget.semester, 13),
-                                SizedBox(
+                                const SizedBox(
                                   height: 3,
                                 ),
                                 _buildRichText(
@@ -179,6 +180,30 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
     );
   }
 
+  Widget _buildAuthorRichText(String text1, String text2, double _fontSize) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width - 120,
+      child: RichText(
+        text: TextSpan(
+            text: text1,
+            style: TextStyle(
+              color: _theme.secondaryColor,
+              fontFamily: _theme.font,
+              fontWeight: FontWeight.w600,
+              fontSize: _fontSize,
+            ),
+            children: <TextSpan>[
+              TextSpan(
+                  text: text2,
+                  style: TextStyle(
+                      color: _theme.tertiaryColor,
+                      fontFamily: _theme.font,
+                      fontWeight: FontWeight.w400)),
+            ]),
+      ),
+    );
+  }
+
   Widget _buildRichText(String text1, String text2, double _fontSize) {
     return RichText(
       text: TextSpan(
@@ -227,7 +252,7 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
               ),
             ],
           ),
-          Spacer(),
+          const Spacer(),
           Column(
             children: [
               IconButton(
@@ -255,7 +280,7 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          SizedBox(
+          const SizedBox(
             height: 15,
           ),
           Text(
@@ -268,7 +293,7 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
                 fontFamily: _theme.font,
                 fontWeight: FontWeight.bold),
           ),
-          SizedBox(
+          const SizedBox(
             height: 25,
           ),
           Text(
@@ -311,7 +336,7 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
             ),
             textAlign: TextAlign.center,
           ),
-          SizedBox(height: 20,),
+          const SizedBox(height: 20,),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
               primary: Colors.red.withOpacity(0.8),
@@ -321,7 +346,7 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
               deleteBooks(books);
               Navigator.pop(context);
             } ,
-            child: Text("Delete"),
+            child: const Text("Delete"),
           )
         ],
       ),
@@ -332,7 +357,9 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
     if (await canLaunch(url)) {
       await launch(url);
     } else {
-      final snackBar = SnackBar(content: Text('Could not launch $url'));
+      ScaffoldMessenger.of(context).hideCurrentSnackBar(reason: SnackBarClosedReason.dismiss);
+      Clipboard.setData(ClipboardData(text: widget.phoneNumberOfSeller));
+      const snackBar = SnackBar(content: Text('Seller phone number copied to clipboard'), duration: Duration(seconds: 4),);
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
@@ -342,7 +369,7 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
         .delete()
         .then(
             (value) {
-              final snackBar = SnackBar(content: Text('Your listing was deleted successfully :D'));
+              const snackBar = SnackBar(content: Text('Your listing was deleted successfully :D'));
               ScaffoldMessenger.of(context).showSnackBar(snackBar);
           }
         )

@@ -202,16 +202,16 @@ class _AddBookState extends State<AddBook> {
                 });
               },
               items: <String>[
-                '1',
-                '2',
-                '3',
-                '4',
-                '5',
-                '6',
-                '7',
-                '8',
-                '9',
-                '10',
+                '1-1',
+                '1-2',
+                '2-1',
+                '2-2',
+                '3-1',
+                '3-2',
+                '4-1',
+                '4-2',
+                '5-1',
+                '5-2',
                 '-'
               ].map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
