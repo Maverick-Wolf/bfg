@@ -170,7 +170,7 @@ class _DrawerClassState extends State<DrawerClass> {
             leading: Icon(Icons.feedback_outlined,
                 color: _theme.secondaryColor),
             title: Text(
-              'Send feedback',
+              'Send Feedback',
               style: TextStyle(
                   fontFamily: _theme.font,
                   fontSize: 18,

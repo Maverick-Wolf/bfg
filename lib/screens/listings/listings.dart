@@ -65,13 +65,13 @@ class _ListingsState extends State<Listings> {
                   indicatorColor: _theme.tertiaryColor,
                   tabs: [
                     _buildTab("All", "college"),
+                    _buildTab("Misc", "misc"),
                     _buildTab("Comp Sc", "cs"),
                     _buildTab("Phoenix", "phx"),
                     _buildTab("Mechanical", "mech"),
                     _buildTab("Chemical", "chem"),
                     _buildTab("Dual Degree", "dual"),
                     _buildTab("Higher Degree", "high"),
-                    _buildTab("Misc", "misc"),
                   ],
                 ),
                 Expanded(
@@ -84,6 +84,9 @@ class _ListingsState extends State<Listings> {
                           children: [
                             ListView(
                               children: getBooks(snapshot, "All"),
+                            ),
+                            ListView(
+                              children: getBooks(snapshot, "Misc"),
                             ),
                             ListView(
                               children: getBooks(snapshot, "Comp Sc"),
@@ -102,9 +105,6 @@ class _ListingsState extends State<Listings> {
                             ),
                             ListView(
                               children: getBooks(snapshot, "Higher Deg"),
-                            ),
-                            ListView(
-                              children: getBooks(snapshot, "Misc"),
                             ),
                           ],
                         );
