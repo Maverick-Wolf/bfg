@@ -121,9 +121,16 @@ class _ListingsState extends State<Listings> {
   }
 
   getBooks(AsyncSnapshot<QuerySnapshot> snapshot, String department) {
+    String contactPreference = "Call";
     return snapshot.data!.docs.map((DocumentSnapshot document) {
       Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
       if ("All" == department && _semester == "All") {
+        if(data['contact_preference'] == null) {
+          contactPreference = "Call";
+        }
+        else {
+          contactPreference = data['contact_preference'];
+        }
         return Padding(
           padding: EdgeInsets.only(bottom: 3.0, top: 7.0),
           child: BookDetailsCard(
@@ -141,6 +148,7 @@ class _ListingsState extends State<Listings> {
             phoneNumberOfSeller: data['seller_phone'],
             documentID: document.id,
             longPressBool: false,
+            contactPreference: contactPreference,
           ),
         );
       } else if (department == "All" && data['semester'] == _semester) {
@@ -161,6 +169,7 @@ class _ListingsState extends State<Listings> {
             phoneNumberOfSeller: data['seller_phone'],
             documentID: document.id,
             longPressBool: false,
+            contactPreference: contactPreference,
           ),
         );
       } else if (data['department'] == department && _semester == "All") {
@@ -180,7 +189,8 @@ class _ListingsState extends State<Listings> {
             hostelNumberOfSeller: data['seller_hostel'],
             phoneNumberOfSeller: data['seller_phone'],
             documentID: document.id,
-            longPressBool: false,            
+            longPressBool: false,
+            contactPreference: contactPreference,
           ),
         );
       } else if (data['department'] == department &&
@@ -202,6 +212,7 @@ class _ListingsState extends State<Listings> {
             phoneNumberOfSeller: data['seller_phone'],
             documentID: document.id,
             longPressBool: false,
+            contactPreference: contactPreference,
           ),
         );
       } else {
