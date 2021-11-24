@@ -28,8 +28,9 @@ class _ProfileState extends State<Profile> {
       child: Scaffold(
         backgroundColor: _theme.primaryColor,
         appBar: AppBar(
+          backgroundColor: _theme.primaryColor,
           centerTitle: true,
-          title: Text("Profile", style: TextStyle(fontFamily: _theme.font),),
+          title: Text("Profile", style: TextStyle(fontFamily: _theme.font, fontWeight: FontWeight.bold, color: _theme.secondaryColor),),
         ),
           body: CustomScrollView(
             slivers: [
