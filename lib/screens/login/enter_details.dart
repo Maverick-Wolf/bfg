@@ -160,7 +160,7 @@ class _DetailsState extends State<Details> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          "I prefer ",
+          "I prefer to be contacted via ",
           style: TextStyle(
               color: _theme.tertiaryColor,
               fontSize: 16.0,
