@@ -65,13 +65,13 @@ class _ListingsState extends State<Listings> {
                   indicatorColor: _theme.tertiaryColor,
                   tabs: [
                     _buildTab("All", "college"),
+                    _buildTab("Misc", "misc"),
                     _buildTab("Comp Sc", "cs"),
                     _buildTab("Phoenix", "phx"),
                     _buildTab("Mechanical", "mech"),
                     _buildTab("Chemical", "chem"),
                     _buildTab("Dual Degree", "dual"),
                     _buildTab("Higher Degree", "high"),
-                    _buildTab("Misc", "misc"),
                   ],
                 ),
                 Expanded(
@@ -84,6 +84,9 @@ class _ListingsState extends State<Listings> {
                           children: [
                             ListView(
                               children: getBooks(snapshot, "All"),
+                            ),
+                            ListView(
+                              children: getBooks(snapshot, "Misc"),
                             ),
                             ListView(
                               children: getBooks(snapshot, "Comp Sc"),
@@ -102,9 +105,6 @@ class _ListingsState extends State<Listings> {
                             ),
                             ListView(
                               children: getBooks(snapshot, "Higher Deg"),
-                            ),
-                            ListView(
-                              children: getBooks(snapshot, "Misc"),
                             ),
                           ],
                         );
@@ -186,7 +186,7 @@ class _ListingsState extends State<Listings> {
       } else if (data['department'] == department &&
           _semester == data['semester']) {
         return Padding(
-          padding: EdgeInsets.only(bottom: 5.0, top: 7.0),
+          padding: const EdgeInsets.only(bottom: 5.0, top: 7.0),
           child: BookDetailsCard(
             bookEdition: data['edition'],
             note: data['note'],
@@ -412,29 +412,56 @@ class _ListingsState extends State<Listings> {
   }
 
   Widget _buildFilterRow(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        showDialog(
-          context: context,
-          builder: (BuildContext) => _buildFilterPopUp(context),
-        );
-      },
-      child: Row(
-        children: [
-          Text(
-            "Filters",
-            style: TextStyle(
-                fontFamily: _theme.font,
-                fontSize: 16,
-                color: _theme.secondaryColor,
-                fontWeight: FontWeight.w600),
+    return Row(
+      children: [
+        InkWell(
+          onTap: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext) => _buildFilterPopUp(context),
+            );
+          },
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.filter_alt_rounded),
+              Text(
+                "Filters",
+                style: TextStyle(
+                    fontFamily: _theme.font,
+                    fontSize: 12,
+                    color: _theme.secondaryColor,
+                    fontWeight: FontWeight.w600),
+              ),
+            ],
           ),
-          const Icon(Icons.filter_alt_rounded),
-          const SizedBox(
-            width: 20.0,
-          )
-        ],
-      ),
+        ),
+        const SizedBox(
+          width: 10,
+        ),
+        InkWell(
+          onTap: () {
+            Navigator.pushNamed(context, '/search');
+          },
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.search),
+              Text(
+                "Search",
+                style: TextStyle(
+                    fontFamily: _theme.font,
+                    fontSize: 12,
+                    color: _theme.secondaryColor,
+                    fontWeight: FontWeight.w600),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(
+          width: 15.0,
+        )
+      ],
     );
   }
 }
