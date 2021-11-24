@@ -46,7 +46,7 @@ class _MyListingsState extends State<MyListings> {
                           _buildInfoPopupDialogue(context),
                     );
                   },
-                  icon: Icon(Icons.info),
+                  icon: const Icon(Icons.info),
                   color: _theme.tertiaryColor,
                 )),
           ],

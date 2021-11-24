@@ -27,7 +27,7 @@ void main() {
         '/initialization': (context) => const Initialization(),
         '/signUp': (context) => const SignUp(),
         '/addBook': (context) => const AddBook(),
-        '/userMenu': (context) => UserMenu(),
+        '/userMnenu': (context) => UserMenu(),
         '/listings': (context) => const Listings(),
         '/enterDetails': (context) => const Details(),
         '/Profile': (context) => const Profile(),

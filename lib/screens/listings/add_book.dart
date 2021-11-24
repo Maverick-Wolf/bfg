@@ -135,6 +135,7 @@ class _AddBookState extends State<AddBook> {
 
   Widget _buildPriceTextFormField(String _label, String _hint, TextInputType inputType) {
     return TextFormField(
+      enableInteractiveSelection: false,
       onChanged: (text) {
         _bookPrice = text;
       },
