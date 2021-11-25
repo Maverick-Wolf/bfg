@@ -22,6 +22,7 @@ class BookDetailsCard extends StatefulWidget {
   final String phoneNumberOfSeller;
   final String documentID;
   final bool longPressBool;
+  final String contactPreference;
 
   const BookDetailsCard({
     Key? key,
@@ -39,6 +40,7 @@ class BookDetailsCard extends StatefulWidget {
     required this.hostelNumberOfSeller,
     required this.documentID,
     required this.longPressBool,
+    required this.contactPreference
   }) : super(key: key);
 
   @override
@@ -261,7 +263,13 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
             children: [
               IconButton(
                 onPressed: () {
-                  _makePhoneCall('tel:${widget.phoneNumberOfSeller}');
+                  if(widget.contactPreference == "Whatsapp") {
+                    openWhatsapp();
+                  } else if (widget.contactPreference == "Call") {
+                    _makePhoneCall('tel:${widget.phoneNumberOfSeller}');
+                  } else {
+                    _makePhoneCall('tel:${widget.phoneNumberOfSeller}');
+                  }
                 },
                 icon: Icon(
                   Icons.phone,
@@ -312,6 +320,17 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
         ],
       ),
     );
+  }
+
+  openWhatsapp() async{
+    var whatsappURl = "whatsapp://send?phone="+widget.phoneNumberOfSeller+"&text=";
+      if( await canLaunch(whatsappURl)){
+        await launch(whatsappURl);
+      }else{
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Whatsapp not installed")));
+        _makePhoneCall('tel:${widget.phoneNumberOfSeller}');
+      }
   }
 
   Widget _deleteBookConfirmationPopUp(

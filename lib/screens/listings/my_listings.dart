@@ -46,7 +46,7 @@ class _MyListingsState extends State<MyListings> {
                           _buildInfoPopupDialogue(context),
                     );
                   },
-                  icon: Icon(Icons.info),
+                  icon: const Icon(Icons.info),
                   color: _theme.tertiaryColor,
                 )),
           ],
@@ -68,9 +68,16 @@ class _MyListingsState extends State<MyListings> {
   }
 
   getBooks(AsyncSnapshot<QuerySnapshot> snapshot) {
+    String contactPreference = "Call";
     return snapshot.data!.docs.map((DocumentSnapshot document) {
       Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
       if (_user == data['seller_id']) {
+        if(data['contact_preference'] == null) {
+          contactPreference = "Call";
+        }
+        else {
+          contactPreference = data['contact_preference'];
+        }
         return Padding(
           padding: const EdgeInsets.only(bottom: 5.0, top: 5.0),
           child: BookDetailsCard(
@@ -88,6 +95,7 @@ class _MyListingsState extends State<MyListings> {
             phoneNumberOfSeller: data['seller_phone'],
             documentID: document.id,
             longPressBool: true,
+            contactPreference: contactPreference,
           ),
         );
       } else {

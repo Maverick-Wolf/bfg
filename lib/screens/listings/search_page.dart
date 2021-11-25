@@ -136,9 +136,16 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   getBooks(AsyncSnapshot<QuerySnapshot> snapshot) {
+    String contactPreference = "Call";
     return snapshot.data!.docs.map((DocumentSnapshot document) {
       Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
       if (data['title'].toString().toLowerCase().contains(stringToBeSearched.toLowerCase()) || data['seller_name'].toString().toLowerCase().contains(stringToBeSearched.toLowerCase()) || data['author'].toString().toLowerCase().contains(stringToBeSearched.toLowerCase())) {
+        if(data['contact_preference'] == null) {
+          contactPreference = "Call";
+        }
+        else {
+          contactPreference = data['contact_preference'];
+        }
         return Padding(
           padding: const EdgeInsets.only(bottom: 5.0, top: 5.0),
           child: BookDetailsCard(
@@ -156,6 +163,7 @@ class _SearchPageState extends State<SearchPage> {
             phoneNumberOfSeller: data['seller_phone'],
             documentID: document.id,
             longPressBool: false,
+            contactPreference: contactPreference,
           ),
         );
       } else {

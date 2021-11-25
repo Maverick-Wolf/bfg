@@ -19,6 +19,7 @@ class _DetailsState extends State<Details> {
   String _name = "";
   String _roomNumber= "";
   String _hostel= "";
+  String contactPreference = "Whatsapp";
   late CollectionReference users;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   User? _user;
@@ -108,10 +109,11 @@ class _DetailsState extends State<Details> {
                       ),
                     ),
                     const Spacer(
-                      flex: 6,
+                      flex: 3,
                     ),
+                    _buildContactPreferenceDropdown(),
                     const Spacer(
-                      flex: 4,
+                      flex: 6,
                     ),
                     _buildSignUpButton(),
                     const Spacer(
@@ -128,13 +130,13 @@ class _DetailsState extends State<Details> {
   }
 
   Future<void> addUser() {
-    // Call the user's CollectionReference to add a new user
     return users.doc(_user!.uid)
         .set({
       'name': _name,
       'hostel': _hostel,
       'phone_number': _user!.phoneNumber,
       'room_number': _roomNumber,
+      'contact_preference': contactPreference,
     })
         .then((value) => print("User Added"))
         .catchError((error) => print("Failed to add user: $error"));
@@ -150,6 +152,46 @@ class _DetailsState extends State<Details> {
             fontFamily: _theme.font,
             fontWeight: FontWeight.w800),
       ),
+    );
+  }
+
+  Widget _buildContactPreferenceDropdown() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          "I prefer to be contacted via ",
+          style: TextStyle(
+              color: _theme.tertiaryColor,
+              fontSize: 16.0,
+              fontFamily: _theme.font,
+              fontWeight: FontWeight.w800,
+          ),
+        ),
+        DropdownButton<String>(
+          value: contactPreference,
+          icon: const Icon(Icons.arrow_downward),
+          iconSize: 24,
+          elevation: 16,
+          style: TextStyle(color: _theme.secondaryColor),
+          underline: Container(
+            height: 2,
+            color: _theme.secondaryColor,
+          ),
+          onChanged: (String? newValue) {
+            setState(() {
+              contactPreference = newValue!;
+            });
+          },
+          items: <String>['Whatsapp', 'Call']
+              .map<DropdownMenuItem<String>>((String value) {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Text(value),
+            );
+          }).toList(),
+        ),
+      ],
     );
   }
 
@@ -255,10 +297,10 @@ class _DetailsState extends State<Details> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text("Your details won't be shared unless you list a book\n\n"
+          const Text("Your details won't be shared unless you list a book\n\n"
               "On listing a book, your name and hostel room number will be displayed\n\n"
               "Your phone number wont be displayed in the app itself, but an interested buyer can view it in their phone app"),
-          SizedBox(height: 25,),
+          const SizedBox(height: 25,),
           TextButton(
             onPressed: () {
               try{
