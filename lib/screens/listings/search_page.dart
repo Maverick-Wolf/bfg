@@ -90,6 +90,7 @@ class _SearchPageState extends State<SearchPage> {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: TextFormField(
+        autofocus: true,
         initialValue: "",
         onChanged: (value) {
           stringToBeSearched = value;
