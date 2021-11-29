@@ -42,10 +42,10 @@ class _ProfileState extends State<Profile> {
                     future: users.doc(_user!.uid).get(),
                     builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
                       if (snapshot.hasError) {
-                        return Text("Something went wrong");
+                        return const Text("Something went wrong");
                       }
                       if (snapshot.hasData && !snapshot.data!.exists) {
-                        return Text("Document does not exist");
+                        return const Text("Document does not exist");
                       }
                       if (snapshot.connectionState == ConnectionState.done) {
                         Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
@@ -66,7 +66,8 @@ class _ProfileState extends State<Profile> {
                                 _buildRichText("Phone Number", data['phone_number']),
                                 _buildRichText("Hostel", data['hostel']),
                                 _buildRichText("Room Number", data['room_number']),
-                                SizedBox(height: 10,),
+                                _buildRichText("Contact Preference", data['contact_preference'] ?? "Call" ),
+                                const SizedBox(height: 10,),
                                 _buildEditButton(),
                               ],
                             ),

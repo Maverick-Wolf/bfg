@@ -22,24 +22,26 @@ class BookDetailsCard extends StatefulWidget {
   final String phoneNumberOfSeller;
   final String documentID;
   final bool longPressBool;
+  final String contactPreference;
 
-  const BookDetailsCard({
-    Key? key,
-    required this.nameOfBook,
-    required this.note,
-    required this.userIdOfSeller,
-    required this.priceOfBook,
-    required this.bookAuthor,
-    required this.bookEdition,
-    required this.department,
-    required this.semester,
-    required this.nameOfSeller,
-    required this.roomNumberOfSeller,
-    required this.phoneNumberOfSeller,
-    required this.hostelNumberOfSeller,
-    required this.documentID,
-    required this.longPressBool,
-  }) : super(key: key);
+  const BookDetailsCard(
+      {Key? key,
+      required this.nameOfBook,
+      required this.note,
+      required this.userIdOfSeller,
+      required this.priceOfBook,
+      required this.bookAuthor,
+      required this.bookEdition,
+      required this.department,
+      required this.semester,
+      required this.nameOfSeller,
+      required this.roomNumberOfSeller,
+      required this.phoneNumberOfSeller,
+      required this.hostelNumberOfSeller,
+      required this.documentID,
+      required this.longPressBool,
+      required this.contactPreference})
+      : super(key: key);
 
   @override
   _BookDetailsCardState createState() => _BookDetailsCardState();
@@ -231,6 +233,14 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
 
   Widget _buildPopupDialogue(BuildContext context, String _sellerName,
       String _bookName, String _bookPrice, String _roomNumber) {
+    IconData contactIcon = Icons.call;
+    if (widget.contactPreference == "Whatsapp") {
+      contactIcon = Icons.message;
+    } else if (widget.contactPreference == "Call") {
+      contactIcon = Icons.call;
+    } else {
+      contactIcon = Icons.call;
+    }
     return AlertDialog(
       backgroundColor: Colors.grey,
       title: Row(
@@ -257,27 +267,40 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
             ],
           ),
           const Spacer(),
-          Column(
-            children: [
-              IconButton(
-                onPressed: () {
-                  _makePhoneCall('tel:${widget.phoneNumberOfSeller}');
-                },
-                icon: Icon(
-                  Icons.phone,
-                  size: 36,
-                  color: _theme.secondaryColor,
+          Container(
+            padding: const EdgeInsets.fromLTRB(7, 3, 7, 3),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5),
+              color: Colors.black45.withOpacity(0.1),
+            ),
+            child: Column(
+              children: [
+                IconButton(
+                  onPressed: () {
+                    if (widget.contactPreference == "Whatsapp") {
+                      openWhatsapp();
+                    } else if (widget.contactPreference == "Call") {
+                      _makePhoneCall('tel:${widget.phoneNumberOfSeller}');
+                    } else {
+                      _makePhoneCall('tel:${widget.phoneNumberOfSeller}');
+                    }
+                  },
+                  icon: Icon(
+                    contactIcon,
+                    size: 36,
+                    color: _theme.secondaryColor,
+                  ),
                 ),
-              ),
-              Text(
-                "Call",
-                style: TextStyle(
-                    fontFamily: _theme.font,
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: _theme.secondaryColor),
-              ),
-            ],
+                Text(
+                  "Contact",
+                  style: TextStyle(
+                      fontFamily: _theme.font,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: _theme.secondaryColor),
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -312,6 +335,17 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
         ],
       ),
     );
+  }
+
+  openWhatsapp() async {
+    var whatsappURl =
+        "whatsapp://send?phone=" + widget.phoneNumberOfSeller + "&text=";
+    try {
+      launch(whatsappURl);
+    } catch (e) {
+      print(e);
+      _makePhoneCall('tel:${widget.phoneNumberOfSeller}');
+    }
   }
 
   Widget _deleteBookConfirmationPopUp(
