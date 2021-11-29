@@ -23,15 +23,23 @@ class _ListingsState extends State<Listings> {
 
   @override
   Widget build(BuildContext context) {
-
-    if(_orderBy == "Most Recent") {
+    if (_orderBy == "Most Recent") {
       _booksStream = FirebaseFirestore.instance.collection('books').snapshots();
     } else if (_orderBy == "Alphabetical") {
-      _booksStream = FirebaseFirestore.instance.collection('books').orderBy('title').snapshots();
+      _booksStream = FirebaseFirestore.instance
+          .collection('books')
+          .orderBy('title')
+          .snapshots();
     } else if (_orderBy == "Seller Name Ascending") {
-      _booksStream = FirebaseFirestore.instance.collection('books').orderBy('seller_name', descending: false).snapshots();
+      _booksStream = FirebaseFirestore.instance
+          .collection('books')
+          .orderBy('seller_name', descending: false)
+          .snapshots();
     } else if (_orderBy == "Seller Name Descending") {
-      _booksStream = FirebaseFirestore.instance.collection('books').orderBy('seller_name', descending: true).snapshots();
+      _booksStream = FirebaseFirestore.instance
+          .collection('books')
+          .orderBy('seller_name', descending: true)
+          .snapshots();
     }
     _user = _auth.currentUser;
     users = FirebaseFirestore.instance.collection('users');
@@ -125,10 +133,9 @@ class _ListingsState extends State<Listings> {
     return snapshot.data!.docs.map((DocumentSnapshot document) {
       Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
       if ("All" == department && _semester == "All") {
-        if(data['contact_preference'] == null) {
+        if (data['contact_preference'] == null) {
           contactPreference = "Call";
-        }
-        else {
+        } else {
           contactPreference = data['contact_preference'];
         }
         return Padding(
@@ -233,14 +240,39 @@ class _ListingsState extends State<Listings> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              if(logo == "college") const CircleAvatar(backgroundImage: AssetImage("assets/images/college_white.png"),),
-              if(logo == "cs") const CircleAvatar(backgroundImage: AssetImage("assets/images/cs.png"), ),
-              if(logo == "phx") const CircleAvatar(backgroundImage: AssetImage("assets/images/phx.png"),),
-              if(logo == "mech") const CircleAvatar(backgroundImage: AssetImage("assets/images/mech.png"),),
-              if(logo == "chem") const CircleAvatar(backgroundImage: AssetImage("assets/images/chem.png"),),
-              if(logo == "dual") const CircleAvatar(backgroundImage: AssetImage("assets/images/dual.png"),),
-              if(logo == "high") const CircleAvatar(backgroundImage: AssetImage("assets/images/high.png"),),
-              if(logo == "misc") const CircleAvatar(backgroundImage: AssetImage("assets/images/book.png"),),
+              if (logo == "college")
+                const CircleAvatar(
+                  backgroundImage:
+                      AssetImage("assets/images/college_white.png"),
+                ),
+              if (logo == "cs")
+                const CircleAvatar(
+                  backgroundImage: AssetImage("assets/images/cs.png"),
+                ),
+              if (logo == "phx")
+                const CircleAvatar(
+                  backgroundImage: AssetImage("assets/images/phx.png"),
+                ),
+              if (logo == "mech")
+                const CircleAvatar(
+                  backgroundImage: AssetImage("assets/images/mech.png"),
+                ),
+              if (logo == "chem")
+                const CircleAvatar(
+                  backgroundImage: AssetImage("assets/images/chem.png"),
+                ),
+              if (logo == "dual")
+                const CircleAvatar(
+                  backgroundImage: AssetImage("assets/images/dual.png"),
+                ),
+              if (logo == "high")
+                const CircleAvatar(
+                  backgroundImage: AssetImage("assets/images/high.png"),
+                ),
+              if (logo == "misc")
+                const CircleAvatar(
+                  backgroundImage: AssetImage("assets/images/book.png"),
+                ),
               const SizedBox(
                 height: 5,
               ),
@@ -262,157 +294,164 @@ class _ListingsState extends State<Listings> {
   Widget _buildFilterPopUp(BuildContext context) {
     String semFilter = _semester;
     String orderByFilter = _orderBy;
-    return StatefulBuilder(
-        builder: (context, StateSetter setState) {
-        return Container(
-          child: Scaffold(
-            body: AlertDialog(
-              backgroundColor: Colors.grey,
-              title: Text(
-                "Filters",
-                style: TextStyle(
-                    fontSize: 24,
-                    fontFamily: _theme.font,
-                    fontWeight: FontWeight.bold,
-                    color: _theme.secondaryColor),
-                textAlign: TextAlign.center,
-              ),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      const SizedBox(
-                        width: 1.0,
-                      ),
-                      Text(
-                        "Sem : ",
-                        style: TextStyle(
-                            fontFamily: _theme.font,
-                            fontSize: 16,
-                            color: _theme.secondaryColor,
-                            fontWeight: FontWeight.w600),
-                      ),
-                      DropdownButton<String>(
-                        value: semFilter,
-                        icon: Icon(
-                          Icons.arrow_downward, color: _theme.tertiaryColor,),
-                        iconSize: 22,
-                        elevation: 16,
-                        style: TextStyle(color: _theme.tertiaryColor),
-                        underline: Container(
-                          height: 2,
-                          color: _theme.tertiaryColor,
-                        ),
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            semFilter = newValue!;
-                          });
-                        },
-                        items: <String>[
-                          'All',
-                          '1-1',
-                          '1-2',
-                          '2-1',
-                          '2-2',
-                          '3-1',
-                          '3-2',
-                          '4-1',
-                          '4-2',
-                          '5-1',
-                          '5-2',
-                          '-'
-                        ].map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                      ),
-                      const SizedBox(
-                        width: 1.0,
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 15,),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      const SizedBox(
-                        width: 1.0,
-                      ),
-                      Text(
-                        "Order By : ",
-                        style: TextStyle(
-                            fontFamily: _theme.font,
-                            fontSize: 16,
-                            color: _theme.secondaryColor,
-                            fontWeight: FontWeight.w600),
-                      ),
-                      DropdownButton<String>(
-                        value: orderByFilter,
-                        icon: Icon(
-                          Icons.arrow_downward, color: _theme.tertiaryColor,),
-                        iconSize: 22,
-                        elevation: 16,
-                        style: TextStyle(color: _theme.tertiaryColor),
-                        underline: Container(
-                          height: 2,
-                          color: _theme.tertiaryColor,
-                        ),
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            orderByFilter = newValue!;
-                          });
-                        },
-                        items: <String>[
-                          'Most Recent',
-                          'Alphabetical',
-                          'Seller Name Ascending',
-                          'Seller Name Descending'
-                        ].map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                      ),
-                      const SizedBox(
-                        width: 1.0,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 25,),
-                  TextButton(
-                    onPressed: () {
-                      setFilter(semFilter, orderByFilter);
-                      Navigator.pop(context);
-                      ScaffoldMessenger.of(context).hideCurrentSnackBar(reason: SnackBarClosedReason.dismiss);
-                      const snackBar = SnackBar(
-                        content: Text("Filter applied >_<"),
-                        duration: Duration(milliseconds: 800),
-                      );
-                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                    },
-                    child: Text(
-                      "Set Filter",
+    return StatefulBuilder(builder: (context, StateSetter setState) {
+      return Container(
+        child: Scaffold(
+          body: AlertDialog(
+            backgroundColor: Colors.grey,
+            title: Text(
+              "Filters",
+              style: TextStyle(
+                  fontSize: 24,
+                  fontFamily: _theme.font,
+                  fontWeight: FontWeight.bold,
+                  color: _theme.secondaryColor),
+              textAlign: TextAlign.center,
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    const SizedBox(
+                      width: 1.0,
+                    ),
+                    Text(
+                      "Sem : ",
                       style: TextStyle(
-                        fontSize: 20,
+                          fontFamily: _theme.font,
+                          fontSize: 16,
+                          color: _theme.secondaryColor,
+                          fontWeight: FontWeight.w600),
+                    ),
+                    DropdownButton<String>(
+                      value: semFilter,
+                      icon: Icon(
+                        Icons.arrow_downward,
                         color: _theme.tertiaryColor,
                       ),
+                      iconSize: 22,
+                      elevation: 16,
+                      style: TextStyle(color: _theme.tertiaryColor),
+                      underline: Container(
+                        height: 2,
+                        color: _theme.tertiaryColor,
+                      ),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          semFilter = newValue!;
+                        });
+                      },
+                      items: <String>[
+                        'All',
+                        '1-1',
+                        '1-2',
+                        '2-1',
+                        '2-2',
+                        '3-1',
+                        '3-2',
+                        '4-1',
+                        '4-2',
+                        '5-1',
+                        '5-2',
+                        '-'
+                      ].map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
                     ),
-                    style: TextButton.styleFrom(
-                        backgroundColor: Colors.blue.withOpacity(0.8)),
-                  )
-                ],
-              ),
+                    const SizedBox(
+                      width: 1.0,
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    const SizedBox(
+                      width: 1.0,
+                    ),
+                    Text(
+                      "Order By : ",
+                      style: TextStyle(
+                          fontFamily: _theme.font,
+                          fontSize: 16,
+                          color: _theme.secondaryColor,
+                          fontWeight: FontWeight.w600),
+                    ),
+                    DropdownButton<String>(
+                      value: orderByFilter,
+                      icon: Icon(
+                        Icons.arrow_downward,
+                        color: _theme.tertiaryColor,
+                      ),
+                      iconSize: 22,
+                      elevation: 16,
+                      style: TextStyle(color: _theme.tertiaryColor),
+                      underline: Container(
+                        height: 2,
+                        color: _theme.tertiaryColor,
+                      ),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          orderByFilter = newValue!;
+                        });
+                      },
+                      items: <String>[
+                        'Most Recent',
+                        'Alphabetical',
+                        'Seller Name Ascending',
+                        'Seller Name Descending'
+                      ].map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                    ),
+                    const SizedBox(
+                      width: 1.0,
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 25,
+                ),
+                TextButton(
+                  onPressed: () {
+                    setFilter(semFilter, orderByFilter);
+                    Navigator.pop(context);
+                    ScaffoldMessenger.of(context).hideCurrentSnackBar(
+                        reason: SnackBarClosedReason.dismiss);
+                    const snackBar = SnackBar(
+                      content: Text("Filter applied >_<"),
+                      duration: Duration(milliseconds: 700),
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  },
+                  child: Text(
+                    "Set Filter",
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: _theme.tertiaryColor,
+                    ),
+                  ),
+                  style: TextButton.styleFrom(
+                      backgroundColor: Colors.blue.withOpacity(0.8)),
+                )
+              ],
             ),
           ),
-        );
-      }
-    );
+        ),
+      );
+    });
   }
 
   setFilter(String semFilter, String orderByFilter) {
