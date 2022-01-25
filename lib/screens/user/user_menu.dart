@@ -18,7 +18,6 @@ class _UserMenuState extends State<UserMenu> {
 
   @override
   Widget build(BuildContext context) {
-
     User? _user = _auth.currentUser;
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
@@ -53,7 +52,8 @@ class _UserMenuState extends State<UserMenu> {
     );
   }
 
-  Widget _buildListingsContainer(BuildContext context, double height, double width) {
+  Widget _buildListingsContainer(
+      BuildContext context, double height, double width) {
     return InkWell(
       onTap: () {
         Navigator.pushNamed(context, '/listings');
@@ -62,7 +62,7 @@ class _UserMenuState extends State<UserMenu> {
             "Tap on a card to view more details about the seller",
             style: TextStyle(color: Colors.white),
           ),
-          duration: Duration(seconds: 4),
+          duration: Duration(milliseconds: 1700),
           backgroundColor: Colors.blue,
         );
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -103,7 +103,8 @@ class _UserMenuState extends State<UserMenu> {
     );
   }
 
-  Widget _buildSellContainer(BuildContext context, double height, double width) {
+  Widget _buildSellContainer(
+      BuildContext context, double height, double width) {
     return InkWell(
       onTap: () {
         Navigator.pushNamed(context, '/addBook');
@@ -144,17 +145,16 @@ class _UserMenuState extends State<UserMenu> {
     );
   }
 
-  Widget _buildMyListingsContainer(BuildContext context, double height, double width) {
+  Widget _buildMyListingsContainer(
+      BuildContext context, double height, double width) {
     return InkWell(
       onTap: () {
         Navigator.pushNamed(context, '/myListings');
         final snackBar = SnackBar(
-          content: Text(
-              "Tap and hold a listing for 2 seconds to delete it",
-              style: TextStyle(color: _theme.tertiaryColor
-              )
-          ),
+          content: Text("Tap and hold a listing for 2 seconds to delete it",
+              style: TextStyle(color: _theme.tertiaryColor)),
           backgroundColor: Colors.blue,
+          duration: const Duration(milliseconds: 1700),
         );
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       },

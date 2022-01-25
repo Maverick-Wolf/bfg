@@ -135,6 +135,7 @@ class _AddBookState extends State<AddBook> {
 
   Widget _buildPriceTextFormField(String _label, String _hint, TextInputType inputType) {
     return TextFormField(
+      enableInteractiveSelection: false,
       onChanged: (text) {
         _bookPrice = text;
       },
@@ -297,7 +298,7 @@ class _AddBookState extends State<AddBook> {
     );
   }
 
-  Future<void> addBook(String sellerName, String sellerRoom, String sellerHostel, String sellerPhone) {
+  Future<void> addBook(String sellerName, String sellerRoom, String sellerHostel, String sellerPhone, String contactPreference) {
     return books
         .add({
           'title': _bookTitle,
@@ -312,6 +313,7 @@ class _AddBookState extends State<AddBook> {
           'price': _bookPrice,
           'semester': _semester,
           'note': _note,
+          'contact_preference': contactPreference,
         })
         .then(
             (value) {
@@ -454,11 +456,11 @@ class _AddBookState extends State<AddBook> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
+          const Text(
             "To avoid unnecessary calls, please remove your listing after it has been sold",
             textAlign: TextAlign.center,
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           TextButton(
@@ -467,6 +469,7 @@ class _AddBookState extends State<AddBook> {
               String roomNumber = "";
               String hostelNumber = "";
               String phoneNumber = "";
+              String contactPreference = "";
               DocumentSnapshot documentSnapshot = await FirebaseFirestore
                   .instance
                   .collection("users")
@@ -479,8 +482,10 @@ class _AddBookState extends State<AddBook> {
                 hostelNumber = (documentSnapshot.data() as dynamic)['hostel'];
                 phoneNumber =
                 (documentSnapshot.data() as dynamic)['phone_number'];
+                contactPreference =
+                (documentSnapshot.data() as dynamic)['contact_preference'];
               }
-              addBook(name, roomNumber, hostelNumber, phoneNumber);
+              addBook(name, roomNumber, hostelNumber, phoneNumber, contactPreference);
               Navigator.popAndPushNamed(context, '/userMenu');
             },
             child: Text(
