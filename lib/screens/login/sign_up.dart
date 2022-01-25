@@ -20,7 +20,7 @@ late String _phoneNumber;
 String _otp = "";
 bool isPhoneNumberTfVisible = true;
 late BuildContext _context;
-late Timer _timer ;
+late Timer _timer;
 int _start = 60;
 bool resendOtpButtonActivated = false;
 
@@ -30,6 +30,7 @@ class _SignUpState extends State<SignUp> {
     _timer.cancel();
     super.dispose();
   }
+
   Widget build(BuildContext context) {
     _context = context;
     return GestureDetector(
@@ -47,13 +48,17 @@ class _SignUpState extends State<SignUp> {
                 children: [
                   _buildRichText("Sign In"),
                   _buildSizedBox(30),
-                  isPhoneNumberTfVisible ? _buildPhoneNumberTF() : _buildOtpTF(),
+                  isPhoneNumberTfVisible
+                      ? _buildPhoneNumberTF()
+                      : _buildOtpTF(),
                 ],
               ),
             ),
             Column(
               children: [
-                isPhoneNumberTfVisible ? _buildSendOtpButton() : _buildVerifyOtpButton(),
+                isPhoneNumberTfVisible
+                    ? _buildSendOtpButton()
+                    : _buildVerifyOtpButton(),
                 if (!isPhoneNumberTfVisible) _buildResendOtpButton(),
                 if (!isPhoneNumberTfVisible) _buildChangeNumberButton(),
               ],
@@ -103,10 +108,12 @@ class _SignUpState extends State<SignUp> {
         codeAutoRetrievalTimeout: codeAutoRetrievalTimeout,
       );
     } catch (e) {
-      final snackBar = SnackBar(content: Text("Failed to Verify Phone Number: ${e}"));
+      final snackBar =
+          SnackBar(content: Text("Failed to Verify Phone Number: ${e}"));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
+  // hello
 
   void signInWithPhoneNumber() async {
     try {
@@ -125,11 +132,19 @@ class _SignUpState extends State<SignUp> {
   }
 
   Future _checkIfUserExists(User? user) async {
-    DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance.collection('users').doc(user!.uid).get();
-    try{
-      if(((documentSnapshot.data() as dynamic)['name']).toString().isNotEmpty){
+    DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user!.uid)
+        .get();
+    try {
+      if (((documentSnapshot.data() as dynamic)['name'])
+          .toString()
+          .isNotEmpty) {
         Navigator.pushReplacementNamed(_context, '/userMenu');
-        const snackBar = SnackBar(content: Text("aur bhai ki haal chaal"), duration: Duration(seconds: 2),);
+        const snackBar = SnackBar(
+          content: Text("aur bhai ki haal chaal"),
+          duration: Duration(seconds: 2),
+        );
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
     } catch (e) {
@@ -143,11 +158,10 @@ class _SignUpState extends State<SignUp> {
     return Center(
       child: ElevatedButton(
         onPressed: () async {
-          if(_phoneNumber.length==13){
+          if (_phoneNumber.length == 13) {
             showDialog(
                 context: context,
-                builder: (BuildContext) => _buildPopupDialogue(context)
-            );
+                builder: (BuildContext) => _buildPopupDialogue(context));
             setState(() {
               FocusScope.of(context).unfocus();
             });
@@ -156,7 +170,6 @@ class _SignUpState extends State<SignUp> {
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
           }
         },
-
         style: ElevatedButton.styleFrom(
             primary: _theme.secondaryColor.withOpacity(0.8),
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -268,7 +281,7 @@ class _SignUpState extends State<SignUp> {
   Widget _buildResendOtpButton() {
     return TextButton(
         onPressed: () {
-          if(_start == 0){
+          if (_start == 0) {
             setState(() {
               _start = 60;
               resendOtpButtonActivated = false;
@@ -287,10 +300,14 @@ class _SignUpState extends State<SignUp> {
               "Resend OTP in",
               style: TextStyle(
                 fontFamily: _theme.font,
-                color: resendOtpButtonActivated ? _theme.secondaryColor : Colors.white54,
+                color: resendOtpButtonActivated
+                    ? _theme.secondaryColor
+                    : Colors.white54,
               ),
             ),
-            const SizedBox(width: 5,),
+            const SizedBox(
+              width: 5,
+            ),
             Text(
               "$_start",
               style: TextStyle(
@@ -299,8 +316,7 @@ class _SignUpState extends State<SignUp> {
               ),
             ),
           ],
-        )
-    );
+        ));
   }
 
   Widget _buildPopupDialogue(BuildContext context) {
@@ -339,12 +355,13 @@ class _SignUpState extends State<SignUp> {
                 fontFamily: _theme.font,
                 fontWeight: FontWeight.bold),
           ),
-          const SizedBox(height: 20,),
+          const SizedBox(
+            height: 20,
+          ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
                 primary: Colors.red.withOpacity(0.8),
-                onPrimary: _theme.tertiaryColor
-            ),
+                onPrimary: _theme.tertiaryColor),
             onPressed: () {
               setState(() {
                 isPhoneNumberTfVisible = !isPhoneNumberTfVisible;
@@ -353,10 +370,9 @@ class _SignUpState extends State<SignUp> {
               verifyPhoneNumber();
               startTimer();
               Navigator.pop(context);
-            } ,
+            },
             child: const Text("OK"),
           )
-
         ],
       ),
     );
@@ -366,7 +382,7 @@ class _SignUpState extends State<SignUp> {
     const oneSec = Duration(seconds: 1);
     _timer = Timer.periodic(
       oneSec,
-          (Timer timer) {
+      (Timer timer) {
         if (_start == 0) {
           setState(() {
             timer.cancel();
