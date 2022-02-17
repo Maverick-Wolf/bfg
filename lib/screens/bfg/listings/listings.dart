@@ -1,9 +1,8 @@
-import 'package:bfg/screens/listings/book_card.dart';
+import 'package:bfg/screens/bfg/listings/book_card.dart';
 import 'package:bfg/theme.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 String _semester = "All";
 String _orderBy = "Most Recent";
