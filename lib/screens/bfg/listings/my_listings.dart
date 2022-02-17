@@ -102,7 +102,6 @@ class _MyListingsState extends State<MyListings> {
       }
     }).toList();
   }
-
   Widget _buildInfoPopupDialogue(BuildContext context) {
     return AlertDialog(
       backgroundColor: Colors.grey,

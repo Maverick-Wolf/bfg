@@ -302,6 +302,42 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
               ],
             ),
           ),
+          const Spacer(),
+          InkWell(
+            onTap: () {
+              if (widget.contactPreference == "Whatsapp") {
+                openWhatsapp();
+              } else if (widget.contactPreference == "Call") {
+                _makePhoneCall('tel:${widget.phoneNumberOfSeller}');
+              } else {
+                _makePhoneCall('tel:${widget.phoneNumberOfSeller}');
+              }
+            },
+            child: Container(
+              padding: const EdgeInsets.fromLTRB(7, 3, 7, 3),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                color: Colors.black45.withOpacity(0.1),
+              ),
+              child: Column(
+                children: [
+                  Icon(
+                    contactIcon,
+                    size: 36,
+                    color: _theme.secondaryColor,
+                  ),
+                  Text(
+                    "Contact",
+                    style: TextStyle(
+                        fontFamily: _theme.font,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: _theme.secondaryColor),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
       content: Column(
@@ -343,7 +379,6 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
     try {
       launch(whatsappURl);
     } catch (e) {
-      print(e);
       _makePhoneCall('tel:${widget.phoneNumberOfSeller}');
     }
   }

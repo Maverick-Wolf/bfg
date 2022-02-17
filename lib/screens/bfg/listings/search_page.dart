@@ -15,7 +15,7 @@ OurTheme _theme = OurTheme();
 
 class _SearchPageState extends State<SearchPage> {
   final Stream<QuerySnapshot> _booksStream =
-      FirebaseFirestore.instance.collection('books').snapshots();
+  FirebaseFirestore.instance.collection('books').snapshots();
   String stringToBeSearched = "";
 
   @override
@@ -96,39 +96,42 @@ class _SearchPageState extends State<SearchPage> {
           stringToBeSearched = value;
         },
         decoration: InputDecoration(
-            filled: true,
-            fillColor: _theme.tertiaryColor,
-            border: const OutlineInputBorder(),
-            labelText: "Search",
-            floatingLabelBehavior: FloatingLabelBehavior.never,
-            labelStyle: TextStyle(color: _theme.primaryColor),
-            enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: _theme.secondaryColor)),
-            focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: _theme.secondaryColor, width: 2)),
-            suffixIcon: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    color: Colors.grey.withOpacity(0.3)),
-                child: IconButton(
-                  icon: const Icon(Icons.search),
-                  onPressed: () {
-                    setState(() {
-                      FocusScope.of(context).unfocus();
-                    });
-                  },
-                  splashRadius: 24,
-                  color: _theme.primaryColor,
-                ),
+          filled: true,
+          fillColor: _theme.tertiaryColor,
+          border: const OutlineInputBorder(),
+          labelText: "Search",
+          floatingLabelBehavior: FloatingLabelBehavior.never,
+          labelStyle: TextStyle(color: _theme.primaryColor),
+          enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: _theme.secondaryColor)),
+          focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: _theme.secondaryColor, width: 2)),
+          suffixIcon: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                color:Colors.grey.withOpacity(0.3)
               ),
-            )),
+              child: IconButton(
+                icon: const Icon(Icons.search),
+                onPressed: () {
+                  setState(() {
+                    FocusScope.of(context).unfocus();
+                  });
+                },
+                splashRadius: 24,
+                color: _theme.primaryColor,
+              ),
+            ),
+          )
+        ),
         cursorColor: _theme.primaryColor,
         style: TextStyle(
-            fontFamily: _theme.font,
-            fontWeight: FontWeight.bold,
-            color: _theme.primaryColor),
+          fontFamily: _theme.font,
+          fontWeight: FontWeight.bold,
+          color: _theme.primaryColor
+        ),
       ),
     );
   }
@@ -179,7 +182,6 @@ class _SearchPageState extends State<SearchPage> {
       }
     }).toList();
   }
-
   Widget _buildInfoPopupDialogue(BuildContext context) {
     return AlertDialog(
       backgroundColor: Colors.grey,
