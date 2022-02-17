@@ -1,6 +1,5 @@
 import 'package:bfg/theme.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -41,10 +40,10 @@ class _DrawerClassState extends State<DrawerClass> {
                 builder: (BuildContext context,
                     AsyncSnapshot<DocumentSnapshot> snapshot) {
                   if (snapshot.hasError) {
-                    return Text("Something went wrong");
+                    return const Text("Something went wrong");
                   }
                   if (snapshot.hasData && !snapshot.data!.exists) {
-                    return Text("Document does not exist");
+                    return const Text("Document does not exist");
                   }
                   if (snapshot.connectionState == ConnectionState.done) {
                     Map<String, dynamic> data =
