@@ -9,14 +9,14 @@ import 'package:url_launcher/url_launcher.dart';
 class PoolDetailsCard extends StatefulWidget {
   final Map initiator;
   final Map pools;
-  final int booked;
+  final String booked;
   final String city;
   final String date;
   final String from;
   final String to;
   final String note;
   final String time;
-  final int maxCapacity;
+  final String maxCapacity;
   final String documentID;
   final bool longPressBool;
 
@@ -217,7 +217,7 @@ class _PoolDetailsCardState extends State<PoolDetailsCard> {
                   children: [
                     _buildRichText("Initiator: ", widget.initiator['name'], 15),
                     _buildRichText("Pools:", "", 14),
-                    for (var i = 2; i <= widget.booked; i++)
+                    for (var i = 2; i <= int.parse(widget.booked); i++)
                       widget.pools['name$i'].toString().isNotEmpty
                           ? _buildRichText(
                               "${i - 1}: ", widget.pools['name$i'], 13)
@@ -253,7 +253,9 @@ class _PoolDetailsCardState extends State<PoolDetailsCard> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               InkWell(
-                onTap: () {},
+                onTap: () async {
+                  await openWhatsapp(widget.initiator['phone']);
+                },
                 child: Container(
                   height: 40,
                   padding: const EdgeInsets.fromLTRB(7, 3, 7, 3),
@@ -317,11 +319,11 @@ class _PoolDetailsCardState extends State<PoolDetailsCard> {
   }
 
   openWhatsapp(String _phoneNumber) async {
-    var whatsappURl = "whatsapp://send?phone=" + widget.initiator[1] + "&text=";
+    var whatsappURl = "whatsapp://send?phone=" + _phoneNumber + "&text=";
     try {
       launch(whatsappURl);
     } catch (e) {
-      _makePhoneCall('tel:${widget.initiator[1]}', _phoneNumber);
+      _makePhoneCall('tel:$_phoneNumber', _phoneNumber);
     }
   }
 

@@ -2,6 +2,7 @@ import 'package:bfg/screens/bfg/listings/add_book.dart';
 import 'package:bfg/screens/bfg/listings/listings.dart';
 import 'package:bfg/screens/bfg/listings/my_listings.dart';
 import 'package:bfg/screens/bfg/listings/search_page.dart';
+import 'package:bfg/screens/cabpools/listings/add_carpool.dart';
 import 'package:bfg/screens/cabpools/listings/pool_listings.dart';
 import 'package:bfg/screens/cabpools/listings/pool_search_page.dart';
 import 'package:bfg/screens/initialization/initialization.dart';
@@ -38,6 +39,7 @@ void main() {
         '/feedbackPage': (context) => const FeedbackPage(),
         '/poolListings': (context) => const PoolListings(),
         '/carpoolSearch': (context) => PoolSearchPage(),
+        '/addCarpool': (context) => const AddCarpool(),
       },
     ),
   );
