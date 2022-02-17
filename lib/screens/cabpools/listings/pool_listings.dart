@@ -54,7 +54,6 @@ class _PoolListingsState extends State<PoolListings> {
             child: Column(
               children: [
                 TabBar(
-                  isScrollable: true,
                   indicatorColor: _theme.tertiaryColor,
                   tabs: [
                     _buildTab("Within Goa"),
@@ -134,6 +133,7 @@ class _PoolListingsState extends State<PoolListings> {
                   color: _theme.tertiaryColor,
                   fontFamily: _theme.font,
                   fontWeight: FontWeight.bold,
+                  fontSize: 18.0,
                 ),
               ),
             ],

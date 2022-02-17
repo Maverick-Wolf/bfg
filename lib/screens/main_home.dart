@@ -1,5 +1,6 @@
 import 'package:bfg/screens/bfg/bfg_home.dart';
 import 'package:bfg/screens/cabpools/pool_home.dart';
+import 'package:bfg/screens/user/profile.dart';
 import 'package:bfg/theme.dart';
 import 'package:bfg/widgets/drawer.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,7 @@ class MainHome extends StatefulWidget {
 class _MainHomeState extends State<MainHome> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final List<Widget> _pages = [
-    const BfgHome(),
+    const Profile(),
     const BfgHome(),
     const PoolHome(),
   ];
