@@ -1,5 +1,5 @@
 import 'package:bfg/screens/login/sign_up.dart';
-import 'package:bfg/screens/user/user_menu.dart';
+import 'package:bfg/screens/bfg/bfg_home.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -25,7 +25,7 @@ class Initialization extends StatelessWidget {
               final FirebaseAuth _auth = FirebaseAuth.instance;
               _user = _auth.currentUser;
               if (_user != null) {
-                return UserMenu();
+                return BfgHome();
               } else {
                 return const SignUp();
               }

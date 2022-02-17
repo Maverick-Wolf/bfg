@@ -1,4 +1,4 @@
-import 'package:bfg/screens/listings/book_card.dart';
+import 'package:bfg/screens/bfg/listings/book_card.dart';
 import 'package:bfg/theme.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -72,10 +72,9 @@ class _MyListingsState extends State<MyListings> {
     return snapshot.data!.docs.map((DocumentSnapshot document) {
       Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
       if (_user == data['seller_id']) {
-        if(data['contact_preference'] == null) {
+        if (data['contact_preference'] == null) {
           contactPreference = "Call";
-        }
-        else {
+        } else {
           contactPreference = data['contact_preference'];
         }
         return Padding(
@@ -103,8 +102,6 @@ class _MyListingsState extends State<MyListings> {
       }
     }).toList();
   }
-
-
   Widget _buildInfoPopupDialogue(BuildContext context) {
     return AlertDialog(
       backgroundColor: Colors.grey,

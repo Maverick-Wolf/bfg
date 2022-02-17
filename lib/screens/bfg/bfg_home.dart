@@ -3,17 +3,17 @@ import 'package:bfg/theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class UserMenu extends StatefulWidget {
-  UserMenu({Key? key}) : super(key: key);
+class BfgHome extends StatefulWidget {
+  BfgHome({Key? key}) : super(key: key);
 
   @override
-  _UserMenuState createState() => _UserMenuState();
+  _BfgHomeState createState() => _BfgHomeState();
 }
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 late User? _user;
 
-class _UserMenuState extends State<UserMenu> {
+class _BfgHomeState extends State<BfgHome> {
   OurTheme _theme = OurTheme();
 
   @override

@@ -1,4 +1,4 @@
-import 'package:bfg/screens/listings/book_card.dart';
+import 'package:bfg/screens/bfg/listings/book_card.dart';
 import 'package:bfg/theme.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -27,61 +27,61 @@ class _SearchPageState extends State<SearchPage> {
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         backgroundColor: _theme.primaryColor,
-          appBar: AppBar(
-            backgroundColor: _theme.primaryColor,
-            centerTitle: true,
-            title: Text(
-              "Search",
-              style: TextStyle(
-                color: _theme.secondaryColor,
-                fontFamily: _theme.font,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 1.5,
-              ),
+        appBar: AppBar(
+          backgroundColor: _theme.primaryColor,
+          centerTitle: true,
+          title: Text(
+            "Search",
+            style: TextStyle(
+              color: _theme.secondaryColor,
+              fontFamily: _theme.font,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 1.5,
             ),
-            actions: <Widget>[
-              Padding(
-                  padding: const EdgeInsets.only(right: 16.0),
-                  child: IconButton(
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext) =>
-                            _buildInfoPopupDialogue(context),
-                      );
-                    },
-                    icon: const Icon(Icons.info),
-                    color: _theme.tertiaryColor,
-                  )),
+          ),
+          actions: <Widget>[
+            Padding(
+                padding: const EdgeInsets.only(right: 16.0),
+                child: IconButton(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext) =>
+                          _buildInfoPopupDialogue(context),
+                    );
+                  },
+                  icon: const Icon(Icons.info),
+                  color: _theme.tertiaryColor,
+                )),
+          ],
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _buildSearchBar(),
+              SingleChildScrollView(
+                child: SizedBox(
+                  height: MediaQuery.of(context).size.height - 185,
+                  child: StreamBuilder(
+                      stream: _booksStream,
+                      builder: (BuildContext context,
+                          AsyncSnapshot<QuerySnapshot> snapshot) {
+                        if (snapshot.hasData) {
+                          return ListView(
+                            children: getBooks(snapshot),
+                          );
+                        } else {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                      }),
+                ),
+              )
             ],
           ),
-          body: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                _buildSearchBar(),
-                SingleChildScrollView(
-                  child: SizedBox(
-                    height: MediaQuery.of(context).size.height - 185,
-                    child: StreamBuilder(
-                        stream: _booksStream,
-                        builder:
-                            (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                          if (snapshot.hasData) {
-                            return ListView(
-                              children: getBooks(snapshot),
-                            );
-                          } else {
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          }
-                        }),
-                  ),
-                )
-              ],
-            ),
-          ),
+        ),
       ),
     );
   }
@@ -140,11 +140,21 @@ class _SearchPageState extends State<SearchPage> {
     String contactPreference = "Call";
     return snapshot.data!.docs.map((DocumentSnapshot document) {
       Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-      if (data['title'].toString().toLowerCase().contains(stringToBeSearched.toLowerCase()) || data['seller_name'].toString().toLowerCase().contains(stringToBeSearched.toLowerCase()) || data['author'].toString().toLowerCase().contains(stringToBeSearched.toLowerCase())) {
-        if(data['contact_preference'] == null) {
+      if (data['title']
+              .toString()
+              .toLowerCase()
+              .contains(stringToBeSearched.toLowerCase()) ||
+          data['seller_name']
+              .toString()
+              .toLowerCase()
+              .contains(stringToBeSearched.toLowerCase()) ||
+          data['author']
+              .toString()
+              .toLowerCase()
+              .contains(stringToBeSearched.toLowerCase())) {
+        if (data['contact_preference'] == null) {
           contactPreference = "Call";
-        }
-        else {
+        } else {
           contactPreference = data['contact_preference'];
         }
         return Padding(
@@ -172,8 +182,6 @@ class _SearchPageState extends State<SearchPage> {
       }
     }).toList();
   }
-
-
   Widget _buildInfoPopupDialogue(BuildContext context) {
     return AlertDialog(
       backgroundColor: Colors.grey,

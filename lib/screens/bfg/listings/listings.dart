@@ -1,4 +1,4 @@
-import 'package:bfg/screens/listings/book_card.dart';
+import 'package:bfg/screens/bfg/listings/book_card.dart';
 import 'package:bfg/theme.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
