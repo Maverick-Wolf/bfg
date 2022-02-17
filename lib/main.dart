@@ -3,6 +3,7 @@ import 'package:bfg/screens/bfg/listings/listings.dart';
 import 'package:bfg/screens/bfg/listings/my_listings.dart';
 import 'package:bfg/screens/bfg/listings/search_page.dart';
 import 'package:bfg/screens/initialization/initialization.dart';
+import 'package:bfg/screens/initialization/start.dart';
 import 'package:bfg/screens/login/enter_details.dart';
 import 'package:bfg/screens/login/sign_up.dart';
 import 'package:bfg/screens/user/feedback.dart';
