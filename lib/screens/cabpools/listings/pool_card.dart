@@ -82,14 +82,12 @@ class _PoolDetailsCardState extends State<PoolDetailsCard> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Row(
-                        children: [
-                          const Spacer(),
-                          _buildRichText(
-                              "Initiator: ", widget.initiator['name'], 15),
-                          const SizedBox(width: 4),
-                        ],
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: _buildRichText(
+                            "Initiator: ", widget.initiator['name'], 15),
                       ),
+                      const SizedBox(width: 4),
                       const SizedBox(
                         height: 30,
                       ),
