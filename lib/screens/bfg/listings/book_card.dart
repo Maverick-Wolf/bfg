@@ -245,25 +245,59 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
       backgroundColor: Colors.grey,
       title: Row(
         children: [
-          Expanded(
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                _sellerName,
+                style: TextStyle(
+                    color: _theme.secondaryColor,
+                    letterSpacing: 0.7,
+                    fontFamily: _theme.font,
+                    fontWeight: FontWeight.bold),
+              ),
+              Text(
+                _roomNumber,
+                style: TextStyle(
+                    color: _theme.secondaryColor,
+                    fontFamily: _theme.font,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16),
+              ),
+            ],
+          ),
+          const Spacer(),
+          Container(
+            padding: const EdgeInsets.fromLTRB(7, 3, 7, 3),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5),
+              color: Colors.black45.withOpacity(0.1),
+            ),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  _sellerName,
-                  style: TextStyle(
-                      color: _theme.secondaryColor,
-                      letterSpacing: 0.7,
-                      fontFamily: _theme.font,
-                      fontWeight: FontWeight.bold),
+                IconButton(
+                  onPressed: () {
+                    if (widget.contactPreference == "Whatsapp") {
+                      openWhatsapp();
+                    } else if (widget.contactPreference == "Call") {
+                      _makePhoneCall('tel:${widget.phoneNumberOfSeller}');
+                    } else {
+                      _makePhoneCall('tel:${widget.phoneNumberOfSeller}');
+                    }
+                  },
+                  icon: Icon(
+                    contactIcon,
+                    size: 36,
+                    color: _theme.secondaryColor,
+                  ),
                 ),
                 Text(
-                  _roomNumber,
+                  "Contact",
                   style: TextStyle(
-                      color: _theme.secondaryColor,
                       fontFamily: _theme.font,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16),
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: _theme.secondaryColor),
                 ),
               ],
             ),
