@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:intl/intl.dart';
 
 class AddCarpool extends StatefulWidget {
   const AddCarpool({Key? key}) : super(key: key);
@@ -367,18 +368,12 @@ class _AddCarpoolState extends State<AddCarpool> {
                                         color: Colors.white,
                                         fontSize: 16)), onChanged: (date) {
                               _date = date;
-                              _dateSet = date.day.toString() +
-                                  "/" +
-                                  date.month.toString() +
-                                  "/" +
-                                  date.year.toString();
+                              DateFormat _dateFormatter = DateFormat('yMMMd');
+                              _dateSet = _dateFormatter.format(date);
                             }, onConfirm: (date) {
                               _date = date;
-                              _dateSet = date.day.toString() +
-                                  "/" +
-                                  date.month.toString() +
-                                  "/" +
-                                  date.year.toString();
+                              DateFormat _dateFormatter = DateFormat('yMMMd');
+                              _dateSet = _dateFormatter.format(date);
                             }, currentTime: _date, locale: LocaleType.en);
                           },
                           style: ElevatedButton.styleFrom(

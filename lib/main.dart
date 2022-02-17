@@ -39,7 +39,7 @@ void main() {
         '/feedbackPage': (context) => const FeedbackPage(),
         '/poolListings': (context) => const PoolListings(),
         '/carpoolSearch': (context) => PoolSearchPage(),
-        '/addCarpool': (context) => const AddCarpool(),
+        '/addCabpool': (context) => const AddCarpool(),
       },
     ),
   );

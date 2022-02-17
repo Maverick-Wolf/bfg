@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:intl/intl.dart';
 
 class PoolListings extends StatefulWidget {
   const PoolListings({Key? key}) : super(key: key);
@@ -188,53 +189,39 @@ class _PoolListingsState extends State<PoolListings> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    const SizedBox(
-                      width: 1.0,
-                    ),
-                    TextButton(
-                        onPressed: () {
-                          DatePicker.showDatePicker(context,
-                              showTitleActions: true,
-                              minTime: DateTime(2022, 2, 2),
-                              theme: DatePickerTheme(
-                                  headerColor: _theme.secondaryColor,
-                                  backgroundColor: _theme.primaryColor,
-                                  itemStyle: const TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18),
-                                  doneStyle: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 16)), onChanged: (date) {
-                            _date = date;
-                            dateFilter = date.day.toString() +
-                                "/" +
-                                date.month.toString() +
-                                "/" +
-                                date.year.toString();
-                          }, onConfirm: (date) {
-                            _date = date;
-                            dateFilter = date.day.toString() +
-                                "/" +
-                                date.month.toString() +
-                                "/" +
-                                date.year.toString();
-                          }, currentTime: _date, locale: LocaleType.en);
-                        },
-                        child: Text(
-                          "Choose Date",
-                          style: TextStyle(
-                              fontFamily: _theme.font,
-                              fontSize: 16,
-                              color: _theme.tertiaryColor,
-                              fontWeight: FontWeight.w600,
-                              decoration: TextDecoration.underline),
-                        )),
-                  ],
-                ),
+                TextButton(
+                    onPressed: () {
+                      DatePicker.showDatePicker(context,
+                          showTitleActions: true,
+                          minTime: DateTime(2022, 2, 2),
+                          theme: DatePickerTheme(
+                              headerColor: _theme.secondaryColor,
+                              backgroundColor: _theme.primaryColor,
+                              itemStyle: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18),
+                              doneStyle: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16)), onChanged: (date) {
+                        _date = date;
+                        DateFormat _dateFormatter = DateFormat('yMMMd');
+                        dateFilter = _dateFormatter.format(date);
+                      }, onConfirm: (date) {
+                        _date = date;
+                        DateFormat _dateFormatter = DateFormat('yMMMd');
+                        dateFilter = _dateFormatter.format(date);
+                      }, currentTime: _date, locale: LocaleType.en);
+                    },
+                    child: Text(
+                      "Choose Date",
+                      style: TextStyle(
+                          fontFamily: _theme.font,
+                          fontSize: 16,
+                          color: _theme.tertiaryColor,
+                          fontWeight: FontWeight.w600,
+                          decoration: TextDecoration.underline),
+                    )),
                 const SizedBox(
                   height: 25,
                 ),
