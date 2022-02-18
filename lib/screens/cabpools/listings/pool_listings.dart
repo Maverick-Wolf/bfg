@@ -21,6 +21,7 @@ class _PoolListingsState extends State<PoolListings> {
   final OurTheme _theme = OurTheme();
   DateTime _date = DateTime.now();
   String _dateSet = "";
+  String _goaFilter = 'All';
 
   @override
   Widget build(BuildContext context) {
@@ -53,14 +54,15 @@ class _PoolListingsState extends State<PoolListings> {
         body: Padding(
           padding: const EdgeInsets.only(top: 10.0),
           child: DefaultTabController(
-            length: 2,
+            length: 3,
             child: Column(
               children: [
                 TabBar(
                   indicatorColor: _theme.tertiaryColor,
                   tabs: [
-                    _buildTab("Within Goa"),
-                    _buildTab("42"),
+                    _buildTab("By Car"),
+                    _buildTab("By Flight"),
+                    _buildTab("By Train"),
                   ],
                 ),
                 Expanded(
@@ -72,10 +74,13 @@ class _PoolListingsState extends State<PoolListings> {
                         return TabBarView(
                           children: [
                             ListView(
-                              children: getpools(snapshot, "goa"),
+                              children: getpools(snapshot, "car"),
                             ),
                             ListView(
-                              children: getpools(snapshot, "other"),
+                              children: getpools(snapshot, "flight"),
+                            ),
+                            ListView(
+                              children: getpools(snapshot, "train"),
                             ),
                           ],
                         );
@@ -91,11 +96,11 @@ class _PoolListingsState extends State<PoolListings> {
         ));
   }
 
-  getpools(AsyncSnapshot<QuerySnapshot> snapshot, String _where) {
+  getpools(AsyncSnapshot<QuerySnapshot> snapshot, String _how) {
     return snapshot.data!.docs.map((DocumentSnapshot document) {
       Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-      if (data['where'] == _where) {
-        if (data['date'] == _dateSet) {
+      if (data['how'] == _how) {
+        if (data['date'] == _dateSet && _goaFilter == 'All') {
           return Padding(
               padding: EdgeInsets.only(bottom: 3.0, top: 7.0),
               child: PoolDetailsCard(
@@ -171,6 +176,7 @@ class _PoolListingsState extends State<PoolListings> {
 
   Widget _buildFilterPopUp(BuildContext context) {
     String dateFilter = _dateSet;
+    String goaFilter = _goaFilter;
     return StatefulBuilder(builder: (context, StateSetter setState) {
       return Container(
         child: Scaffold(
@@ -189,6 +195,54 @@ class _PoolListingsState extends State<PoolListings> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    const SizedBox(
+                      width: 1.0,
+                    ),
+                    Text(
+                      "Search in :",
+                      style: TextStyle(
+                          fontFamily: _theme.font,
+                          fontSize: 16,
+                          color: _theme.secondaryColor,
+                          fontWeight: FontWeight.w600),
+                    ),
+                    DropdownButton<String>(
+                      value: goaFilter,
+                      icon: Icon(
+                        Icons.arrow_downward,
+                        color: _theme.tertiaryColor,
+                      ),
+                      iconSize: 22,
+                      elevation: 16,
+                      style: TextStyle(color: _theme.tertiaryColor),
+                      underline: Container(
+                        height: 2,
+                        color: _theme.tertiaryColor,
+                      ),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          goaFilter = newValue!;
+                        });
+                      },
+                      items: <String>[
+                        'All',
+                        'Goa',
+                        'Other',
+                      ].map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                    ),
+                    const SizedBox(
+                      width: 1.0,
+                    ),
+                  ],
+                ),
                 TextButton(
                     onPressed: () {
                       DatePicker.showDatePicker(context,
@@ -227,7 +281,7 @@ class _PoolListingsState extends State<PoolListings> {
                 ),
                 TextButton(
                   onPressed: () {
-                    setFilter(dateFilter);
+                    setFilter(dateFilter, goaFilter);
                     Navigator.pop(context);
                     ScaffoldMessenger.of(context).hideCurrentSnackBar(
                         reason: SnackBarClosedReason.dismiss);
@@ -255,9 +309,10 @@ class _PoolListingsState extends State<PoolListings> {
     });
   }
 
-  setFilter(String dateFilter) {
+  setFilter(String dateFilter, String goaFilter) {
     setState(() {
       _dateSet = dateFilter;
+      _goaFilter = goaFilter;
     });
   }
 

@@ -28,8 +28,10 @@ class _AddCarpoolState extends State<AddCarpool> {
   String _timeSet = "";
   String _dateSet = "";
   late Map _initiator;
-  String _where = "goa";
+  String _how = "car";
+  bool _withinGoaBool = false;
   final OurTheme _theme = OurTheme();
+  final TextEditingController _controller = TextEditingController();
 
   Future<void> addCarpool(String name, String phone) {
     _initiator = {'name': name, 'phone': phone};
@@ -41,10 +43,11 @@ class _AddCarpoolState extends State<AddCarpool> {
       'to': _to,
       'time': _timeSet,
       'note': _note,
-      'where': _where,
+      'how': _how,
       'initiator': _initiator,
       'booked': "1",
       'pools': {},
+      'inGoa': _withinGoaBool
     }).then((value) {
       const snackBar =
           SnackBar(content: Text("Your listing was added successfully"));
@@ -99,11 +102,12 @@ class _AddCarpoolState extends State<AddCarpool> {
   Widget _buildCapacityFormField(
       String _label, String _hint, TextInputType inputType) {
     return TextFormField(
+      controller: _controller,
       enableInteractiveSelection: false,
       onChanged: (text) {
         _maxCapacity = text;
       },
-      maxLength: 1,
+      maxLength: (_how == "car") ? 1 : 2,
       decoration: InputDecoration(
         border: const OutlineInputBorder(),
         labelText: _label,
@@ -309,7 +313,7 @@ class _AddCarpoolState extends State<AddCarpool> {
           backgroundColor: _theme.primaryColor,
           centerTitle: true,
           title: Text(
-            "Add a Carpool",
+            "Add a Pool",
             style: TextStyle(
                 fontFamily: _theme.font,
                 fontWeight: FontWeight.bold,
@@ -334,7 +338,6 @@ class _AddCarpoolState extends State<AddCarpool> {
         body: CustomScrollView(
           slivers: [
             SliverFillRemaining(
-              hasScrollBody: false,
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(30.0, 0.0, 30.0, 0.0),
                 child: Column(
@@ -452,7 +455,31 @@ class _AddCarpoolState extends State<AddCarpool> {
                             "Max Poolmates", "", TextInputType.number),
                       ),
                     ),
-                    _buildWhereDropDown(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        _buildWhereDropDown(),
+                        if (_how == "car")
+                          Row(
+                            children: [
+                              Checkbox(
+                                  checkColor: _theme.primaryColor,
+                                  activeColor: _theme.secondaryColor,
+                                  value: _withinGoaBool,
+                                  onChanged: (value) {
+                                    _withinGoaBool = value!;
+                                    setState(() {
+                                      !_withinGoaBool;
+                                    });
+                                  }),
+                              Text("In Goa?",
+                                  style: TextStyle(
+                                      fontFamily: _theme.font,
+                                      fontWeight: FontWeight.w600))
+                            ],
+                          ),
+                      ],
+                    ),
                     _buildTextFormField("Note (Optional)",
                         "Extra info (if any)", 'note', TextInputType.name),
                     _buildAddPoolButton(),
@@ -471,14 +498,14 @@ class _AddCarpoolState extends State<AddCarpool> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          "Where: ",
+          "How: ",
           style: TextStyle(fontFamily: _theme.font, fontSize: 16),
         ),
         const SizedBox(
           width: 5,
         ),
         DropdownButton<String>(
-          value: _where,
+          value: _how,
           icon: const Icon(Icons.arrow_downward),
           iconSize: 20,
           elevation: 16,
@@ -489,10 +516,11 @@ class _AddCarpoolState extends State<AddCarpool> {
           ),
           onChanged: (String? newValue) {
             setState(() {
-              _where = newValue!;
+              _how = newValue!;
+              _controller.clear();
             });
           },
-          items: <String>["goa", "other"]
+          items: <String>["car", "flight", "train"]
               .map<DropdownMenuItem<String>>((String value) {
             return DropdownMenuItem<String>(
               value: value,

@@ -5,7 +5,6 @@ import 'package:bfg/screens/bfg/listings/search_page.dart';
 import 'package:bfg/screens/cabpools/listings/add_carpool.dart';
 import 'package:bfg/screens/cabpools/listings/pool_listings.dart';
 import 'package:bfg/screens/cabpools/listings/pool_search_page.dart';
-import 'package:bfg/screens/cabpools/pool_home.dart';
 import 'package:bfg/screens/initialization/initialization.dart';
 import 'package:bfg/screens/initialization/start.dart';
 import 'package:bfg/screens/login/enter_details.dart';
@@ -13,7 +12,6 @@ import 'package:bfg/screens/login/sign_up.dart';
 import 'package:bfg/screens/main_home.dart';
 import 'package:bfg/screens/user/feedback.dart';
 import 'package:bfg/screens/user/profile.dart';
-import 'package:bfg/screens/bfg/bfg_home.dart';
 import 'package:bfg/theme.dart';
 import 'package:flutter/material.dart';
 
@@ -41,7 +39,7 @@ void main() {
         '/feedbackPage': (context) => const FeedbackPage(),
         '/poolListings': (context) => const PoolListings(),
         '/carpoolSearch': (context) => PoolSearchPage(),
-        '/addCabpool': (context) => const AddCarpool(),
+        '/addCarpool': (context) => const AddCarpool(),
       },
     ),
   );
