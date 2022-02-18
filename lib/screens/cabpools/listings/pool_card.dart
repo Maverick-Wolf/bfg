@@ -8,7 +8,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 class PoolDetailsCard extends StatefulWidget {
   final Map initiator;
-  final Map pools;
+  final List pools;
   final String booked;
   final String city;
   final String date;
@@ -40,6 +40,9 @@ class PoolDetailsCard extends StatefulWidget {
   _PoolDetailsCardState createState() => _PoolDetailsCardState();
 }
 
+int _poolNumber = 1;
+List _pools = [];
+User? _user;
 OurTheme _theme = OurTheme();
 late double _width;
 final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -47,6 +50,7 @@ final FirebaseAuth _auth = FirebaseAuth.instance;
 class _PoolDetailsCardState extends State<PoolDetailsCard> {
   @override
   Widget build(BuildContext context) {
+    _user = _auth.currentUser;
     _width = MediaQuery.of(context).size.width;
     return InkWell(
       child: Center(
@@ -215,10 +219,9 @@ class _PoolDetailsCardState extends State<PoolDetailsCard> {
                   children: [
                     _buildRichText("Initiator: ", widget.initiator['name'], 15),
                     _buildRichText("Pools:", "", 14),
-                    for (var i = 2; i <= int.parse(widget.booked); i++)
-                      widget.pools['name$i'].toString().isNotEmpty
-                          ? _buildRichText(
-                              "${i - 1}: ", widget.pools['name$i'], 13)
+                    for (Map map in widget.pools)
+                      widget.pools.isNotEmpty
+                          ? _buildRichText("•", map["name"], 13)
                           : const SizedBox(),
                   ],
                 ),
@@ -283,7 +286,33 @@ class _PoolDetailsCardState extends State<PoolDetailsCard> {
                 width: 10,
               ),
               InkWell(
-                onTap: () {},
+                onTap: () async {
+                  String name = "";
+                  String phoneNumber = "";
+                  DocumentSnapshot documentSnapshot = await FirebaseFirestore
+                      .instance
+                      .collection("users")
+                      .doc(_user!.uid)
+                      .get();
+                  if (documentSnapshot.exists) {
+                    name = (documentSnapshot.data() as dynamic)['name'];
+                    phoneNumber =
+                        (documentSnapshot.data() as dynamic)['phone_number'];
+                  }
+                  DocumentSnapshot documentSnapshot1 = await FirebaseFirestore
+                      .instance
+                      .collection("polls")
+                      .doc(widget.documentID)
+                      .get();
+                  if (documentSnapshot1.exists) {
+                    _pools = (documentSnapshot1.data() as dynamic)['pools'];
+                  }
+                  _pools.add({"name": name, "number": phoneNumber});
+                  DocumentReference _docpools = FirebaseFirestore.instance
+                      .collection("pools")
+                      .doc(widget.documentID);
+                  _docpools.update({"pools": _pools});
+                },
                 child: Container(
                   height: 40,
                   padding: const EdgeInsets.fromLTRB(7, 3, 7, 3),

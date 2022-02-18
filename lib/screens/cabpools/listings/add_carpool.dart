@@ -46,7 +46,7 @@ class _AddCarpoolState extends State<AddCarpool> {
       'how': _how,
       'initiator': _initiator,
       'booked': "1",
-      'pools': {},
+      'pools': [],
       'inGoa': _withinGoaBool
     }).then((value) {
       const snackBar =
