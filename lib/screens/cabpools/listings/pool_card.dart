@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:bfg/theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -45,12 +44,15 @@ List _pools = [];
 User? _user;
 OurTheme _theme = OurTheme();
 late double _width;
-final FirebaseAuth _auth = FirebaseAuth.instance;
+late CollectionReference users;
+String _username = "";
+User? _user;
 
 class _PoolDetailsCardState extends State<PoolDetailsCard> {
   @override
   Widget build(BuildContext context) {
-    _user = _auth.currentUser;
+    _user = FirebaseAuth.instance.currentUser;
+    users = FirebaseFirestore.instance.collection('users');
     _width = MediaQuery.of(context).size.width;
     return InkWell(
       child: Center(
@@ -261,12 +263,12 @@ class _PoolDetailsCardState extends State<PoolDetailsCard> {
                   height: 40,
                   padding: const EdgeInsets.fromLTRB(7, 3, 7, 3),
                   decoration: BoxDecoration(
-                    color: Colors.grey,
+                    color: Colors.green,
                     borderRadius: BorderRadius.circular(5),
                     boxShadow: [
                       BoxShadow(
                           color: _theme.primaryColor,
-                          offset: Offset.fromDirection(1, 2),
+                          offset: Offset.fromDirection(1, 1),
                           blurRadius: 1)
                     ],
                   ),
@@ -287,42 +289,49 @@ class _PoolDetailsCardState extends State<PoolDetailsCard> {
               ),
               InkWell(
                 onTap: () async {
-                  String name = "";
-                  String phoneNumber = "";
-                  DocumentSnapshot documentSnapshot = await FirebaseFirestore
-                      .instance
-                      .collection("users")
+                  await users
                       .doc(_user!.uid)
-                      .get();
-                  if (documentSnapshot.exists) {
-                    name = (documentSnapshot.data() as dynamic)['name'];
-                    phoneNumber =
-                        (documentSnapshot.data() as dynamic)['phone_number'];
+                      .get()
+                      .then((value) => _username = value['name']);
+                  List _pools = widget.pools;
+                  _pools.add({
+                    'name': _username,
+                    'phone': _user!.phoneNumber.toString()
+                  });
+                  if (int.parse(widget.booked) <=
+                          int.parse(widget.maxCapacity) &&
+                      _username != widget.initiator['name'] &&
+                      _username !=
+                          widget.pools[int.parse(widget.booked) - 2]['name']) {
+                    try {
+                      await FirebaseFirestore.instance
+                          .collection('pools')
+                          .doc(widget.documentID)
+                          .update({
+                        'pools': _pools,
+                        'booked': (int.parse(widget.booked) + 1).toString()
+                      });
+                    } catch (e) {
+                      const snackBar =
+                          SnackBar(content: Text('Couldn\'t join pool :('));
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    }
+                  } else {
+                    const snackBar =
+                        SnackBar(content: Text('Can\'t join pool'));
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   }
-                  DocumentSnapshot documentSnapshot1 = await FirebaseFirestore
-                      .instance
-                      .collection("polls")
-                      .doc(widget.documentID)
-                      .get();
-                  if (documentSnapshot1.exists) {
-                    _pools = (documentSnapshot1.data() as dynamic)['pools'];
-                  }
-                  _pools.add({"name": name, "number": phoneNumber});
-                  DocumentReference _docpools = FirebaseFirestore.instance
-                      .collection("pools")
-                      .doc(widget.documentID);
-                  _docpools.update({"pools": _pools});
                 },
                 child: Container(
                   height: 40,
                   padding: const EdgeInsets.fromLTRB(7, 3, 7, 3),
                   decoration: BoxDecoration(
-                    color: Colors.grey,
+                    color: Colors.blue,
                     borderRadius: BorderRadius.circular(5),
                     boxShadow: [
                       BoxShadow(
                           color: _theme.primaryColor,
-                          offset: Offset.fromDirection(1, 2),
+                          offset: Offset.fromDirection(1, 1),
                           blurRadius: 1)
                     ],
                   ),
