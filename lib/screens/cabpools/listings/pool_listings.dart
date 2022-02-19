@@ -101,40 +101,25 @@ class _PoolListingsState extends State<PoolListings> {
       Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
       if (data['how'] == _how) {
         if (data['date'] == _dateSet && _goaFilter == 'All') {
-          return Padding(
-              padding: EdgeInsets.only(bottom: 3.0, top: 7.0),
-              child: PoolDetailsCard(
-                documentID: document.id,
-                longPressBool: false,
-                booked: data['booked'],
-                city: data['city'],
-                date: data['date'],
-                from: data['from'],
-                initiator: data['initiator'],
-                maxCapacity: data['max_capacity'],
-                note: data['note'],
-                pools: data['pools'],
-                to: data['to'],
-                time: data['time'],
-              ));
-        }
-        if (_dateSet == "") {
-          return Padding(
-              padding: EdgeInsets.only(bottom: 3.0, top: 7.0),
-              child: PoolDetailsCard(
-                documentID: document.id,
-                longPressBool: false,
-                booked: data['booked'],
-                city: data['city'],
-                date: data['date'],
-                from: data['from'],
-                initiator: data['initiator'],
-                maxCapacity: data['max_capacity'],
-                note: data['note'],
-                pools: data['pools'],
-                to: data['to'],
-                time: data['time'],
-              ));
+          return detailsCard(document, data);
+        } else if (data['date'] == _dateSet &&
+            _goaFilter == 'Goa' &&
+            data["inGoa"] == true) {
+          return detailsCard(document, data);
+        } else if (data['date'] == _dateSet &&
+            _goaFilter == 'Other' &&
+            data["inGoa"] == false) {
+          return detailsCard(document, data);
+        } else if (_dateSet == "" && _goaFilter == 'All') {
+          return detailsCard(document, data);
+        } else if (_dateSet == "" &&
+            _goaFilter == 'Goa' &&
+            data['inGoa'] == true) {
+          return detailsCard(document, data);
+        } else if (_dateSet == "" &&
+            _goaFilter == 'Other' &&
+            data['inGoa'] == false) {
+          return detailsCard(document, data);
         } else {
           return const SizedBox(
             height: 0,
@@ -369,4 +354,21 @@ class _PoolListingsState extends State<PoolListings> {
       ],
     );
   }
+
+  Widget detailsCard(DocumentSnapshot document, Map data) => Padding(
+      padding: EdgeInsets.only(bottom: 3.0, top: 7.0),
+      child: PoolDetailsCard(
+        documentID: document.id,
+        longPressBool: false,
+        booked: data['booked'],
+        city: data['city'],
+        date: data['date'],
+        from: data['from'],
+        initiator: data['initiator'],
+        maxCapacity: data['max_capacity'],
+        note: data['note'],
+        pools: data['pools'],
+        to: data['to'],
+        time: data['time'],
+      ));
 }

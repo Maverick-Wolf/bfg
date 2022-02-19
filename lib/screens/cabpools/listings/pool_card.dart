@@ -46,7 +46,6 @@ OurTheme _theme = OurTheme();
 late double _width;
 late CollectionReference users;
 String _username = "";
-User? _user;
 
 class _PoolDetailsCardState extends State<PoolDetailsCard> {
   @override
