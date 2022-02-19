@@ -39,6 +39,9 @@ class PoolDetailsCard extends StatefulWidget {
   _PoolDetailsCardState createState() => _PoolDetailsCardState();
 }
 
+int _poolNumber = 1;
+List _pools = [];
+User? _user;
 OurTheme _theme = OurTheme();
 late double _width;
 late CollectionReference users;
@@ -218,10 +221,9 @@ class _PoolDetailsCardState extends State<PoolDetailsCard> {
                   children: [
                     _buildRichText("Initiator: ", widget.initiator['name'], 15),
                     _buildRichText("Pools:", "", 14),
-                    for (var i = 0; i < int.parse(widget.booked) - 1; i++)
-                      widget.pools[i]['name'].toString().isNotEmpty
-                          ? _buildRichText(
-                              "${i + 2}: ", widget.pools[i]['name'], 13)
+                    for (Map map in widget.pools)
+                      widget.pools.isNotEmpty
+                          ? _buildRichText("• ", map["name"], 13)
                           : const SizedBox(),
                   ],
                 ),
