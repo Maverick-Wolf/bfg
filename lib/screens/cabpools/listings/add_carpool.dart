@@ -25,8 +25,8 @@ class _AddCarpoolState extends State<AddCarpool> {
   String _maxCapacity = "";
   late DateTime _date = DateTime.now();
   late DateTime _time = DateTime.now();
-  String _timeSet = "";
-  String _dateSet = "";
+  String _timeSet = "Choose Time";
+  String _dateSet = "Choose Date";
   late Map _initiator;
   String _how = "car";
   bool _withinGoaBool = false;
@@ -376,7 +376,9 @@ class _AddCarpoolState extends State<AddCarpool> {
                             }, onConfirm: (date) {
                               _date = date;
                               DateFormat _dateFormatter = DateFormat('yMMMd');
-                              _dateSet = _dateFormatter.format(date);
+                              setState(() {
+                                _dateSet = _dateFormatter.format(date);
+                              });
                             }, currentTime: _date, locale: LocaleType.en);
                           },
                           style: ElevatedButton.styleFrom(
@@ -396,7 +398,7 @@ class _AddCarpoolState extends State<AddCarpool> {
                                 width: 10.0,
                               ),
                               Text(
-                                "Choose Date",
+                                _dateSet,
                                 style: TextStyle(
                                     fontSize: 15.0,
                                     fontFamily: _theme.font,
@@ -415,9 +417,12 @@ class _AddCarpoolState extends State<AddCarpool> {
                                   "hrs";
                             }, onConfirm: (date) {
                               _time = date;
-                              _timeSet = date.hour.toString() +
-                                  date.minute.toString() +
-                                  "hrs";
+                              setState(() {
+                                _timeSet = date.hour.toString() +
+                                    ":" +
+                                    date.minute.toString() +
+                                    "hrs";
+                              });
                             }, currentTime: _time);
                           },
                           style: ElevatedButton.styleFrom(
@@ -437,7 +442,7 @@ class _AddCarpoolState extends State<AddCarpool> {
                                 width: 10.0,
                               ),
                               Text(
-                                "Choose Time",
+                                _timeSet,
                                 style: TextStyle(
                                     fontSize: 15.0,
                                     fontFamily: _theme.font,

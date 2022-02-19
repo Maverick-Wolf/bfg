@@ -221,7 +221,7 @@ class _PoolDetailsCardState extends State<PoolDetailsCard> {
                     _buildRichText("Pools:", "", 14),
                     for (Map map in widget.pools)
                       widget.pools.isNotEmpty
-                          ? _buildRichText("•", map["name"], 13)
+                          ? _buildRichText("• ", map["name"], 13)
                           : const SizedBox(),
                   ],
                 ),
