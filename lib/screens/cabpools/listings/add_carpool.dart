@@ -335,164 +335,160 @@ class _AddCarpoolState extends State<AddCarpool> {
                 )),
           ],
         ),
-        body: CustomScrollView(
-          slivers: [
-            SliverFillRemaining(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(30.0, 0.0, 30.0, 0.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    _buildTextFormField("City", "", 'city', TextInputType.name),
-                    _buildTextFormField(
-                        "From",
-                        "Where will the pool start from",
-                        'from',
-                        TextInputType.name),
-                    _buildTextFormField("To", "Where will the pool end", 'to',
-                        TextInputType.name),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        ElevatedButton(
-                          onPressed: () {
-                            DatePicker.showDatePicker(context,
-                                showTitleActions: true,
-                                minTime: DateTime(2022, 2, 2),
-                                theme: DatePickerTheme(
-                                    headerColor: _theme.secondaryColor,
-                                    backgroundColor: _theme.primaryColor,
-                                    itemStyle: const TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18),
-                                    doneStyle: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 16)), onChanged: (date) {
-                              _date = date;
-                              DateFormat _dateFormatter = DateFormat('yMMMd');
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(30.0, 0.0, 30.0, 0.0),
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height - 80.0,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  _buildTextFormField("City", "", 'city', TextInputType.name),
+                  _buildTextFormField("From", "Where will the pool start from",
+                      'from', TextInputType.name),
+                  _buildTextFormField("To", "Where will the pool end", 'to',
+                      TextInputType.name),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          DatePicker.showDatePicker(context,
+                              showTitleActions: true,
+                              minTime: DateTime(2022, 2, 2),
+                              theme: DatePickerTheme(
+                                  headerColor: _theme.secondaryColor,
+                                  backgroundColor: _theme.primaryColor,
+                                  itemStyle: const TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18),
+                                  doneStyle: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16)), onChanged: (date) {
+                            _date = date;
+                            DateFormat _dateFormatter = DateFormat('yMMMd');
+                            _dateSet = _dateFormatter.format(date);
+                          }, onConfirm: (date) {
+                            _date = date;
+                            DateFormat _dateFormatter = DateFormat('yMMMd');
+                            setState(() {
                               _dateSet = _dateFormatter.format(date);
-                            }, onConfirm: (date) {
-                              _date = date;
-                              DateFormat _dateFormatter = DateFormat('yMMMd');
-                              setState(() {
-                                _dateSet = _dateFormatter.format(date);
-                              });
-                            }, currentTime: _date, locale: LocaleType.en);
-                          },
-                          style: ElevatedButton.styleFrom(
-                              primary: _theme.secondaryColor.withOpacity(0.8),
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 10),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15),
-                              )),
-                          child: Wrap(
-                            children: [
-                              const Icon(
-                                Icons.calendar_today,
-                                size: 18,
-                              ),
-                              const SizedBox(
-                                width: 10.0,
-                              ),
-                              Text(
-                                _dateSet,
-                                style: TextStyle(
-                                    fontSize: 15.0,
-                                    fontFamily: _theme.font,
-                                    fontWeight: FontWeight.bold),
-                              )
-                            ],
-                          ),
+                            });
+                          }, currentTime: _date, locale: LocaleType.en);
+                        },
+                        style: ElevatedButton.styleFrom(
+                            primary: _theme.secondaryColor.withOpacity(0.8),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            )),
+                        child: Wrap(
+                          children: [
+                            const Icon(
+                              Icons.calendar_today,
+                              size: 18,
+                            ),
+                            const SizedBox(
+                              width: 10.0,
+                            ),
+                            Text(
+                              _dateSet,
+                              style: TextStyle(
+                                  fontSize: 15.0,
+                                  fontFamily: _theme.font,
+                                  fontWeight: FontWeight.bold),
+                            )
+                          ],
                         ),
-                        ElevatedButton(
-                          onPressed: () {
-                            DatePicker.showTimePicker(context,
-                                showTitleActions: true, onChanged: (date) {
-                              _time = date;
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          DatePicker.showTimePicker(context,
+                              showTitleActions: true, onChanged: (date) {
+                            _time = date;
+                            _timeSet = date.hour.toString() +
+                                date.minute.toString() +
+                                "hrs";
+                          }, onConfirm: (date) {
+                            _time = date;
+                            setState(() {
                               _timeSet = date.hour.toString() +
+                                  ":" +
                                   date.minute.toString() +
                                   "hrs";
-                            }, onConfirm: (date) {
-                              _time = date;
-                              setState(() {
-                                _timeSet = date.hour.toString() +
-                                    ":" +
-                                    date.minute.toString() +
-                                    "hrs";
-                              });
-                            }, currentTime: _time);
-                          },
-                          style: ElevatedButton.styleFrom(
-                              primary: _theme.secondaryColor.withOpacity(0.8),
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 10),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15),
-                              )),
-                          child: Wrap(
-                            children: [
-                              const Icon(
-                                Icons.timer,
-                                size: 18,
-                              ),
-                              const SizedBox(
-                                width: 10.0,
-                              ),
-                              Text(
-                                _timeSet,
-                                style: TextStyle(
-                                    fontSize: 15.0,
-                                    fontFamily: _theme.font,
-                                    fontWeight: FontWeight.bold),
-                              )
-                            ],
-                          ),
+                            });
+                          }, currentTime: _time);
+                        },
+                        style: ElevatedButton.styleFrom(
+                            primary: _theme.secondaryColor.withOpacity(0.8),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            )),
+                        child: Wrap(
+                          children: [
+                            const Icon(
+                              Icons.timer,
+                              size: 18,
+                            ),
+                            const SizedBox(
+                              width: 10.0,
+                            ),
+                            Text(
+                              _timeSet,
+                              style: TextStyle(
+                                  fontSize: 15.0,
+                                  fontFamily: _theme.font,
+                                  fontWeight: FontWeight.bold),
+                            )
+                          ],
                         ),
-                      ],
-                    ),
-                    Center(
-                      child: Container(
-                        width: MediaQuery.of(context).size.width / 2,
-                        child: _buildCapacityFormField(
-                            "Max Poolmates", "", TextInputType.number),
                       ),
+                    ],
+                  ),
+                  Center(
+                    child: Container(
+                      width: MediaQuery.of(context).size.width / 2,
+                      child: _buildCapacityFormField(
+                          "Max Poolmates", "", TextInputType.number),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        _buildWhereDropDown(),
-                        if (_how == "car")
-                          Row(
-                            children: [
-                              Checkbox(
-                                  checkColor: _theme.primaryColor,
-                                  activeColor: _theme.secondaryColor,
-                                  value: _withinGoaBool,
-                                  onChanged: (value) {
-                                    _withinGoaBool = value!;
-                                    setState(() {
-                                      !_withinGoaBool;
-                                    });
-                                  }),
-                              Text("In Goa?",
-                                  style: TextStyle(
-                                      fontFamily: _theme.font,
-                                      fontWeight: FontWeight.w600))
-                            ],
-                          ),
-                      ],
-                    ),
-                    _buildTextFormField("Note (Optional)",
-                        "Extra info (if any)", 'note', TextInputType.name),
-                    _buildAddPoolButton(),
-                  ],
-                ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      _buildWhereDropDown(),
+                      if (_how == "car")
+                        Row(
+                          children: [
+                            Checkbox(
+                                checkColor: _theme.primaryColor,
+                                activeColor: _theme.secondaryColor,
+                                value: _withinGoaBool,
+                                onChanged: (value) {
+                                  _withinGoaBool = value!;
+                                  setState(() {
+                                    !_withinGoaBool;
+                                  });
+                                }),
+                            Text("In Goa?",
+                                style: TextStyle(
+                                    fontFamily: _theme.font,
+                                    fontWeight: FontWeight.w600))
+                          ],
+                        ),
+                    ],
+                  ),
+                  _buildTextFormField("Note (Optional)", "Extra info (if any)",
+                      'note', TextInputType.name),
+                  _buildAddPoolButton(),
+                ],
               ),
             ),
-          ],
+          ),
         ),
       ),
     );

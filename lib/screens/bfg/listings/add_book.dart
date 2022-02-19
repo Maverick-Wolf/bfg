@@ -39,7 +39,10 @@ class _AddBookState extends State<AddBook> {
           centerTitle: true,
           title: Text(
             "Sell a Book",
-            style: TextStyle(fontFamily: _theme.font, fontWeight: FontWeight.bold, color: _theme.secondaryColor),
+            style: TextStyle(
+                fontFamily: _theme.font,
+                fontWeight: FontWeight.bold,
+                color: _theme.secondaryColor),
           ),
           actions: <Widget>[
             Padding(
@@ -57,43 +60,45 @@ class _AddBookState extends State<AddBook> {
                 )),
           ],
         ),
-        body: CustomScrollView(
-          slivers: [
-            SliverFillRemaining(
-              hasScrollBody: false,
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(30.0, 0.0, 30.0, 0.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    _buildTextFormField(
-                        "Book Name", "Full Name of Book", 'title', TextInputType.name),
-                    _buildTextFormField(
-                        "Author(s)", "Name(s) separated by commas", 'author', TextInputType.name),
-                    _buildDepartmentDropDown(),
-                    _buildDropdownRow(),
-                    Center(
-                      child: Container(
-                        width: MediaQuery.of(context).size.width / 2,
-                        child: _buildPriceTextFormField(
-                            "Listing Price", "Your Selling Price", TextInputType.number),
-                      ),
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(30.0, 0.0, 30.0, 0.0),
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height - 80.0,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  _buildTextFormField("Book Name", "Full Name of Book", 'title',
+                      TextInputType.name),
+                  _buildTextFormField(
+                      "Author(s)",
+                      "Name(s) separated by commas",
+                      'author',
+                      TextInputType.name),
+                  _buildDepartmentDropDown(),
+                  _buildDropdownRow(),
+                  Center(
+                    child: Container(
+                      width: MediaQuery.of(context).size.width / 2,
+                      child: _buildPriceTextFormField("Listing Price",
+                          "Your Selling Price", TextInputType.number),
                     ),
-                    _buildTextFormField(
-                        "Note (Optional)", "Extra info (if any)", 'note', TextInputType.name),
-                    _buildSellButton(),
-                  ],
-                ),
+                  ),
+                  _buildTextFormField("Note (Optional)", "Extra info (if any)",
+                      'note', TextInputType.name),
+                  _buildSellButton(),
+                ],
               ),
             ),
-          ],
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildTextFormField(String _label, String _hint, String fillIn, TextInputType inputType) {
+  Widget _buildTextFormField(
+      String _label, String _hint, String fillIn, TextInputType inputType) {
     return TextFormField(
       onChanged: (text) {
         switch (fillIn) {
@@ -133,7 +138,8 @@ class _AddBookState extends State<AddBook> {
     );
   }
 
-  Widget _buildPriceTextFormField(String _label, String _hint, TextInputType inputType) {
+  Widget _buildPriceTextFormField(
+      String _label, String _hint, TextInputType inputType) {
     return TextFormField(
       enableInteractiveSelection: false,
       onChanged: (text) {
@@ -298,42 +304,39 @@ class _AddBookState extends State<AddBook> {
     );
   }
 
-  Future<void> addBook(String sellerName, String sellerRoom, String sellerHostel, String sellerPhone, String contactPreference) {
-    return books
-        .add({
-          'title': _bookTitle,
-          'author': _bookAuthor,
-          'department': _department,
-          'edition': _edition,
-          'seller_id': _user!.uid,
-          'seller_name': sellerName,
-          'seller_room': sellerRoom,
-          'seller_hostel': sellerHostel,
-          'seller_phone': sellerPhone,
-          'price': _bookPrice,
-          'semester': _semester,
-          'note': _note,
-          'contact_preference': contactPreference,
-        })
-        .then(
-            (value) {
-              const snackBar = SnackBar(content: Text("Your listing was added successfully"));
-              ScaffoldMessenger.of(context).showSnackBar(snackBar);
-              }
-            )
-        .catchError((error) {
-              final snackBar = SnackBar(content: Text("Failed to add book: $error"));
-              ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      }
-    );
+  Future<void> addBook(String sellerName, String sellerRoom,
+      String sellerHostel, String sellerPhone, String contactPreference) {
+    return books.add({
+      'title': _bookTitle,
+      'author': _bookAuthor,
+      'department': _department,
+      'edition': _edition,
+      'seller_id': _user!.uid,
+      'seller_name': sellerName,
+      'seller_room': sellerRoom,
+      'seller_hostel': sellerHostel,
+      'seller_phone': sellerPhone,
+      'price': _bookPrice,
+      'semester': _semester,
+      'note': _note,
+      'contact_preference': contactPreference,
+    }).then((value) {
+      const snackBar =
+          SnackBar(content: Text("Your listing was added successfully"));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }).catchError((error) {
+      final snackBar = SnackBar(content: Text("Failed to add book: $error"));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    });
   }
 
   Widget _buildSellButton() {
     return Center(
       child: ElevatedButton(
         onPressed: () {
-          if(_bookTitle.isEmpty || _bookAuthor.isEmpty || _bookPrice.isEmpty) {
-            const snackBar = SnackBar(content: Text("Please fill the required fields"));
+          if (_bookTitle.isEmpty || _bookAuthor.isEmpty || _bookPrice.isEmpty) {
+            const snackBar =
+                SnackBar(content: Text("Please fill the required fields"));
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
           } else {
             showDialog(
@@ -478,14 +481,15 @@ class _AddBookState extends State<AddBook> {
               if (documentSnapshot.exists) {
                 name = (documentSnapshot.data() as dynamic)['name'];
                 roomNumber =
-                (documentSnapshot.data() as dynamic)['room_number'];
+                    (documentSnapshot.data() as dynamic)['room_number'];
                 hostelNumber = (documentSnapshot.data() as dynamic)['hostel'];
                 phoneNumber =
-                (documentSnapshot.data() as dynamic)['phone_number'];
+                    (documentSnapshot.data() as dynamic)['phone_number'];
                 contactPreference =
-                (documentSnapshot.data() as dynamic)['contact_preference'];
+                    (documentSnapshot.data() as dynamic)['contact_preference'];
               }
-              addBook(name, roomNumber, hostelNumber, phoneNumber, contactPreference);
+              addBook(name, roomNumber, hostelNumber, phoneNumber,
+                  contactPreference);
               Navigator.popAndPushNamed(context, '/userMenu');
             },
             child: Text(
