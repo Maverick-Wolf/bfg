@@ -78,6 +78,14 @@ flutter:
     - assets/images/book.png
     - assets/images/college_white.png
     - assets/images/high.png
+    - assets/images/doge.gif
+    - assets/images/rihanna.gif
+    - assets/images/simpsons.gif
+    - assets/images/stewie.gif
+    - assets/images/wows.jpeg
+    - assets/images/give.jpeg
+    - assets/images/bernie.jpeg
+    - assets/images/broke.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
