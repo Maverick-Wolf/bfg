@@ -82,7 +82,7 @@ class _MainHomeState extends State<MainHome> {
                     icon: Icon(
                       Icons.directions_car,
                     ),
-                    label: "Poll"),
+                    label: "Pool"),
               ],
               iconSize: 25.0,
               unselectedFontSize: 12.0,

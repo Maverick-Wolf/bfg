@@ -240,8 +240,8 @@ class _PoolListingsState extends State<PoolListings> {
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 18),
-                              doneStyle: const TextStyle(
-                                  color: Colors.white,
+                              doneStyle: TextStyle(
+                                  color: _theme.primaryColor,
                                   fontSize: 16)), onChanged: (date) {
                         _date = date;
                         DateFormat _dateFormatter = DateFormat('yMMMd');

@@ -188,36 +188,33 @@ class _AddCarpoolState extends State<AddCarpool> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _textBox("Book Name",
-              "Enter the complete name of the book, with proper indentations"),
+          _textBox("City", "The city where the pool is supposed to happen"),
           SizedBox(
             height: 5,
           ),
-          _textBox("Author(s)",
-              "Enter the names of the authors with correct spellings"),
+          _textBox("From", "Starting point"),
           SizedBox(
             height: 5,
           ),
-          _textBox("Department", "The department the book belongs to"),
+          _textBox("To", "Destination"),
           SizedBox(
             height: 5,
           ),
-          _textBox("Edition", "The edition of the book"),
+          _textBox("Max Poolmates",
+              "The max number of poolmates youre comfortable with having"),
           SizedBox(
             height: 5,
           ),
-          _textBox("Semester",
-              "The semester in which the book is part of the curriculum"),
+          _textBox("How", "Choose your suitable way of travel"),
           SizedBox(
             height: 5,
           ),
-          _textBox(
-              "Listing Price", "The price at which you want to sell the book"),
+          _textBox("In Goa", "This helps us filter search results later"),
           SizedBox(
             height: 5,
           ),
           _textBox("Note",
-              "(Optional) Any extra info, regarding the book, or life in general"),
+              "(Optional) Any extra info, regarding the pool, or life in general"),
           SizedBox(
             height: 5,
           ),
@@ -364,8 +361,8 @@ class _AddCarpoolState extends State<AddCarpool> {
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 18),
-                                  doneStyle: const TextStyle(
-                                      color: Colors.white,
+                                  doneStyle: TextStyle(
+                                      color: _theme.primaryColor,
                                       fontSize: 16)), onChanged: (date) {
                             _date = date;
                             DateFormat _dateFormatter = DateFormat('yMMMd');
@@ -474,7 +471,7 @@ class _AddCarpoolState extends State<AddCarpool> {
                                     !_withinGoaBool;
                                   });
                                 }),
-                            Text("In Goa?",
+                            Text("Is the pool in Goa?",
                                 style: TextStyle(
                                     fontFamily: _theme.font,
                                     fontWeight: FontWeight.w600))
