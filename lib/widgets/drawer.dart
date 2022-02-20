@@ -130,44 +130,8 @@ class _DrawerClassState extends State<DrawerClass> {
             thickness: 1,
           ),
           ListTile(
-            leading: Icon(Icons.view_headline_outlined,
-                color: _theme.secondaryColor),
-            title: Text(
-              'View Available Books',
-              style: TextStyle(
-                  fontFamily: _theme.font,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: _theme.tertiaryColor),
-            ),
-            onTap: () {
-              Navigator.pushNamed(context, '/listings');
-            },
-          ),
-          const Divider(
-            thickness: 1,
-          ),
-          ListTile(
-            leading: Icon(Icons.bookmark_outline_sharp,
-                color: _theme.secondaryColor),
-            title: Text(
-              'Sell a Book',
-              style: TextStyle(
-                  fontFamily: _theme.font,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: _theme.tertiaryColor),
-            ),
-            onTap: () {
-              Navigator.popAndPushNamed(context, '/addBook');
-            },
-          ),
-          const Divider(
-            thickness: 1,
-          ),
-          ListTile(
-            leading: Icon(Icons.feedback_outlined,
-                color: _theme.secondaryColor),
+            leading:
+                Icon(Icons.feedback_outlined, color: _theme.secondaryColor),
             title: Text(
               'Send Feedback',
               style: TextStyle(
@@ -178,6 +142,23 @@ class _DrawerClassState extends State<DrawerClass> {
             ),
             onTap: () {
               Navigator.pushNamed(context, '/feedbackPage');
+            },
+          ),
+          const Divider(
+            thickness: 1,
+          ),
+          ListTile(
+            leading: Icon(Icons.coffee, color: _theme.secondaryColor),
+            title: Text(
+              'Buy Us a Coffee',
+              style: TextStyle(
+                  fontFamily: _theme.font,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: _theme.tertiaryColor),
+            ),
+            onTap: () {
+              Navigator.pushNamed(context, '/donate');
             },
           ),
           const Divider(

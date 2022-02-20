@@ -10,10 +10,11 @@ class DonationScreen extends StatelessWidget {
     OurTheme _theme = OurTheme();
     double _width = MediaQuery.of(context).size.width;
     return Scaffold(
+        backgroundColor: Colors.lightBlue,
         appBar: AppBar(
-          title: Text("Send Help"),
+          title: const Text("Send Help"),
         ),
-        body: Container(
+        body: SizedBox(
           height: _height,
           width: _width,
           child: Column(
@@ -68,7 +69,7 @@ class DonationScreen extends StatelessWidget {
                           style: TextStyle(
                               fontFamily: _theme.font,
                               fontSize: 16,
-                              color: _theme.secondaryColor,
+                              color: Colors.white,
                               fontWeight: FontWeight.w600),
                           toolbarOptions: const ToolbarOptions(
                             copy: true,
@@ -80,7 +81,7 @@ class DonationScreen extends StatelessWidget {
                           style: TextStyle(
                               fontFamily: _theme.font,
                               fontSize: 16,
-                              color: _theme.secondaryColor,
+                              color: Colors.white,
                               fontWeight: FontWeight.w600),
                           toolbarOptions: const ToolbarOptions(
                             copy: true,
@@ -110,7 +111,7 @@ class DonationScreen extends StatelessWidget {
               Row(
                 children: [
                   SizedBox(
-                    height: _height * 0.156,
+                    height: _height * 0.19,
                     width: _width * 0.55,
                     child: Image.asset(
                       "assets/images/doge.gif",
@@ -122,7 +123,7 @@ class DonationScreen extends StatelessWidget {
                         "assets/images/broke.jpeg",
                         fit: BoxFit.fill,
                       ),
-                      height: _height * 0.156,
+                      height: _height * 0.19,
                       width: _width * 0.45),
                 ],
               ),

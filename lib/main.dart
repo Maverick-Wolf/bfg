@@ -27,8 +27,7 @@ void main() {
       ),
       debugShowCheckedModeBanner: false,
       routes: {
-        '/': (context) => const DonationScreen(),
-        // '/': (context) => const Start(),
+        '/': (context) => const Start(),
         '/initialization': (context) => const Initialization(),
         '/signUp': (context) => const SignUp(),
         '/addBook': (context) => const AddBook(),
@@ -42,6 +41,7 @@ void main() {
         '/poolListings': (context) => const PoolListings(),
         '/carpoolSearch': (context) => PoolSearchPage(),
         '/addCarpool': (context) => const AddCarpool(),
+        '/donate': (context) => const DonationScreen(),
       },
     ),
   );
