@@ -270,8 +270,8 @@ class _PoolDetailsCardState extends State<PoolDetailsCard> {
                 primary: Colors.red.withOpacity(0.8),
                 onPrimary: _theme.tertiaryColor),
             onPressed: () {
-              deletePools(pools);
               Navigator.of(context, rootNavigator: true).pop();
+              deletePools(pools);
             },
             child: const Text("Delete"),
           )
