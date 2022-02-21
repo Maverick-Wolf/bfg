@@ -67,7 +67,7 @@ class _MyPoolListingsState extends State<MyPoolListings> {
   }
 
   getPools(AsyncSnapshot<QuerySnapshot> snapshot) {
-    String contactPreference = "Call";
+    String contactPreference = "Whatsapp";
     List phoneNumbers = [];
     return snapshot.data!.docs.map((DocumentSnapshot document) {
       Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
@@ -76,11 +76,6 @@ class _MyPoolListingsState extends State<MyPoolListings> {
       }
       if (_user!.phoneNumber == data['initiator']['phone'] ||
           phoneNumbers.contains(_user!.phoneNumber)) {
-        if (data['contact_preference'] == null) {
-          contactPreference = "Call";
-        } else {
-          contactPreference = data['contact_preference'];
-        }
         return Padding(
           padding: const EdgeInsets.only(bottom: 5.0, top: 5.0),
           child: PoolDetailsCard(
@@ -95,6 +90,7 @@ class _MyPoolListingsState extends State<MyPoolListings> {
               note: data['note'],
               maxCapacity: data['max_capacity'],
               documentID: document.id,
+              contactPreference: contactPreference,
               longPressBool: true),
         );
       } else {

@@ -19,6 +19,7 @@ class PoolDetailsCard extends StatefulWidget {
   final String maxCapacity;
   final String documentID;
   final bool longPressBool;
+  final String contactPreference;
 
   const PoolDetailsCard({
     Key? key,
@@ -34,6 +35,7 @@ class PoolDetailsCard extends StatefulWidget {
     required this.maxCapacity,
     required this.documentID,
     required this.longPressBool,
+    required this.contactPreference,
   }) : super(key: key);
 
   @override
@@ -378,7 +380,13 @@ class _PoolDetailsCardState extends State<PoolDetailsCard> {
             children: [
               InkWell(
                 onTap: () async {
-                  await openWhatsapp(widget.initiator['phone']);
+                 if (widget.contactPreference == "Whatsapp") {
+                      openWhatsapp(widget.initiator['phone']);
+                    } else if (widget.contactPreference == "Call") {
+                      _makePhoneCall('tel:${widget.initiator['phone']}', '${widget.initiator['phone']}');
+                    } else {
+                      _makePhoneCall('tel:${widget.initiator['phone']}', '${widget.initiator['phone']}');
+                    }
                 },
                 child: Container(
                   height: 40,
