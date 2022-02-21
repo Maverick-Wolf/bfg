@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:bfg/theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -49,6 +50,7 @@ class _PoolDetailsCardState extends State<PoolDetailsCard> {
   @override
   Widget build(BuildContext context) {
     _user = FirebaseAuth.instance.currentUser;
+    users = FirebaseFirestore.instance.collection('users');
     _width = MediaQuery.of(context).size.width;
     return InkWell(
       child: Center(
@@ -133,9 +135,15 @@ class _PoolDetailsCardState extends State<PoolDetailsCard> {
         ),
       ),
       onTap: () {
-        showDialog(
-            context: context,
-            builder: (context) => _buildPopupDialogue(context));
+        if (widget.longPressBool) {
+          showDialog(
+              context: context,
+              builder: (context) => _buildLongPressPopupDialogue(context));
+        } else {
+          showDialog(
+              context: context,
+              builder: (context) => _buildPopupDialogue(context));
+        }
       },
       onLongPress: () async {
         String initiatorphoneNumber = "";
@@ -204,13 +212,13 @@ class _PoolDetailsCardState extends State<PoolDetailsCard> {
             onPressed: () async {
               widget.pools.removeWhere(
                   (element) => element['phone'] == _user!.phoneNumber);
-                  await FirebaseFirestore.instance
-                          .collection('pools')
-                          .doc(widget.documentID)
-                          .update({
-                        'pools': widget.pools,
-                        'booked': (int.parse(widget.booked) - 1).toString()
-                      });
+              await FirebaseFirestore.instance
+                  .collection('pools')
+                  .doc(widget.documentID)
+                  .update({
+                'pools': widget.pools,
+                'booked': (int.parse(widget.booked) - 1).toString()
+              });
               Navigator.of(context, rootNavigator: true).pop();
             },
             child: const Text("Leave"),
@@ -406,19 +414,19 @@ class _PoolDetailsCardState extends State<PoolDetailsCard> {
                       .doc(_user!.uid)
                       .get()
                       .then((value) => _username = value['name']);
+                  List _poolsphoneNumbers = [];
+                  for (Map map in widget.pools) {
+                    _poolsphoneNumbers.add(map['phone']);
+                  }
                   List _pools = widget.pools;
                   _pools.add({
                     'name': _username,
                     'phone': _user!.phoneNumber.toString()
                   });
-                  List _phoneNumbers = [];
-                  for (Map map in widget.pools) {
-                    _phoneNumbers.add(map['phone']);
-                  }
                   if (int.parse(widget.booked) <=
                           int.parse(widget.maxCapacity) &&
                       _user!.phoneNumber != widget.initiator['phone'] &&
-                      !_phoneNumbers.contains(_user!.phoneNumber)) {
+                      !_poolsphoneNumbers.contains(_user!.phoneNumber)) {
                     try {
                       await FirebaseFirestore.instance
                           .collection('pools')
@@ -467,6 +475,118 @@ class _PoolDetailsCardState extends State<PoolDetailsCard> {
             ],
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildLongPressPopupDialogue(BuildContext context) {
+    return AlertDialog(
+      backgroundColor: Colors.grey,
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const SizedBox(
+            height: 20,
+          ),
+          _buildTitle(widget.date, 20),
+          _buildTitle(widget.city, 24),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 30, 0, 25),
+            child: Row(
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildRichText("Initiator: ", widget.initiator['name'], 15),
+                    _buildRichText("Pools:", "", 14),
+                    for (Map map in widget.pools)
+                      widget.pools.isNotEmpty
+                          ? _buildRichText("• ", map["name"], 13)
+                          : const SizedBox(),
+                  ],
+                ),
+                const Spacer(),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    _buildRichText("From: ", widget.from, 14),
+                    _buildRichText("To: ", widget.to, 14),
+                    _buildRichText(
+                        "Capacity: ",
+                        widget.booked.toString() +
+                            "/" +
+                            widget.maxCapacity.toString(),
+                        14),
+                    const SizedBox(
+                      height: 3,
+                    ),
+                    _buildRichText("Time: ", widget.time, 14),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          if (widget.note.isNotEmpty) _buildRichText("Note: ", widget.note, 12),
+          const SizedBox(
+            height: 15,
+          ),
+          InkWell(
+            onTap: () {
+              Navigator.pop(context);
+              showDialog(
+                  context: context,
+                  builder: (context) => _poolMatesPopUp(context));
+            },
+            child: Container(
+              height: 40,
+              padding: const EdgeInsets.fromLTRB(7, 3, 7, 3),
+              decoration: BoxDecoration(
+                color: Colors.amberAccent[700],
+                borderRadius: BorderRadius.circular(5),
+                boxShadow: [
+                  BoxShadow(
+                      color: _theme.primaryColor,
+                      offset: Offset.fromDirection(1, 1),
+                      blurRadius: 1)
+                ],
+              ),
+              child: Center(
+                child: Text(
+                  "Contact Pool Mates",
+                  style: TextStyle(
+                      fontFamily: _theme.font,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: _theme.tertiaryColor),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _poolMatesPopUp(BuildContext context) {
+    return AlertDialog(
+      backgroundColor: Colors.grey,
+      content: ListView.builder(
+        shrinkWrap: true,
+        itemCount: widget.pools.length,
+        itemBuilder: (context, index) {
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Text(
+                widget.pools[index]['name'],
+                style: TextStyle(
+                    color: _theme.secondaryColor,
+                    fontSize: 14.0,
+                    fontWeight: FontWeight.w600),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
