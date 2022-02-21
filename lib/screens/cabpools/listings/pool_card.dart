@@ -337,7 +337,8 @@ class _PoolDetailsCardState extends State<PoolDetailsCard> {
           _buildTitle(widget.city, 24),
           Padding(
             padding: const EdgeInsets.fromLTRB(0, 30, 0, 25),
-            child: Row(
+            child: Wrap(
+              alignment: WrapAlignment.start,
               children: [
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -350,7 +351,6 @@ class _PoolDetailsCardState extends State<PoolDetailsCard> {
                           : const SizedBox(),
                   ],
                 ),
-                const Spacer(),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
@@ -380,13 +380,15 @@ class _PoolDetailsCardState extends State<PoolDetailsCard> {
             children: [
               InkWell(
                 onTap: () async {
-                 if (widget.contactPreference == "Whatsapp") {
-                      openWhatsapp(widget.initiator['phone']);
-                    } else if (widget.contactPreference == "Call") {
-                      _makePhoneCall('tel:${widget.initiator['phone']}', '${widget.initiator['phone']}');
-                    } else {
-                      _makePhoneCall('tel:${widget.initiator['phone']}', '${widget.initiator['phone']}');
-                    }
+                  if (widget.contactPreference == "Whatsapp") {
+                    openWhatsapp(widget.initiator['phone']);
+                  } else if (widget.contactPreference == "Call") {
+                    _makePhoneCall('tel:${widget.initiator['phone']}',
+                        '${widget.initiator['phone']}');
+                  } else {
+                    _makePhoneCall('tel:${widget.initiator['phone']}',
+                        '${widget.initiator['phone']}');
+                  }
                 },
                 child: Container(
                   height: 40,
