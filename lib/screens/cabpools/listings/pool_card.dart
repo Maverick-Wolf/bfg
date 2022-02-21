@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:bfg/theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -39,8 +40,6 @@ class PoolDetailsCard extends StatefulWidget {
   _PoolDetailsCardState createState() => _PoolDetailsCardState();
 }
 
-int _poolNumber = 1;
-List _pools = [];
 User? _user;
 OurTheme _theme = OurTheme();
 late double _width;
@@ -136,30 +135,153 @@ class _PoolDetailsCardState extends State<PoolDetailsCard> {
         ),
       ),
       onTap: () {
-        showDialog(
-            context: context,
-            builder: (BuildContext) => _buildPopupDialogue(context));
+        if (widget.longPressBool) {
+          showDialog(
+              context: context,
+              builder: (context) => _buildLongPressPopupDialogue(context));
+        } else {
+          showDialog(
+              context: context,
+              builder: (context) => _buildPopupDialogue(context));
+        }
       },
-      // onLongPress: () async {
-      //   String phoneNumber = "";
-      //   DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
-      //       .collection("users")
-      //       .doc(_auth.currentUser!.uid)
-      //       .get();
-      //   if (documentSnapshot.exists) {
-      //     phoneNumber = (documentSnapshot.data() as dynamic)['phone_number'];
-      //   }
-      //   print(phoneNumber);
-      //   if (widget.longPressBool || phoneNumber == "+919876543210") {
-      //     CollectionReference books =
-      //         FirebaseFirestore.instance.collection('books');
-      //     showDialog(
-      //         context: context,
-      //         builder: (BuildContext) =>
-      //             _deleteBookConfirmationPopUp(context, books));
-      //   }
-      // },
+      onLongPress: () async {
+        String initiatorphoneNumber = "";
+        DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
+            .collection("pools")
+            .doc(widget.documentID)
+            .get();
+        if (documentSnapshot.exists) {
+          initiatorphoneNumber =
+              (documentSnapshot.data() as dynamic)['initiator']['phone'];
+        }
+        List _poolsPhoneNumber = [];
+        for (Map map in widget.pools) {
+          _poolsPhoneNumber.add(map['phone']);
+        }
+        CollectionReference pools =
+            FirebaseFirestore.instance.collection('pools');
+        if ((widget.longPressBool &&
+            _user!.phoneNumber == initiatorphoneNumber)) {
+          showDialog(
+              context: context,
+              builder: (context) =>
+                  _deletePoolConfirmationPopUp(context, pools));
+        } else if (_poolsPhoneNumber.contains(_user!.phoneNumber)) {
+          showDialog(
+              context: context,
+              builder: (context) => _leaveConfirmationPopUp(context, pools));
+        }
+      },
     );
+  }
+
+  Widget _leaveConfirmationPopUp(
+      BuildContext context, CollectionReference pools) {
+    return AlertDialog(
+      backgroundColor: Colors.grey,
+      title: Center(
+        child: Text(
+          "Leave",
+          style: TextStyle(
+              color: _theme.secondaryColor,
+              letterSpacing: 0.7,
+              fontFamily: _theme.font,
+              fontWeight: FontWeight.bold),
+        ),
+      ),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            "Tapping leave will make you leave this pool, you can join back the pool later if you want",
+            style: TextStyle(
+                color: _theme.tertiaryColor,
+                letterSpacing: 0.7,
+                fontFamily: _theme.font,
+                fontWeight: FontWeight.bold),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                primary: Colors.red.withOpacity(0.8),
+                onPrimary: _theme.tertiaryColor),
+            onPressed: () async {
+              widget.pools.removeWhere(
+                  (element) => element['phone'] == _user!.phoneNumber);
+              await FirebaseFirestore.instance
+                  .collection('pools')
+                  .doc(widget.documentID)
+                  .update({
+                'pools': widget.pools,
+                'booked': (int.parse(widget.booked) - 1).toString()
+              });
+              Navigator.of(context, rootNavigator: true).pop();
+            },
+            child: const Text("Leave"),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _deletePoolConfirmationPopUp(
+      BuildContext context, CollectionReference pools) {
+    return AlertDialog(
+      backgroundColor: Colors.grey,
+      title: Center(
+        child: Text(
+          "DELETE?",
+          style: TextStyle(
+              color: _theme.secondaryColor,
+              letterSpacing: 0.7,
+              fontFamily: _theme.font,
+              fontWeight: FontWeight.bold),
+        ),
+      ),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            "Tapping delete will remove all instances of this listing\nThis action cannot be undone",
+            style: TextStyle(
+                color: _theme.tertiaryColor,
+                letterSpacing: 0.7,
+                fontFamily: _theme.font,
+                fontWeight: FontWeight.bold),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                primary: Colors.red.withOpacity(0.8),
+                onPrimary: _theme.tertiaryColor),
+            onPressed: () {
+              deletePools(pools);
+              Navigator.of(context, rootNavigator: true).pop();
+            },
+            child: const Text("Delete"),
+          )
+        ],
+      ),
+    );
+  }
+
+  Future<void> deletePools(CollectionReference pools) {
+    return pools.doc(widget.documentID).delete().then((value) {
+      const snackBar =
+          SnackBar(content: Text('Your listing was deleted successfully :D'));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }).catchError((error) {
+      final snackBar =
+          SnackBar(content: Text("Failed to delete pool ;-; ... $error"));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    });
   }
 
   Widget _buildTitle(String bookTitle, double fontSize) {
@@ -292,6 +414,10 @@ class _PoolDetailsCardState extends State<PoolDetailsCard> {
                       .doc(_user!.uid)
                       .get()
                       .then((value) => _username = value['name']);
+                  List _poolsphoneNumbers = [];
+                  for (Map map in widget.pools) {
+                    _poolsphoneNumbers.add(map['phone']);
+                  }
                   List _pools = widget.pools;
                   _pools.add({
                     'name': _username,
@@ -299,9 +425,8 @@ class _PoolDetailsCardState extends State<PoolDetailsCard> {
                   });
                   if (int.parse(widget.booked) <=
                           int.parse(widget.maxCapacity) &&
-                      _username != widget.initiator['name'] &&
-                      _username !=
-                          widget.pools[int.parse(widget.booked) - 2]['name']) {
+                      _user!.phoneNumber != widget.initiator['phone'] &&
+                      !_poolsphoneNumbers.contains(_user!.phoneNumber)) {
                     try {
                       await FirebaseFirestore.instance
                           .collection('pools')
@@ -320,6 +445,7 @@ class _PoolDetailsCardState extends State<PoolDetailsCard> {
                         SnackBar(content: Text('Can\'t join pool'));
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   }
+                  Navigator.pop(context);
                 },
                 child: Container(
                   height: 40,
@@ -353,6 +479,149 @@ class _PoolDetailsCardState extends State<PoolDetailsCard> {
     );
   }
 
+  Widget _buildLongPressPopupDialogue(BuildContext context) {
+    return AlertDialog(
+      backgroundColor: Colors.grey,
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const SizedBox(
+            height: 20,
+          ),
+          _buildTitle(widget.date, 20),
+          _buildTitle(widget.city, 24),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 30, 0, 25),
+            child: Row(
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildRichText("Initiator: ", widget.initiator['name'], 15),
+                    _buildRichText("Pools:", "", 14),
+                    for (Map map in widget.pools)
+                      widget.pools.isNotEmpty
+                          ? _buildRichText("• ", map["name"], 13)
+                          : const SizedBox(),
+                  ],
+                ),
+                const Spacer(),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    _buildRichText("From: ", widget.from, 14),
+                    _buildRichText("To: ", widget.to, 14),
+                    _buildRichText(
+                        "Capacity: ",
+                        widget.booked.toString() +
+                            "/" +
+                            widget.maxCapacity.toString(),
+                        14),
+                    const SizedBox(
+                      height: 3,
+                    ),
+                    _buildRichText("Time: ", widget.time, 14),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          if (widget.note.isNotEmpty) _buildRichText("Note: ", widget.note, 12),
+          const SizedBox(
+            height: 15,
+          ),
+          InkWell(
+            onTap: () {
+              Navigator.pop(context);
+              showDialog(
+                  context: context,
+                  builder: (context) => _poolMatesPopUp(context));
+            },
+            child: Container(
+              height: 40,
+              padding: const EdgeInsets.fromLTRB(7, 3, 7, 3),
+              decoration: BoxDecoration(
+                color: Colors.amberAccent[700],
+                borderRadius: BorderRadius.circular(5),
+                boxShadow: [
+                  BoxShadow(
+                      color: _theme.primaryColor,
+                      offset: Offset.fromDirection(1, 1),
+                      blurRadius: 1)
+                ],
+              ),
+              child: Center(
+                child: Text(
+                  "Contact Pool Mates",
+                  style: TextStyle(
+                      fontFamily: _theme.font,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: _theme.tertiaryColor),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _poolMatesPopUp(BuildContext context) {
+    List _pools = [];
+    _pools.add(widget.initiator);
+    _pools.addAll(widget.pools);
+    return AlertDialog(
+      backgroundColor: Colors.grey,
+      content: SizedBox(
+        height: 400.0,
+        width: 300.0,
+        child: ListView.builder(
+          shrinkWrap: true,
+          itemCount: _pools.length,
+          itemBuilder: (context, index) {
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text(
+                  _pools[index]['name'],
+                  style: TextStyle(
+                      color: _theme.secondaryColor,
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.w600),
+                ),
+                InkWell(
+                  onTap: () {
+                    openWhatsapp(_pools[index]['phone']);
+                  },
+                  child: Container(
+                    child: Text("Contact"),
+                    color: Colors.amber,
+                  ),
+                ),
+                IconButton(
+                    onPressed: () {
+                      Clipboard.setData(
+                          ClipboardData(text: _pools[index]['phone']));
+                      const snackBar = SnackBar(
+                        content:
+                            Text('Seller phone number copied to clipboard'),
+                        duration: Duration(seconds: 4),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    },
+                    icon: Icon(
+                      Icons.copy,
+                      color: Colors.black,
+                    ))
+              ],
+            );
+          },
+        ),
+      ),
+    );
+  }
+
   openWhatsapp(String _phoneNumber) async {
     var whatsappURl = "whatsapp://send?phone=" + _phoneNumber + "&text=";
     try {
@@ -361,50 +630,6 @@ class _PoolDetailsCardState extends State<PoolDetailsCard> {
       _makePhoneCall('tel:$_phoneNumber', _phoneNumber);
     }
   }
-
-  // Widget _deleteBookConfirmationPopUp(
-  //     BuildContext context, CollectionReference books) {
-  //   return AlertDialog(
-  //     backgroundColor: Colors.grey,
-  //     title: Center(
-  //       child: Text(
-  //         "DELETE?",
-  //         style: TextStyle(
-  //             color: _theme.secondaryColor,
-  //             letterSpacing: 0.7,
-  //             fontFamily: _theme.font,
-  //             fontWeight: FontWeight.bold),
-  //       ),
-  //     ),
-  //     content: Column(
-  //       mainAxisSize: MainAxisSize.min,
-  //       children: [
-  //         Text(
-  //           "Tapping delete will remove all instances of this listing\nThis action cannot be undone",
-  //           style: TextStyle(
-  //               color: _theme.tertiaryColor,
-  //               letterSpacing: 0.7,
-  //               fontFamily: _theme.font,
-  //               fontWeight: FontWeight.bold),
-  //           textAlign: TextAlign.center,
-  //         ),
-  //         const SizedBox(
-  //           height: 20,
-  //         ),
-  //         ElevatedButton(
-  //           style: ElevatedButton.styleFrom(
-  //               primary: Colors.red.withOpacity(0.8),
-  //               onPrimary: _theme.tertiaryColor),
-  //           onPressed: () {
-  //             deleteBooks(books);
-  //             Navigator.pop(context);
-  //           },
-  //           child: const Text("Delete"),
-  //         )
-  //       ],
-  //     ),
-  //   );
-  // }
 
   Future<void> _makePhoneCall(String url, String _phoneNumber) async {
     if (await canLaunch(url)) {
@@ -419,17 +644,5 @@ class _PoolDetailsCardState extends State<PoolDetailsCard> {
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
-  }
-
-  Future<void> deleteBooks(CollectionReference books) {
-    return books.doc(widget.documentID).delete().then((value) {
-      const snackBar =
-          SnackBar(content: Text('Your listing was deleted successfully :D'));
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    }).catchError((error) {
-      final snackBar =
-          SnackBar(content: Text("Failed to delete book ;-; ... $error"));
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    });
   }
 }
