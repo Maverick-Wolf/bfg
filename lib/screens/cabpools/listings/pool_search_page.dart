@@ -132,8 +132,12 @@ class _PoolSearchPageState extends State<PoolSearchPage> {
   }
 
   getPools(AsyncSnapshot<QuerySnapshot> snapshot) {
+    String contactPreference = 'Call';
     return snapshot.data!.docs.map((DocumentSnapshot document) {
       Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+      if (data['contact_preference'].toString().isNotEmpty) {
+        contactPreference = data['contact_preference'].toString();
+      }
       if (data['to']
               .toString()
               .toLowerCase()
@@ -169,6 +173,7 @@ class _PoolSearchPageState extends State<PoolSearchPage> {
             pools: data['pools'],
             to: data['to'],
             time: data['time'],
+            contactPreference: contactPreference,
           ),
         );
       } else {

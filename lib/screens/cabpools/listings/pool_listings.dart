@@ -97,29 +97,33 @@ class _PoolListingsState extends State<PoolListings> {
   }
 
   getpools(AsyncSnapshot<QuerySnapshot> snapshot, String _how) {
+    String contactPreference = 'Call';
     return snapshot.data!.docs.map((DocumentSnapshot document) {
       Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+      if (data['contact_preference'].toString().isNotEmpty) {
+        contactPreference = data['contact_preference'].toString();
+      }
       if (data['how'] == _how) {
         if (data['date'] == _dateSet && _goaFilter == 'All') {
-          return detailsCard(document, data);
+          return detailsCard(document, data, contactPreference);
         } else if (data['date'] == _dateSet &&
             _goaFilter == 'Goa' &&
             data["inGoa"] == true) {
-          return detailsCard(document, data);
+          return detailsCard(document, data, contactPreference);
         } else if (data['date'] == _dateSet &&
             _goaFilter == 'Other' &&
             data["inGoa"] == false) {
-          return detailsCard(document, data);
+          return detailsCard(document, data, contactPreference);
         } else if (_dateSet == "" && _goaFilter == 'All') {
-          return detailsCard(document, data);
+          return detailsCard(document, data, contactPreference);
         } else if (_dateSet == "" &&
             _goaFilter == 'Goa' &&
             data['inGoa'] == true) {
-          return detailsCard(document, data);
+          return detailsCard(document, data, contactPreference);
         } else if (_dateSet == "" &&
             _goaFilter == 'Other' &&
             data['inGoa'] == false) {
-          return detailsCard(document, data);
+          return detailsCard(document, data, contactPreference);
         } else {
           return const SizedBox(
             height: 0,
@@ -355,7 +359,7 @@ class _PoolListingsState extends State<PoolListings> {
     );
   }
 
-  Widget detailsCard(DocumentSnapshot document, Map data) => Padding(
+  Widget detailsCard(DocumentSnapshot document, Map data, String contactPreference) => Padding(
       padding: EdgeInsets.only(bottom: 3.0, top: 7.0),
       child: PoolDetailsCard(
         documentID: document.id,
@@ -370,5 +374,6 @@ class _PoolListingsState extends State<PoolListings> {
         pools: data['pools'],
         to: data['to'],
         time: data['time'],
+        contactPreference: contactPreference,
       ));
 }
