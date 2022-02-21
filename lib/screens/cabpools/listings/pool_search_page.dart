@@ -173,6 +173,7 @@ class _PoolSearchPageState extends State<PoolSearchPage> {
             pools: data['pools'],
             to: data['to'],
             time: data['time'],
+            how: data['how'],
             contactPreference: contactPreference,
           ),
         );

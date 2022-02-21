@@ -383,6 +383,7 @@ class _PoolListingsState extends State<PoolListings> {
             pools: data['pools'],
             to: data['to'],
             time: data['time'],
+            how: data['how'],
             contactPreference: contactPreference,
           ));
 }

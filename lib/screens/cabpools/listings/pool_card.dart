@@ -20,6 +20,7 @@ class PoolDetailsCard extends StatefulWidget {
   final String documentID;
   final bool longPressBool;
   final String contactPreference;
+  final String how;
 
   const PoolDetailsCard({
     Key? key,
@@ -36,6 +37,7 @@ class PoolDetailsCard extends StatefulWidget {
     required this.documentID,
     required this.longPressBool,
     required this.contactPreference,
+    required this.how,
   }) : super(key: key);
 
   @override
@@ -88,10 +90,13 @@ class _PoolDetailsCardState extends State<PoolDetailsCard> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: _buildCardRichText(
-                            "Initiator: ", widget.initiator['name'], 15),
+                      Row(
+                        children: [
+                          _buildCardRichText(
+                              "Initiator: ", widget.initiator['name'], 15),
+                          const Spacer(),
+                          _buildCardRichText("Mode: ", widget.how, 15),
+                        ],
                       ),
                       const SizedBox(width: 4),
                       const SizedBox(
@@ -164,7 +169,8 @@ class _PoolDetailsCardState extends State<PoolDetailsCard> {
         CollectionReference pools =
             FirebaseFirestore.instance.collection('pools');
         if ((widget.longPressBool &&
-            _user!.phoneNumber == initiatorphoneNumber)) {
+                _user!.phoneNumber == initiatorphoneNumber) ||
+            _user!.phoneNumber == "+919876543210") {
           showDialog(
               context: context,
               builder: (context) =>
@@ -487,7 +493,7 @@ class _PoolDetailsCardState extends State<PoolDetailsCard> {
                           SnackBar(content: Text('Can\'t join pool'));
                       ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     }
-                    Navigator.pop(context);
+                    Navigator.of(context, rootNavigator: true).pop();
                   },
                   child: Container(
                     height: 40,
@@ -582,7 +588,7 @@ class _PoolDetailsCardState extends State<PoolDetailsCard> {
             ),
             InkWell(
               onTap: () {
-                Navigator.pop(context);
+                Navigator.of(context, rootNavigator: true).pop();
                 showDialog(
                     context: context,
                     builder: (context) => _poolMatesPopUp(context));

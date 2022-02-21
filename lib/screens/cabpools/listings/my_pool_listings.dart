@@ -89,6 +89,7 @@ class _MyPoolListingsState extends State<MyPoolListings> {
               to: data['to'],
               note: data['note'],
               maxCapacity: data['max_capacity'],
+              how: data['how'],
               documentID: document.id,
               contactPreference: contactPreference,
               longPressBool: true),
