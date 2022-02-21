@@ -90,7 +90,7 @@ class _PoolDetailsCardState extends State<PoolDetailsCard> {
                     children: [
                       Align(
                         alignment: Alignment.centerLeft,
-                        child: _buildRichText(
+                        child: _buildCardRichText(
                             "Initiator: ", widget.initiator['name'], 15),
                       ),
                       const SizedBox(width: 4),
@@ -106,14 +106,14 @@ class _PoolDetailsCardState extends State<PoolDetailsCard> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                _buildRichText("From: ", widget.from, 15),
-                                _buildRichText("To: ", widget.to, 15),
+                                _buildCardRichText("From: ", widget.from, 15),
+                                _buildCardRichText("To: ", widget.to, 15),
                               ],
                             ),
                             const Spacer(),
                             Column(
                               children: [
-                                _buildRichText(
+                                _buildCardRichText(
                                     "Capacity: ",
                                     widget.booked.toString() +
                                         "/" +
@@ -122,14 +122,14 @@ class _PoolDetailsCardState extends State<PoolDetailsCard> {
                                 const SizedBox(
                                   height: 3,
                                 ),
-                                _buildRichText("Time: ", widget.time, 15),
+                                _buildCardRichText("Time: ", widget.time, 15),
                               ],
                             ),
                           ],
                         ),
                       ),
                       if (widget.note.isNotEmpty)
-                        _buildRichText("Note: ", widget.note, 12),
+                        _buildCardRichText("Note: ", widget.note, 12),
                     ],
                   ),
                 )),
@@ -302,6 +302,31 @@ class _PoolDetailsCardState extends State<PoolDetailsCard> {
   Widget _buildRichText(String text1, String text2, double _fontSize) {
     return Container(
       constraints:
+          BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.35),
+      child: RichText(
+        text: TextSpan(
+            text: text1,
+            style: TextStyle(
+              color: _theme.secondaryColor,
+              fontFamily: _theme.font,
+              fontWeight: FontWeight.w600,
+              fontSize: _fontSize,
+            ),
+            children: <TextSpan>[
+              TextSpan(
+                  text: text2,
+                  style: TextStyle(
+                      color: _theme.tertiaryColor,
+                      fontFamily: _theme.font,
+                      fontWeight: FontWeight.w400)),
+            ]),
+      ),
+    );
+  }
+
+  Widget _buildCardRichText(String text1, String text2, double _fontSize) {
+    return Container(
+      constraints:
           BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.45),
       child: RichText(
         text: TextSpan(
@@ -327,164 +352,172 @@ class _PoolDetailsCardState extends State<PoolDetailsCard> {
   Widget _buildPopupDialogue(BuildContext context) {
     return AlertDialog(
       backgroundColor: Colors.grey,
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const SizedBox(
-            height: 20,
-          ),
-          _buildTitle(widget.date, 20),
-          _buildTitle(widget.city, 24),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 30, 0, 25),
-            child: Wrap(
-              alignment: WrapAlignment.start,
+      content: Container(
+        constraints: BoxConstraints(minWidth: _width * 0.7),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(
+              height: 20,
+            ),
+            _buildTitle(widget.date, 20),
+            _buildTitle(widget.city, 24),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 30, 0, 25),
+              child: Row(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildRichText(
+                          "Initiator: ",
+                          widget.initiator['name'].toString().split(" ")[0],
+                          15),
+                      _buildRichText("Pools:", "", 14),
+                      for (Map map in widget.pools)
+                        widget.pools.isNotEmpty
+                            ? _buildRichText(
+                                "• ", map["name"].toString().split(" ")[0], 13)
+                            : const SizedBox(),
+                    ],
+                  ),
+                  Spacer(),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      _buildRichText("From: ", widget.from, 14),
+                      _buildRichText("To: ", widget.to, 14),
+                      _buildRichText(
+                          "Capacity: ",
+                          widget.booked.toString() +
+                              "/" +
+                              widget.maxCapacity.toString(),
+                          14),
+                      const SizedBox(
+                        height: 3,
+                      ),
+                      _buildRichText("Time: ", widget.time, 14),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            if (widget.note.isNotEmpty)
+              _buildRichText("Note: ", widget.note, 12),
+            const SizedBox(
+              height: 15,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildRichText("Initiator: ", widget.initiator['name'], 15),
-                    _buildRichText("Pools:", "", 14),
-                    for (Map map in widget.pools)
-                      widget.pools.isNotEmpty
-                          ? _buildRichText("• ", map["name"], 13)
-                          : const SizedBox(),
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    _buildRichText("From: ", widget.from, 14),
-                    _buildRichText("To: ", widget.to, 14),
-                    _buildRichText(
-                        "Capacity: ",
-                        widget.booked.toString() +
-                            "/" +
-                            widget.maxCapacity.toString(),
-                        14),
-                    const SizedBox(
-                      height: 3,
+                InkWell(
+                  onTap: () async {
+                    if (widget.contactPreference == "Whatsapp") {
+                      openWhatsapp(widget.initiator['phone']);
+                    } else if (widget.contactPreference == "Call") {
+                      _makePhoneCall('tel:${widget.initiator['phone']}',
+                          '${widget.initiator['phone']}');
+                    } else {
+                      _makePhoneCall('tel:${widget.initiator['phone']}',
+                          '${widget.initiator['phone']}');
+                    }
+                  },
+                  child: Container(
+                    height: 40,
+                    padding: const EdgeInsets.fromLTRB(7, 3, 7, 3),
+                    decoration: BoxDecoration(
+                      color: Colors.green,
+                      borderRadius: BorderRadius.circular(5),
+                      boxShadow: [
+                        BoxShadow(
+                            color: _theme.primaryColor,
+                            offset: Offset.fromDirection(1, 1),
+                            blurRadius: 1)
+                      ],
                     ),
-                    _buildRichText("Time: ", widget.time, 14),
-                  ],
+                    child: Center(
+                      child: Text(
+                        "Contact Initiator",
+                        style: TextStyle(
+                            fontFamily: _theme.font,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: _theme.tertiaryColor),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                InkWell(
+                  onTap: () async {
+                    await users
+                        .doc(_user!.uid)
+                        .get()
+                        .then((value) => _username = value['name']);
+                    List _poolsphoneNumbers = [];
+                    for (Map map in widget.pools) {
+                      _poolsphoneNumbers.add(map['phone']);
+                    }
+                    List _pools = widget.pools;
+                    _pools.add({
+                      'name': _username,
+                      'phone': _user!.phoneNumber.toString()
+                    });
+                    if (int.parse(widget.booked) <=
+                            int.parse(widget.maxCapacity) &&
+                        _user!.phoneNumber != widget.initiator['phone'] &&
+                        !_poolsphoneNumbers.contains(_user!.phoneNumber)) {
+                      try {
+                        await FirebaseFirestore.instance
+                            .collection('pools')
+                            .doc(widget.documentID)
+                            .update({
+                          'pools': _pools,
+                          'booked': (int.parse(widget.booked) + 1).toString()
+                        });
+                      } catch (e) {
+                        const snackBar =
+                            SnackBar(content: Text('Couldn\'t join pool :('));
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      }
+                    } else {
+                      const snackBar =
+                          SnackBar(content: Text('Can\'t join pool'));
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    }
+                    Navigator.pop(context);
+                  },
+                  child: Container(
+                    height: 40,
+                    padding: const EdgeInsets.fromLTRB(7, 3, 7, 3),
+                    decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(5),
+                      boxShadow: [
+                        BoxShadow(
+                            color: _theme.primaryColor,
+                            offset: Offset.fromDirection(1, 1),
+                            blurRadius: 1)
+                      ],
+                    ),
+                    child: Center(
+                      child: Text(
+                        "Join pool",
+                        style: TextStyle(
+                            fontFamily: _theme.font,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: _theme.tertiaryColor),
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),
-          ),
-          if (widget.note.isNotEmpty) _buildRichText("Note: ", widget.note, 12),
-          const SizedBox(
-            height: 15,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              InkWell(
-                onTap: () async {
-                  if (widget.contactPreference == "Whatsapp") {
-                    openWhatsapp(widget.initiator['phone']);
-                  } else if (widget.contactPreference == "Call") {
-                    _makePhoneCall('tel:${widget.initiator['phone']}',
-                        '${widget.initiator['phone']}');
-                  } else {
-                    _makePhoneCall('tel:${widget.initiator['phone']}',
-                        '${widget.initiator['phone']}');
-                  }
-                },
-                child: Container(
-                  height: 40,
-                  padding: const EdgeInsets.fromLTRB(7, 3, 7, 3),
-                  decoration: BoxDecoration(
-                    color: Colors.green,
-                    borderRadius: BorderRadius.circular(5),
-                    boxShadow: [
-                      BoxShadow(
-                          color: _theme.primaryColor,
-                          offset: Offset.fromDirection(1, 1),
-                          blurRadius: 1)
-                    ],
-                  ),
-                  child: Center(
-                    child: Text(
-                      "Contact Initiator",
-                      style: TextStyle(
-                          fontFamily: _theme.font,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: _theme.tertiaryColor),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              InkWell(
-                onTap: () async {
-                  await users
-                      .doc(_user!.uid)
-                      .get()
-                      .then((value) => _username = value['name']);
-                  List _poolsphoneNumbers = [];
-                  for (Map map in widget.pools) {
-                    _poolsphoneNumbers.add(map['phone']);
-                  }
-                  List _pools = widget.pools;
-                  _pools.add({
-                    'name': _username,
-                    'phone': _user!.phoneNumber.toString()
-                  });
-                  if (int.parse(widget.booked) <=
-                          int.parse(widget.maxCapacity) &&
-                      _user!.phoneNumber != widget.initiator['phone'] &&
-                      !_poolsphoneNumbers.contains(_user!.phoneNumber)) {
-                    try {
-                      await FirebaseFirestore.instance
-                          .collection('pools')
-                          .doc(widget.documentID)
-                          .update({
-                        'pools': _pools,
-                        'booked': (int.parse(widget.booked) + 1).toString()
-                      });
-                    } catch (e) {
-                      const snackBar =
-                          SnackBar(content: Text('Couldn\'t join pool :('));
-                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                    }
-                  } else {
-                    const snackBar =
-                        SnackBar(content: Text('Can\'t join pool'));
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                  }
-                  Navigator.pop(context);
-                },
-                child: Container(
-                  height: 40,
-                  padding: const EdgeInsets.fromLTRB(7, 3, 7, 3),
-                  decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(5),
-                    boxShadow: [
-                      BoxShadow(
-                          color: _theme.primaryColor,
-                          offset: Offset.fromDirection(1, 1),
-                          blurRadius: 1)
-                    ],
-                  ),
-                  child: Center(
-                    child: Text(
-                      "Join pool",
-                      style: TextStyle(
-                          fontFamily: _theme.font,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: _theme.tertiaryColor),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -492,87 +525,95 @@ class _PoolDetailsCardState extends State<PoolDetailsCard> {
   Widget _buildLongPressPopupDialogue(BuildContext context) {
     return AlertDialog(
       backgroundColor: Colors.grey,
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const SizedBox(
-            height: 20,
-          ),
-          _buildTitle(widget.date, 20),
-          _buildTitle(widget.city, 24),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 30, 0, 25),
-            child: Row(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildRichText("Initiator: ", widget.initiator['name'], 15),
-                    _buildRichText("Pools:", "", 14),
-                    for (Map map in widget.pools)
-                      widget.pools.isNotEmpty
-                          ? _buildRichText("• ", map["name"], 13)
-                          : const SizedBox(),
-                  ],
-                ),
-                const Spacer(),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    _buildRichText("From: ", widget.from, 14),
-                    _buildRichText("To: ", widget.to, 14),
-                    _buildRichText(
-                        "Capacity: ",
-                        widget.booked.toString() +
-                            "/" +
-                            widget.maxCapacity.toString(),
-                        14),
-                    const SizedBox(
-                      height: 3,
-                    ),
-                    _buildRichText("Time: ", widget.time, 14),
-                  ],
-                ),
-              ],
+      content: Container(
+        constraints: BoxConstraints(minWidth: _width * 0.8),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(
+              height: 20,
             ),
-          ),
-          if (widget.note.isNotEmpty) _buildRichText("Note: ", widget.note, 12),
-          const SizedBox(
-            height: 15,
-          ),
-          InkWell(
-            onTap: () {
-              Navigator.pop(context);
-              showDialog(
-                  context: context,
-                  builder: (context) => _poolMatesPopUp(context));
-            },
-            child: Container(
-              height: 40,
-              padding: const EdgeInsets.fromLTRB(7, 3, 7, 3),
-              decoration: BoxDecoration(
-                color: Colors.amberAccent[700],
-                borderRadius: BorderRadius.circular(5),
-                boxShadow: [
-                  BoxShadow(
-                      color: _theme.primaryColor,
-                      offset: Offset.fromDirection(1, 1),
-                      blurRadius: 1)
+            _buildTitle(widget.date, 20),
+            _buildTitle(widget.city, 24),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 30, 0, 25),
+              child: Row(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildRichText(
+                          "Initiator: ",
+                          widget.initiator['name'].toString().split(" ")[0],
+                          15),
+                      _buildRichText("Pools:", "", 14),
+                      for (Map map in widget.pools)
+                        widget.pools.isNotEmpty
+                            ? _buildRichText(
+                                "• ", map["name"].toString().split(" ")[0], 13)
+                            : const SizedBox(),
+                    ],
+                  ),
+                  const Spacer(),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      _buildRichText("From: ", widget.from, 14),
+                      _buildRichText("To: ", widget.to, 14),
+                      _buildRichText(
+                          "Capacity: ",
+                          widget.booked.toString() +
+                              "/" +
+                              widget.maxCapacity.toString(),
+                          14),
+                      const SizedBox(
+                        height: 3,
+                      ),
+                      _buildRichText("Time: ", widget.time, 14),
+                    ],
+                  ),
                 ],
               ),
-              child: Center(
-                child: Text(
-                  "Contact Pool Mates",
-                  style: TextStyle(
-                      fontFamily: _theme.font,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: _theme.tertiaryColor),
+            ),
+            if (widget.note.isNotEmpty)
+              _buildRichText("Note: ", widget.note, 12),
+            const SizedBox(
+              height: 15,
+            ),
+            InkWell(
+              onTap: () {
+                Navigator.pop(context);
+                showDialog(
+                    context: context,
+                    builder: (context) => _poolMatesPopUp(context));
+              },
+              child: Container(
+                height: 40,
+                padding: const EdgeInsets.fromLTRB(7, 3, 7, 3),
+                decoration: BoxDecoration(
+                  color: Colors.amberAccent[700],
+                  borderRadius: BorderRadius.circular(5),
+                  boxShadow: [
+                    BoxShadow(
+                        color: _theme.primaryColor,
+                        offset: Offset.fromDirection(1, 1),
+                        blurRadius: 1)
+                  ],
+                ),
+                child: Center(
+                  child: Text(
+                    "Contact Pool Mates",
+                    style: TextStyle(
+                        fontFamily: _theme.font,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: _theme.tertiaryColor),
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -584,47 +625,64 @@ class _PoolDetailsCardState extends State<PoolDetailsCard> {
     return AlertDialog(
       backgroundColor: Colors.grey,
       content: SizedBox(
-        height: 400.0,
-        width: 300.0,
+        width: _width * 0.78,
         child: ListView.builder(
           shrinkWrap: true,
           itemCount: _pools.length,
           itemBuilder: (context, index) {
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Text(
-                  _pools[index]['name'],
-                  style: TextStyle(
-                      color: _theme.secondaryColor,
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.w600),
-                ),
-                InkWell(
-                  onTap: () {
-                    openWhatsapp(_pools[index]['phone']);
-                  },
-                  child: Container(
-                    child: Text("Contact"),
-                    color: Colors.amber,
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text(
+                    _pools[index]['name'],
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: _theme.font,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
                   ),
-                ),
-                IconButton(
-                    onPressed: () {
-                      Clipboard.setData(
-                          ClipboardData(text: _pools[index]['phone']));
-                      const snackBar = SnackBar(
-                        content:
-                            Text('Seller phone number copied to clipboard'),
-                        duration: Duration(seconds: 4),
-                      );
-                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  const Spacer(),
+                  InkWell(
+                    onTap: () {
+                      openWhatsapp(_pools[index]['phone']);
                     },
-                    icon: Icon(
-                      Icons.copy,
-                      color: Colors.black,
-                    ))
-              ],
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.amberAccent[700],
+                        borderRadius: BorderRadius.circular(5),
+                        boxShadow: [
+                          BoxShadow(
+                              color: _theme.primaryColor,
+                              offset: Offset.fromDirection(1, 1),
+                              blurRadius: 1)
+                        ],
+                      ),
+                      child: const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text("Contact"),
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                      onPressed: () {
+                        Clipboard.setData(
+                            ClipboardData(text: _pools[index]['phone']));
+                        const snackBar = SnackBar(
+                          content: Text('Phone number copied to clipboard'),
+                          duration: Duration(seconds: 4),
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      },
+                      icon: const Icon(
+                        Icons.copy,
+                        color: Colors.white,
+                        size: 24,
+                      ))
+                ],
+              ),
             );
           },
         ),

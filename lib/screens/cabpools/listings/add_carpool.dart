@@ -136,8 +136,8 @@ class _AddCarpoolState extends State<AddCarpool> {
               _city.isEmpty ||
               _to.isEmpty ||
               _maxCapacity.isEmpty ||
-              _dateSet.isEmpty ||
-              _timeSet.isEmpty) {
+              _dateSet == "Choose Date" ||
+              _timeSet == "Choose Time") {
             const snackBar =
                 SnackBar(content: Text("Please fill the required fields"));
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -281,9 +281,8 @@ class _AddCarpoolState extends State<AddCarpool> {
                 name = (documentSnapshot.data() as dynamic)['name'];
                 phoneNumber =
                     (documentSnapshot.data() as dynamic)['phone_number'];
-                    contactPreference =
+                contactPreference =
                     (documentSnapshot.data() as dynamic)['contact_preference'];
-                
               }
               addCarpool(name, phoneNumber, contactPreference);
               Navigator.popAndPushNamed(context, '/userMenu');

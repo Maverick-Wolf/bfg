@@ -116,7 +116,7 @@ class _MyPoolListingsState extends State<MyPoolListings> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "\nThese are books you have put up to sell \n\nRemember to remove books that have already been sold to avoid unnecessary calls\n\n\nTo delete a listing, hold down on the item for 2 seconds and tap 'Delete' on the pop up box",
+            "\nThese are pools you are a part of \n\nRemember to remove pools that have already been completed to avoid unnecessary calls\n\nTo delete or leave a pool, hold down on the item for 2 seconds and tap 'Delete/Leave' on the pop up box",
             style: TextStyle(
               color: _theme.tertiaryColor,
               fontFamily: _theme.font,

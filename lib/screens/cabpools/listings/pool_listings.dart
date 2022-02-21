@@ -232,39 +232,46 @@ class _PoolListingsState extends State<PoolListings> {
                     ),
                   ],
                 ),
-                TextButton(
-                    onPressed: () {
-                      DatePicker.showDatePicker(context,
-                          showTitleActions: true,
-                          minTime: DateTime(2022, 2, 2),
-                          theme: DatePickerTheme(
-                              headerColor: _theme.secondaryColor,
-                              backgroundColor: _theme.primaryColor,
-                              itemStyle: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18),
-                              doneStyle: TextStyle(
-                                  color: _theme.primaryColor,
-                                  fontSize: 16)), onChanged: (date) {
-                        _date = date;
-                        DateFormat _dateFormatter = DateFormat('yMMMd');
-                        dateFilter = _dateFormatter.format(date);
-                      }, onConfirm: (date) {
-                        _date = date;
-                        DateFormat _dateFormatter = DateFormat('yMMMd');
-                        dateFilter = _dateFormatter.format(date);
-                      }, currentTime: _date, locale: LocaleType.en);
-                    },
-                    child: Text(
-                      "Choose Date",
-                      style: TextStyle(
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          primary: _theme.secondaryColor.withOpacity(0.7),
+                          onPrimary: _theme.tertiaryColor),
+                      onPressed: () {
+                        DatePicker.showDatePicker(context,
+                            showTitleActions: true,
+                            minTime: DateTime(2022, 2, 2),
+                            theme: DatePickerTheme(
+                                headerColor: _theme.secondaryColor,
+                                backgroundColor: _theme.primaryColor,
+                                itemStyle: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18),
+                                doneStyle: TextStyle(
+                                    color: _theme.primaryColor,
+                                    fontSize: 16)), onChanged: (date) {
+                          _date = date;
+                          DateFormat _dateFormatter = DateFormat('yMMMd');
+                          dateFilter = _dateFormatter.format(date);
+                          setState(() {});
+                        }, onConfirm: (date) {
+                          _date = date;
+                          DateFormat _dateFormatter = DateFormat('yMMMd');
+                          dateFilter = _dateFormatter.format(date);
+                        }, currentTime: _date, locale: LocaleType.en);
+                      },
+                      child: Text(
+                        dateFilter.isEmpty ? "Choose Date" : dateFilter,
+                        style: TextStyle(
                           fontFamily: _theme.font,
                           fontSize: 16,
                           color: _theme.tertiaryColor,
                           fontWeight: FontWeight.w600,
-                          decoration: TextDecoration.underline),
-                    )),
+                        ),
+                      )),
+                ),
                 const SizedBox(
                   height: 25,
                 ),
@@ -359,21 +366,23 @@ class _PoolListingsState extends State<PoolListings> {
     );
   }
 
-  Widget detailsCard(DocumentSnapshot document, Map data, String contactPreference) => Padding(
-      padding: EdgeInsets.only(bottom: 3.0, top: 7.0),
-      child: PoolDetailsCard(
-        documentID: document.id,
-        longPressBool: false,
-        booked: data['booked'],
-        city: data['city'],
-        date: data['date'],
-        from: data['from'],
-        initiator: data['initiator'],
-        maxCapacity: data['max_capacity'],
-        note: data['note'],
-        pools: data['pools'],
-        to: data['to'],
-        time: data['time'],
-        contactPreference: contactPreference,
-      ));
+  Widget detailsCard(
+          DocumentSnapshot document, Map data, String contactPreference) =>
+      Padding(
+          padding: EdgeInsets.only(bottom: 3.0, top: 7.0),
+          child: PoolDetailsCard(
+            documentID: document.id,
+            longPressBool: false,
+            booked: data['booked'],
+            city: data['city'],
+            date: data['date'],
+            from: data['from'],
+            initiator: data['initiator'],
+            maxCapacity: data['max_capacity'],
+            note: data['note'],
+            pools: data['pools'],
+            to: data['to'],
+            time: data['time'],
+            contactPreference: contactPreference,
+          ));
 }
