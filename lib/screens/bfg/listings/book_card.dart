@@ -238,8 +238,6 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
       contactIcon = Icons.message;
     } else if (widget.contactPreference == "Call") {
       contactIcon = Icons.call;
-    } else {
-      contactIcon = Icons.call;
     }
     return AlertDialog(
       backgroundColor: Colors.grey,
@@ -300,42 +298,6 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
                       color: _theme.secondaryColor),
                 ),
               ],
-            ),
-          ),
-          const Spacer(),
-          InkWell(
-            onTap: () {
-              if (widget.contactPreference == "Whatsapp") {
-                openWhatsapp();
-              } else if (widget.contactPreference == "Call") {
-                _makePhoneCall('tel:${widget.phoneNumberOfSeller}');
-              } else {
-                _makePhoneCall('tel:${widget.phoneNumberOfSeller}');
-              }
-            },
-            child: Container(
-              padding: const EdgeInsets.fromLTRB(7, 3, 7, 3),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                color: Colors.black45.withOpacity(0.1),
-              ),
-              child: Column(
-                children: [
-                  Icon(
-                    contactIcon,
-                    size: 36,
-                    color: _theme.secondaryColor,
-                  ),
-                  Text(
-                    "Contact",
-                    style: TextStyle(
-                        fontFamily: _theme.font,
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        color: _theme.secondaryColor),
-                  ),
-                ],
-              ),
             ),
           ),
         ],

@@ -37,6 +37,8 @@ dependencies:
   url_launcher: ^6.0.12
   animated_text_kit: ^4.2.1
   flutter_staggered_animations: ^1.0.0
+  flutter_datetime_picker: ^1.5.1
+  intl: ^0.17.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -76,6 +78,14 @@ flutter:
     - assets/images/book.png
     - assets/images/college_white.png
     - assets/images/high.png
+    - assets/images/doge.gif
+    - assets/images/rihanna.gif
+    - assets/images/simpsons.gif
+    - assets/images/stewie.gif
+    - assets/images/wows.jpeg
+    - assets/images/give.jpeg
+    - assets/images/bernie.jpeg
+    - assets/images/broke.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

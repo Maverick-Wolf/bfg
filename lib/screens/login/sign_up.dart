@@ -23,6 +23,7 @@ late BuildContext _context;
 late Timer _timer;
 int _start = 60;
 bool resendOtpButtonActivated = false;
+String _bitsID = "";
 
 class _SignUpState extends State<SignUp> {
   @override
@@ -51,6 +52,7 @@ class _SignUpState extends State<SignUp> {
                   isPhoneNumberTfVisible
                       ? _buildPhoneNumberTF()
                       : _buildOtpTF(),
+                  isPhoneNumberTfVisible ? _buildBitsIdTF() : const SizedBox(),
                 ],
               ),
             ),
@@ -158,15 +160,22 @@ class _SignUpState extends State<SignUp> {
     return Center(
       child: ElevatedButton(
         onPressed: () async {
-          if (_phoneNumber.length == 13) {
-            showDialog(
-                context: context,
-                builder: (BuildContext) => _buildPopupDialogue(context));
-            setState(() {
-              FocusScope.of(context).unfocus();
-            });
+          if (_bitsID.toLowerCase().endsWith('g') && _bitsID.length > 10) {
+            if (_phoneNumber.length == 13) {
+              showDialog(
+                  context: context,
+                  builder: (BuildContext) => _buildPopupDialogue(context));
+              setState(() {
+                FocusScope.of(context).unfocus();
+              });
+            } else {
+              const snackBar = SnackBar(content: Text("Invalid phone number"));
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            }
           } else {
-            const snackBar = SnackBar(content: Text("Invalid phone number"));
+            const snackBar = SnackBar(
+                content: Text(
+                    "Sowwy, this app is available only for students from BPGC at the moment :p"));
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
           }
         },
@@ -218,6 +227,33 @@ class _SignUpState extends State<SignUp> {
         fontWeight: FontWeight.bold,
       ),
       keyboardType: TextInputType.number,
+    );
+  }
+
+  Widget _buildBitsIdTF() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+      child: TextFormField(
+        initialValue: "",
+        key: const ValueKey("test4"),
+        onChanged: (value) {
+          _bitsID = value;
+        },
+        decoration: InputDecoration(
+          border: const OutlineInputBorder(),
+          labelText: "BITS ID",
+          labelStyle: TextStyle(color: _theme.secondaryColor),
+          enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: _theme.tertiaryColor)),
+          focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: _theme.secondaryColor, width: 1.3)),
+        ),
+        cursorColor: _theme.secondaryColor,
+        style: TextStyle(
+          fontFamily: _theme.font,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
     );
   }
 

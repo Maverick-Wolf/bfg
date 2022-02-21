@@ -1,34 +1,28 @@
-import 'package:bfg/widgets/drawer.dart';
 import 'package:bfg/theme.dart';
 import 'package:flutter/material.dart';
 
-class BfgHome extends StatefulWidget {
-  const BfgHome({Key? key}) : super(key: key);
+final OurTheme _theme = OurTheme();
 
-  @override
-  _BfgHomeState createState() => _BfgHomeState();
-}
-
-class _BfgHomeState extends State<BfgHome> {
-  final OurTheme _theme = OurTheme();
+class PoolHome extends StatelessWidget {
+  const PoolHome({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
-
-    return Scaffold(
-      backgroundColor: _theme.primaryColor,
-      drawer: const DrawerClass(),
-      body: Center(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            _buildListingsContainer(context, height, width),
-            _buildSellContainer(context, height, width),
-            _buildMyListingsContainer(context, height, width)
-          ],
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: _theme.primaryColor,
+        body: Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              _buildListingsContainer(context, height, width),
+              _buildSellContainer(context, height, width),
+              _buildMyListingsContainer(context, height, width)
+            ],
+          ),
         ),
       ),
     );
@@ -38,16 +32,7 @@ class _BfgHomeState extends State<BfgHome> {
       BuildContext context, double height, double width) {
     return InkWell(
       onTap: () {
-        Navigator.pushNamed(context, '/listings');
-        const snackBar = SnackBar(
-          content: Text(
-            "Tap on a card to view more details about the seller",
-            style: TextStyle(color: Colors.white),
-          ),
-          duration: Duration(milliseconds: 1700),
-          backgroundColor: Colors.blue,
-        );
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        Navigator.pushNamed(context, '/poolListings');
       },
       child: Container(
         height: height * 0.16,
@@ -64,13 +49,13 @@ class _BfgHomeState extends State<BfgHome> {
               width: 15.0,
             ),
             Icon(
-              Icons.view_headline_outlined,
+              Icons.map,
               color: _theme.secondaryColor,
               size: 40,
             ),
             const Spacer(),
             Text(
-              "View Listings",
+              "View Pools",
               style: TextStyle(
                   color: _theme.tertiaryColor,
                   fontFamily: _theme.font,
@@ -89,7 +74,7 @@ class _BfgHomeState extends State<BfgHome> {
       BuildContext context, double height, double width) {
     return InkWell(
       onTap: () {
-        Navigator.pushNamed(context, '/addBook');
+        Navigator.pushNamed(context, '/addCarpool');
       },
       child: Container(
         height: height * 0.16,
@@ -106,13 +91,13 @@ class _BfgHomeState extends State<BfgHome> {
               width: 15.0,
             ),
             Icon(
-              Icons.bookmark_outline,
+              Icons.directions_car,
               color: _theme.secondaryColor,
               size: 40,
             ),
             const Spacer(),
             Text(
-              "Sell a Book",
+              "Start a pool",
               style: TextStyle(
                   color: _theme.tertiaryColor,
                   fontFamily: _theme.font,
@@ -131,14 +116,7 @@ class _BfgHomeState extends State<BfgHome> {
       BuildContext context, double height, double width) {
     return InkWell(
       onTap: () {
-        Navigator.pushNamed(context, '/myListings');
-        final snackBar = SnackBar(
-          content: Text("Tap and hold a listing for 2 seconds to delete it",
-              style: TextStyle(color: _theme.tertiaryColor)),
-          backgroundColor: Colors.blue,
-          duration: const Duration(milliseconds: 1700),
-        );
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        Navigator.pushNamed(context, '/myPools');
       },
       child: Container(
         height: height * 0.16,
@@ -155,13 +133,13 @@ class _BfgHomeState extends State<BfgHome> {
               width: 15.0,
             ),
             Icon(
-              Icons.list_alt_rounded,
+              Icons.person,
               color: _theme.secondaryColor,
               size: 40,
             ),
             const Spacer(),
             Text(
-              "My Listings",
+              "My Pools",
               style: TextStyle(
                   color: _theme.tertiaryColor,
                   fontFamily: _theme.font,
