@@ -568,25 +568,56 @@ class _PoolDetailsCardState extends State<PoolDetailsCard> {
   }
 
   Widget _poolMatesPopUp(BuildContext context) {
+    List _pools = [];
+    _pools.add(widget.initiator);
+    _pools.addAll(widget.pools);
     return AlertDialog(
       backgroundColor: Colors.grey,
-      content: ListView.builder(
-        shrinkWrap: true,
-        itemCount: widget.pools.length,
-        itemBuilder: (context, index) {
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Text(
-                widget.pools[index]['name'],
-                style: TextStyle(
-                    color: _theme.secondaryColor,
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.w600),
-              ),
-            ],
-          );
-        },
+      content: SizedBox(
+        height: 400.0,
+        width: 300.0,
+        child: ListView.builder(
+          shrinkWrap: true,
+          itemCount: _pools.length,
+          itemBuilder: (context, index) {
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text(
+                  _pools[index]['name'],
+                  style: TextStyle(
+                      color: _theme.secondaryColor,
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.w600),
+                ),
+                InkWell(
+                  onTap: () {
+                    openWhatsapp(_pools[index]['phone']);
+                  },
+                  child: Container(
+                    child: Text("Contact"),
+                    color: Colors.amber,
+                  ),
+                ),
+                IconButton(
+                    onPressed: () {
+                      Clipboard.setData(
+                          ClipboardData(text: _pools[index]['phone']));
+                      const snackBar = SnackBar(
+                        content:
+                            Text('Seller phone number copied to clipboard'),
+                        duration: Duration(seconds: 4),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    },
+                    icon: Icon(
+                      Icons.copy,
+                      color: Colors.black,
+                    ))
+              ],
+            );
+          },
+        ),
       ),
     );
   }
