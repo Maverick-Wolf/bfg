@@ -1,4 +1,5 @@
 import 'package:bfg/theme.dart';
+import 'package:bfg/widgets/drawer.dart';
 import 'package:flutter/material.dart';
 
 final OurTheme _theme = OurTheme();
@@ -12,6 +13,18 @@ class PoolHome extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: _theme.primaryColor,
+          centerTitle: true,
+          title: Text(
+            "Cab Pools",
+            style: TextStyle(
+                fontFamily: _theme.font,
+                fontWeight: FontWeight.bold,
+                color: _theme.secondaryColor),
+          ),
+        ),
+        drawer: const DrawerClass(),
         backgroundColor: _theme.primaryColor,
         body: Center(
           child: Column(

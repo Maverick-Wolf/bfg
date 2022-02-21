@@ -38,8 +38,6 @@ class _MainHomeState extends State<MainHome> {
     final OurTheme _theme = OurTheme();
     return SafeArea(
       child: Scaffold(
-        key: _scaffoldKey,
-        drawer: const DrawerClass(),
         backgroundColor: _theme.primaryColor,
         bottomNavigationBar: Container(
           decoration: BoxDecoration(
@@ -55,16 +53,12 @@ class _MainHomeState extends State<MainHome> {
             child: BottomNavigationBar(
               currentIndex: _selectedIndex,
               onTap: (index) {
-                if (index == 0) {
-                  _scaffoldKey.currentState?.openDrawer();
-                } else {
-                  _pageController.animateToPage(index,
-                      duration: const Duration(milliseconds: 250),
-                      curve: Curves.linear);
-                  setState(() {
-                    _selectedIndex = index;
-                  });
-                }
+                _pageController.animateToPage(index,
+                    duration: const Duration(milliseconds: 250),
+                    curve: Curves.linear);
+                setState(() {
+                  _selectedIndex = index;
+                });
               },
               backgroundColor: _theme.primaryColor,
               items: const [
@@ -72,12 +66,12 @@ class _MainHomeState extends State<MainHome> {
                     icon: Icon(
                       Icons.person,
                     ),
-                    label: "Menu"),
+                    label: "Profile"),
                 BottomNavigationBarItem(
                     icon: Icon(
                       Icons.bookmark_outline_rounded,
                     ),
-                    label: "BFG"),
+                    label: "Books"),
                 BottomNavigationBarItem(
                     icon: Icon(
                       Icons.directions_car,
@@ -97,9 +91,6 @@ class _MainHomeState extends State<MainHome> {
           controller: _pageController,
           children: _pages,
           onPageChanged: (index) {
-            if (index == 0) {
-              _scaffoldKey.currentState?.openDrawer();
-            }
             setState(() {
               _selectedIndex = index;
             });

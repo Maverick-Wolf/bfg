@@ -13,7 +13,6 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-
   OurTheme _theme = OurTheme();
   late CollectionReference users;
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -30,17 +29,25 @@ class _ProfileState extends State<Profile> {
         appBar: AppBar(
           backgroundColor: _theme.primaryColor,
           centerTitle: true,
-          title: Text("Profile", style: TextStyle(fontFamily: _theme.font, fontWeight: FontWeight.bold, color: _theme.secondaryColor),),
+          title: Text(
+            "Profile",
+            style: TextStyle(
+                fontFamily: _theme.font,
+                fontWeight: FontWeight.bold,
+                color: _theme.secondaryColor),
+          ),
         ),
-          body: CustomScrollView(
-            slivers: [
-              SliverFillRemaining(
-                hasScrollBody: false,
-                child: Padding(
+        drawer: const DrawerClass(),
+        body: CustomScrollView(
+          slivers: [
+            SliverFillRemaining(
+              hasScrollBody: false,
+              child: Padding(
                   padding: const EdgeInsets.fromLTRB(30.0, 0.0, 30.0, 0.0),
                   child: FutureBuilder<DocumentSnapshot>(
                     future: users.doc(_user!.uid).get(),
-                    builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                    builder: (BuildContext context,
+                        AsyncSnapshot<DocumentSnapshot> snapshot) {
                       if (snapshot.hasError) {
                         return const Text("Something went wrong");
                       }
@@ -48,7 +55,8 @@ class _ProfileState extends State<Profile> {
                         return const Text("Document does not exist");
                       }
                       if (snapshot.connectionState == ConnectionState.done) {
-                        Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
+                        Map<String, dynamic> data =
+                            snapshot.data!.data() as Map<String, dynamic>;
                         return Padding(
                           padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
                           child: Container(
@@ -56,31 +64,38 @@ class _ProfileState extends State<Profile> {
                                 borderRadius: BorderRadius.circular(10),
                                 border: Border.all(
                                   color: _theme.secondaryColor,
-                                )
-                            ),
+                                )),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 _buildRichText("Name", data['name']),
-                                _buildRichText("Phone Number", data['phone_number']),
+                                _buildRichText(
+                                    "Phone Number", data['phone_number']),
                                 _buildRichText("Hostel", data['hostel']),
-                                _buildRichText("Room Number", data['room_number']),
-                                _buildRichText("Contact Preference", data['contact_preference'] ?? "Call" ),
-                                const SizedBox(height: 10,),
+                                _buildRichText(
+                                    "Room Number", data['room_number']),
+                                _buildRichText("Contact Preference",
+                                    data['contact_preference'] ?? "Call"),
+                                const SizedBox(
+                                  height: 10,
+                                ),
                                 _buildEditButton(),
                               ],
                             ),
                           ),
                         );
                       }
-                      return Center(child: CircularProgressIndicator(color: _theme.secondaryColor,),);
+                      return Center(
+                        child: CircularProgressIndicator(
+                          color: _theme.secondaryColor,
+                        ),
+                      );
                     },
-                  )
-                ),
-              ),
-            ],
-          ),
+                  )),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -108,7 +123,7 @@ class _ProfileState extends State<Profile> {
   Widget _buildEditButton() {
     return Center(
       child: ElevatedButton(
-        onPressed: (){
+        onPressed: () {
           FocusScope.of(context).unfocus();
           Navigator.pushNamed(context, '/enterDetails');
         },
@@ -117,19 +132,19 @@ class _ProfileState extends State<Profile> {
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15),
-            )
-        ),
+            )),
         child: Wrap(
           children: [
             const Icon(Icons.edit),
-            const SizedBox(width: 10.0,),
+            const SizedBox(
+              width: 10.0,
+            ),
             Text(
               "Edit Details",
               style: TextStyle(
                   fontSize: 18.0,
                   fontFamily: _theme.font,
-                  fontWeight: FontWeight.bold
-              ),
+                  fontWeight: FontWeight.bold),
             )
           ],
         ),

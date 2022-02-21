@@ -19,6 +19,17 @@ class _BfgHomeState extends State<BfgHome> {
 
     return Scaffold(
       backgroundColor: _theme.primaryColor,
+      appBar: AppBar(
+        backgroundColor: _theme.primaryColor,
+        centerTitle: true,
+        title: Text(
+          "BFG",
+          style: TextStyle(
+              fontFamily: _theme.font,
+              fontWeight: FontWeight.bold,
+              color: _theme.secondaryColor),
+        ),
+      ),
       drawer: const DrawerClass(),
       body: Center(
         child: Column(
