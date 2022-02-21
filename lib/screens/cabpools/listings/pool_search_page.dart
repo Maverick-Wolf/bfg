@@ -199,7 +199,7 @@ class _PoolSearchPageState extends State<PoolSearchPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "\nYou can search the listings by city, date, To or From\n\nSearch with a blank text field to view all books at once\n",
+            "\nYou can search the listings by city, date, To or From\n\nSearch with a blank text field to view all pools at once\n",
             style: TextStyle(
               color: _theme.tertiaryColor,
               fontFamily: _theme.font,
