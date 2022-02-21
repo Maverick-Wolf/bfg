@@ -299,9 +299,7 @@ class _PoolDetailsCardState extends State<PoolDetailsCard> {
                   });
                   if (int.parse(widget.booked) <=
                           int.parse(widget.maxCapacity) &&
-                      _username != widget.initiator['name'] &&
-                      _username !=
-                          widget.pools[int.parse(widget.booked) - 2]['name']) {
+                      _username != widget.initiator['name']) {
                     try {
                       await FirebaseFirestore.instance
                           .collection('pools')

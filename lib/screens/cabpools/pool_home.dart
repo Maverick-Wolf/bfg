@@ -115,7 +115,9 @@ class PoolHome extends StatelessWidget {
   Widget _buildMyListingsContainer(
       BuildContext context, double height, double width) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        Navigator.pushNamed(context, '/myPools');
+      },
       child: Container(
         height: height * 0.16,
         width: width * 0.8,
