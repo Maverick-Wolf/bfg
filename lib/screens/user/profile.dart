@@ -63,12 +63,16 @@ class _ProfileState extends State<Profile> {
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
                                 border: Border.all(
-                                  color: _theme.secondaryColor,
+                                  color: Colors.transparent,
                                 )),
                             child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
+                                SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.05,
+                                ),
                                 _buildRichText("Name", data['name']),
                                 _buildRichText(
                                     "Phone Number", data['phone_number']),
@@ -79,6 +83,10 @@ class _ProfileState extends State<Profile> {
                                     data['contact_preference'] ?? "Call"),
                                 const SizedBox(
                                   height: 10,
+                                ),
+                                SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.05,
                                 ),
                                 _buildEditButton(),
                               ],
@@ -101,22 +109,46 @@ class _ProfileState extends State<Profile> {
   }
 
   Widget _buildRichText(String title, String text) {
-    return RichText(
-      text: TextSpan(
-          text: title + ": ",
-          style: TextStyle(
-              color: _theme.secondaryColor,
-              fontSize: 20.0,
-              fontFamily: _theme.font,
-              fontWeight: FontWeight.w800),
-          children: <TextSpan>[
-            TextSpan(
-                text: text,
-                style: TextStyle(
+    return Padding(
+      padding: EdgeInsets.symmetric(
+          vertical: MediaQuery.of(context).size.height * 0.02),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              RichText(
+                text: TextSpan(
+                  text: title + ": ",
+                  style: TextStyle(
+                      color: _theme.secondaryColor,
+                      fontSize: 20.0,
+                      fontFamily: _theme.font,
+                      fontWeight: FontWeight.w600),
+                ),
+              ),
+              const Spacer(),
+              RichText(
+                text: TextSpan(
+                  text: text,
+                  style: TextStyle(
                     color: _theme.tertiaryColor,
                     fontFamily: _theme.font,
-                    fontWeight: FontWeight.w800)),
-          ]),
+                    fontWeight: FontWeight.w500,
+                    fontSize: 20.0,
+                  ),
+                ),
+              )
+            ],
+          ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.015,
+          ),
+          Divider(
+            color: _theme.secondaryColor,
+            thickness: 0.2,
+          )
+        ],
+      ),
     );
   }
 

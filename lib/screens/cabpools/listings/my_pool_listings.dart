@@ -116,7 +116,7 @@ class _MyPoolListingsState extends State<MyPoolListings> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "\nThese are pools you are a part of \n\nRemember to remove pools that have already been completed to avoid unnecessary calls\n\nTo delete or leave a pool, hold down on the item for 2 seconds and tap 'Delete/Leave' on the pop up box",
+            "\nThese are pools you are a part of \n\nTo contact pool mates just tap on the item\n\nRemember to remove pools that have already been completed to avoid unnecessary calls\n\nTo delete or leave a pool, hold down on the item for 2 seconds and tap 'Delete/Leave' on the pop up box",
             style: TextStyle(
               color: _theme.tertiaryColor,
               fontFamily: _theme.font,
