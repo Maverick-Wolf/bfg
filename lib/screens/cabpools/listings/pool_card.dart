@@ -147,17 +147,76 @@ class _PoolDetailsCardState extends State<PoolDetailsCard> {
           initiatorphoneNumber =
               (documentSnapshot.data() as dynamic)['initiator']['phone'];
         }
+        List _poolsPhoneNumber = [];
+        for (Map map in widget.pools) {
+          _poolsPhoneNumber.add(map['phone']);
+        }
+        CollectionReference pools =
+            FirebaseFirestore.instance.collection('pools');
         if ((widget.longPressBool &&
-                _user!.phoneNumber == initiatorphoneNumber) ||
-            _user!.phoneNumber == '+919876543210') {
-          CollectionReference pools =
-              FirebaseFirestore.instance.collection('pools');
+            _user!.phoneNumber == initiatorphoneNumber)) {
           showDialog(
               context: context,
               builder: (context) =>
                   _deletePoolConfirmationPopUp(context, pools));
+        } else if (_poolsPhoneNumber.contains(_user!.phoneNumber)) {
+          showDialog(
+              context: context,
+              builder: (context) => _leaveConfirmationPopUp(context, pools));
         }
       },
+    );
+  }
+
+  Widget _leaveConfirmationPopUp(
+      BuildContext context, CollectionReference pools) {
+    return AlertDialog(
+      backgroundColor: Colors.grey,
+      title: Center(
+        child: Text(
+          "Leave",
+          style: TextStyle(
+              color: _theme.secondaryColor,
+              letterSpacing: 0.7,
+              fontFamily: _theme.font,
+              fontWeight: FontWeight.bold),
+        ),
+      ),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            "Tapping leave will make you leave this pool, you can join back the pool later if you want",
+            style: TextStyle(
+                color: _theme.tertiaryColor,
+                letterSpacing: 0.7,
+                fontFamily: _theme.font,
+                fontWeight: FontWeight.bold),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                primary: Colors.red.withOpacity(0.8),
+                onPrimary: _theme.tertiaryColor),
+            onPressed: () async {
+              widget.pools.removeWhere(
+                  (element) => element['phone'] == _user!.phoneNumber);
+                  await FirebaseFirestore.instance
+                          .collection('pools')
+                          .doc(widget.documentID)
+                          .update({
+                        'pools': widget.pools,
+                        'booked': (int.parse(widget.booked) - 1).toString()
+                      });
+              Navigator.of(context, rootNavigator: true).pop();
+            },
+            child: const Text("Leave"),
+          )
+        ],
+      ),
     );
   }
 
@@ -203,6 +262,18 @@ class _PoolDetailsCardState extends State<PoolDetailsCard> {
         ],
       ),
     );
+  }
+
+  Future<void> deletePools(CollectionReference pools) {
+    return pools.doc(widget.documentID).delete().then((value) {
+      const snackBar =
+          SnackBar(content: Text('Your listing was deleted successfully :D'));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }).catchError((error) {
+      final snackBar =
+          SnackBar(content: Text("Failed to delete pool ;-; ... $error"));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    });
   }
 
   Widget _buildTitle(String bookTitle, double fontSize) {
@@ -422,17 +493,5 @@ class _PoolDetailsCardState extends State<PoolDetailsCard> {
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
-  }
-
-  Future<void> deletePools(CollectionReference pools) {
-    return pools.doc(widget.documentID).delete().then((value) {
-      const snackBar =
-          SnackBar(content: Text('Your listing was deleted successfully :D'));
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    }).catchError((error) {
-      final snackBar =
-          SnackBar(content: Text("Failed to delete pool ;-; ... $error"));
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    });
   }
 }
