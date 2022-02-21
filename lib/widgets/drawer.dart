@@ -81,16 +81,33 @@ class _DrawerClassState extends State<DrawerClass> {
                   );
                 }),
           ),
+          // const Divider(
+          //   thickness: 1,
+          // ),
+          // ListTile(
+          //   leading: Icon(
+          //     Icons.person,
+          //     color: _theme.secondaryColor,
+          //   ),
+          //   title: Text(
+          //     'Profile',
+          //     style: TextStyle(
+          //         fontFamily: _theme.font,
+          //         fontSize: 18,
+          //         fontWeight: FontWeight.bold,
+          //         color: _theme.tertiaryColor),
+          //   ),
+          //   onTap: () {
+          //     Navigator.pushNamed(context, '/Profile');
+          //   },
+          // ),
           const Divider(
             thickness: 1,
           ),
           ListTile(
-            leading: Icon(
-              Icons.person,
-              color: _theme.secondaryColor,
-            ),
+            leading: Icon(Icons.coffee, color: _theme.secondaryColor),
             title: Text(
-              'Profile',
+              'Buy Us a Coffee',
               style: TextStyle(
                   fontFamily: _theme.font,
                   fontSize: 18,
@@ -98,34 +115,9 @@ class _DrawerClassState extends State<DrawerClass> {
                   color: _theme.tertiaryColor),
             ),
             onTap: () {
-              Navigator.pushNamed(context, '/Profile');
+              Navigator.pushNamed(context, '/donate');
             },
           ),
-          const Divider(
-            thickness: 1,
-          ),
-          ListTile(
-              title: Text(
-                'My Listings',
-                style: TextStyle(
-                    fontFamily: _theme.font,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: _theme.tertiaryColor),
-              ),
-              leading:
-                  Icon(Icons.list_alt_rounded, color: _theme.secondaryColor),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pushNamed(context, '/myListings');
-                final snackBar = SnackBar(
-                  content: Text(
-                      "Tap and hold a listing for 2 seconds to delete it",
-                      style: TextStyle(color: _theme.tertiaryColor)),
-                  backgroundColor: Colors.blue,
-                );
-                ScaffoldMessenger.of(context).showSnackBar(snackBar);
-              }),
           const Divider(
             thickness: 1,
           ),
@@ -142,23 +134,6 @@ class _DrawerClassState extends State<DrawerClass> {
             ),
             onTap: () {
               Navigator.pushNamed(context, '/feedbackPage');
-            },
-          ),
-          const Divider(
-            thickness: 1,
-          ),
-          ListTile(
-            leading: Icon(Icons.coffee, color: _theme.secondaryColor),
-            title: Text(
-              'Buy Us a Coffee',
-              style: TextStyle(
-                  fontFamily: _theme.font,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: _theme.tertiaryColor),
-            ),
-            onTap: () {
-              Navigator.pushNamed(context, '/donate');
             },
           ),
           const Divider(

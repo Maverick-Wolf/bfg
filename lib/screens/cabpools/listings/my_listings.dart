@@ -68,8 +68,8 @@ class _MyPoolListingsState extends State<MyPoolListings> {
 
   getPools(AsyncSnapshot<QuerySnapshot> snapshot) {
     String contactPreference = "Whatsapp";
-    List phoneNumbers = [];
     return snapshot.data!.docs.map((DocumentSnapshot document) {
+      List phoneNumbers = [];
       Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
       for (Map map in data['pools']) {
         phoneNumbers.add(map['phone']);

@@ -12,14 +12,16 @@ class DonationScreen extends StatelessWidget {
     return Scaffold(
         backgroundColor: Color.fromARGB(255, 20, 236, 49),
         appBar: AppBar(
+          centerTitle: true,
+          elevation: 0.0,
           iconTheme: const IconThemeData(
-            color: Colors.yellowAccent,
+            color: Colors.white,
           ),
-          title: const Text(
+          title: Text(
             "Send Help",
-            style: TextStyle(letterSpacing: 6, color: Colors.deepPurpleAccent),
+            style: TextStyle(letterSpacing: 2, color: _theme.secondaryColor),
           ),
-          backgroundColor: Colors.pinkAccent,
+          backgroundColor: _theme.primaryColor,
         ),
         body: SizedBox(
           height: _height,
