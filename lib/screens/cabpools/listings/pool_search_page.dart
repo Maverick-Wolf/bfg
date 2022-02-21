@@ -132,8 +132,12 @@ class _PoolSearchPageState extends State<PoolSearchPage> {
   }
 
   getPools(AsyncSnapshot<QuerySnapshot> snapshot) {
+    String contactPreference = 'Call';
     return snapshot.data!.docs.map((DocumentSnapshot document) {
       Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+      if (data['contact_preference'].toString().isNotEmpty) {
+        contactPreference = data['contact_preference'].toString();
+      }
       if (data['to']
               .toString()
               .toLowerCase()
@@ -169,6 +173,7 @@ class _PoolSearchPageState extends State<PoolSearchPage> {
             pools: data['pools'],
             to: data['to'],
             time: data['time'],
+            contactPreference: contactPreference,
           ),
         );
       } else {
@@ -194,7 +199,7 @@ class _PoolSearchPageState extends State<PoolSearchPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "\nYou can search the listings by city, date, To or From\n\nSearch with a blank text field to view all books at once\n",
+            "\nYou can search the listings by city, date, To or From\n\nSearch with a blank text field to view all pools at once\n",
             style: TextStyle(
               color: _theme.tertiaryColor,
               fontFamily: _theme.font,

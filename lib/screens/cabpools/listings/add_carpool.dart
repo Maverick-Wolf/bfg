@@ -33,7 +33,7 @@ class _AddCarpoolState extends State<AddCarpool> {
   final OurTheme _theme = OurTheme();
   final TextEditingController _controller = TextEditingController();
 
-  Future<void> addCarpool(String name, String phone) {
+  Future<void> addCarpool(String name, String phone, String contactPreference) {
     _initiator = {'name': name, 'phone': phone};
     return pools.add({
       'city': _city,
@@ -47,7 +47,8 @@ class _AddCarpoolState extends State<AddCarpool> {
       'initiator': _initiator,
       'booked': "1",
       'pools': [],
-      'inGoa': _withinGoaBool
+      'inGoa': _withinGoaBool,
+      'contact_preference': contactPreference,
     }).then((value) {
       const snackBar =
           SnackBar(content: Text("Your listing was added successfully"));
@@ -135,8 +136,8 @@ class _AddCarpoolState extends State<AddCarpool> {
               _city.isEmpty ||
               _to.isEmpty ||
               _maxCapacity.isEmpty ||
-              _dateSet.isEmpty ||
-              _timeSet.isEmpty) {
+              _dateSet == "Choose Date" ||
+              _timeSet == "Choose Time") {
             const snackBar =
                 SnackBar(content: Text("Please fill the required fields"));
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -269,6 +270,7 @@ class _AddCarpoolState extends State<AddCarpool> {
             onPressed: () async {
               String name = "";
               String phoneNumber = "";
+              String contactPreference = "";
 
               DocumentSnapshot documentSnapshot = await FirebaseFirestore
                   .instance
@@ -279,8 +281,10 @@ class _AddCarpoolState extends State<AddCarpool> {
                 name = (documentSnapshot.data() as dynamic)['name'];
                 phoneNumber =
                     (documentSnapshot.data() as dynamic)['phone_number'];
+                contactPreference =
+                    (documentSnapshot.data() as dynamic)['contact_preference'];
               }
-              addCarpool(name, phoneNumber);
+              addCarpool(name, phoneNumber, contactPreference);
               Navigator.popAndPushNamed(context, '/userMenu');
             },
             child: Text(
