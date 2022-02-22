@@ -77,13 +77,18 @@ class _AddCarpoolState extends State<AddCarpool> {
             _note = text;
             break;
           default:
-            print("idk");
             break;
         }
       },
       decoration: InputDecoration(
         border: const OutlineInputBorder(),
-        labelText: _label,
+        labelText: _how == 'car' && fillIn == "city"
+            ? 'City'
+            : _how == 'flight' && fillIn == "city"
+                ? 'Airlines Name/No.'
+                : _how == "train" && fillIn == "city"
+                    ? "Train Name/No."
+                    : _label,
         hintText: _hint,
         labelStyle: TextStyle(color: _theme.secondaryColor),
         enabledBorder: OutlineInputBorder(
@@ -345,6 +350,31 @@ class _AddCarpoolState extends State<AddCarpool> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      _buildWhereDropDown(),
+                      if (_how == "car")
+                        Row(
+                          children: [
+                            Checkbox(
+                                checkColor: _theme.primaryColor,
+                                activeColor: _theme.secondaryColor,
+                                value: _withinGoaBool,
+                                onChanged: (value) {
+                                  _withinGoaBool = value!;
+                                  setState(() {
+                                    !_withinGoaBool;
+                                  });
+                                }),
+                            Text("Is the pool in Goa?",
+                                style: TextStyle(
+                                    fontFamily: _theme.font,
+                                    fontWeight: FontWeight.w600))
+                          ],
+                        ),
+                    ],
+                  ),
                   _buildTextFormField("City", "", 'city', TextInputType.name),
                   _buildTextFormField("From", "Where will the pool start from",
                       'from', TextInputType.name),
@@ -457,31 +487,6 @@ class _AddCarpoolState extends State<AddCarpool> {
                       child: _buildCapacityFormField(
                           "Max Poolmates", "", TextInputType.number),
                     ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      _buildWhereDropDown(),
-                      if (_how == "car")
-                        Row(
-                          children: [
-                            Checkbox(
-                                checkColor: _theme.primaryColor,
-                                activeColor: _theme.secondaryColor,
-                                value: _withinGoaBool,
-                                onChanged: (value) {
-                                  _withinGoaBool = value!;
-                                  setState(() {
-                                    !_withinGoaBool;
-                                  });
-                                }),
-                            Text("Is the pool in Goa?",
-                                style: TextStyle(
-                                    fontFamily: _theme.font,
-                                    fontWeight: FontWeight.w600))
-                          ],
-                        ),
-                    ],
                   ),
                   _buildTextFormField("Note (Optional)", "Extra info (if any)",
                       'note', TextInputType.name),
