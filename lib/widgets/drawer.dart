@@ -11,7 +11,7 @@ class DrawerClass extends StatefulWidget {
 }
 
 class _DrawerClassState extends State<DrawerClass> {
-  OurTheme _theme = OurTheme();
+  final OurTheme _theme = OurTheme();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   User? _user;
   String userName = "Name";

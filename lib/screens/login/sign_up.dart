@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../theme.dart';
@@ -32,6 +33,7 @@ class _SignUpState extends State<SignUp> {
     super.dispose();
   }
 
+  @override
   Widget build(BuildContext context) {
     _context = context;
     return GestureDetector(
@@ -72,32 +74,36 @@ class _SignUpState extends State<SignUp> {
   }
 
   //Callback for when the user has already previously signed in with this phone number on this device
-  PhoneVerificationCompleted verificationCompleted =
-      (PhoneAuthCredential phoneAuthCredential) async {
+  void verificationCompleted(PhoneAuthCredential phoneAuthCredential) async {
     await _auth.signInWithCredential(phoneAuthCredential);
-    print(
-        'Phone number automatically verified and user signed in: ${_auth.currentUser!.uid}');
-  };
+    if (kDebugMode) {
+      print(
+          'Phone number automatically verified and user signed in: ${_auth.currentUser!.uid}');
+    }
+  }
 
   //Listens for errors with verification, such as too many attempts
-  PhoneVerificationFailed verificationFailed =
-      (FirebaseAuthException authException) {
-    print(
-        'Phone number verification failed. Code: ${authException.code}. Message: ${authException.message}');
-  };
+  void verificationFailed(FirebaseAuthException authException) {
+    if (kDebugMode) {
+      print(
+          'Phone number verification failed. Code: ${authException.code}. Message: ${authException.message}');
+    }
+  }
 
   //Callback for when the code is sent
-  PhoneCodeSent codeSent =
-      (String verificationId, [int? forceResendingToken]) async {
-    print('Please check your phone for the verification code.');
+  void codeSent(String verificationId, [int? forceResendingToken]) async {
+    if (kDebugMode) {
+      print('Please check your phone for the verification code.');
+    }
     _verificationId = verificationId;
-  };
+  }
 
-  PhoneCodeAutoRetrievalTimeout codeAutoRetrievalTimeout =
-      (String verificationId) {
-    print("verification code: " + verificationId);
+  void codeAutoRetrievalTimeout(String verificationId) {
+    if (kDebugMode) {
+      print("verification code: " + verificationId);
+    }
     _verificationId = verificationId;
-  };
+  }
 
   verifyPhoneNumber() async {
     try {
@@ -111,7 +117,7 @@ class _SignUpState extends State<SignUp> {
       );
     } catch (e) {
       final snackBar =
-          SnackBar(content: Text("Failed to Verify Phone Number: ${e}"));
+          SnackBar(content: Text("Failed to Verify Phone Number: $e"));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
@@ -164,7 +170,7 @@ class _SignUpState extends State<SignUp> {
             if (_phoneNumber.length == 13) {
               showDialog(
                   context: context,
-                  builder: (BuildContext) => _buildPopupDialogue(context));
+                  builder: (_) => _buildPopupDialogue(context));
               setState(() {
                 FocusScope.of(context).unfocus();
               });

@@ -1,6 +1,7 @@
 import 'package:bfg/theme.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class AddBook extends StatefulWidget {
@@ -14,7 +15,7 @@ final FirebaseAuth _auth = FirebaseAuth.instance;
 User? _user;
 
 class _AddBookState extends State<AddBook> {
-  OurTheme _theme = OurTheme();
+  final OurTheme _theme = OurTheme();
   String _edition = "1";
   String _semester = "1-1";
   String _department = "Misc";
@@ -51,11 +52,10 @@ class _AddBookState extends State<AddBook> {
                   onPressed: () {
                     showDialog(
                       context: context,
-                      builder: (BuildContext) =>
-                          _buildInfoPopupDialogue(context),
+                      builder: (_) => _buildInfoPopupDialogue(context),
                     );
                   },
-                  icon: Icon(Icons.info),
+                  icon: const Icon(Icons.info),
                   color: _theme.tertiaryColor,
                 )),
           ],
@@ -79,7 +79,7 @@ class _AddBookState extends State<AddBook> {
                   _buildDepartmentDropDown(),
                   _buildDropdownRow(),
                   Center(
-                    child: Container(
+                    child: SizedBox(
                       width: MediaQuery.of(context).size.width / 2,
                       child: _buildPriceTextFormField("Listing Price",
                           "Your Selling Price", TextInputType.number),
@@ -115,7 +115,9 @@ class _AddBookState extends State<AddBook> {
             _note = text;
             break;
           default:
-            print("idk");
+            if (kDebugMode) {
+              print("idk");
+            }
             break;
         }
       },
@@ -341,7 +343,7 @@ class _AddBookState extends State<AddBook> {
           } else {
             showDialog(
               context: context,
-              builder: (BuildContext) => _buildPopupDialogue(context),
+              builder: (_) => _buildPopupDialogue(context),
             );
           }
         },
@@ -388,35 +390,35 @@ class _AddBookState extends State<AddBook> {
         children: [
           _textBox("Book Name",
               "Enter the complete name of the book, with proper indentations"),
-          SizedBox(
+          const SizedBox(
             height: 5,
           ),
           _textBox("Author(s)",
               "Enter the names of the authors with correct spellings"),
-          SizedBox(
+          const SizedBox(
             height: 5,
           ),
           _textBox("Department", "The department the book belongs to"),
-          SizedBox(
+          const SizedBox(
             height: 5,
           ),
           _textBox("Edition", "The edition of the book"),
-          SizedBox(
+          const SizedBox(
             height: 5,
           ),
           _textBox("Semester",
               "The semester in which the book is part of the curriculum"),
-          SizedBox(
+          const SizedBox(
             height: 5,
           ),
           _textBox(
               "Listing Price", "The price at which you want to sell the book"),
-          SizedBox(
+          const SizedBox(
             height: 5,
           ),
           _textBox("Note",
               "(Optional) Any extra info, regarding the book, or life in general"),
-          SizedBox(
+          const SizedBox(
             height: 5,
           ),
         ],

@@ -1,8 +1,7 @@
-import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:bfg/theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -144,7 +143,7 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
       onTap: () {
         showDialog(
             context: context,
-            builder: (BuildContext) => _buildPopupDialogue(
+            builder: (_) => _buildPopupDialogue(
                 context,
                 widget.nameOfSeller,
                 widget.nameOfBook,
@@ -160,14 +159,15 @@ class _BookDetailsCardState extends State<BookDetailsCard> {
         if (documentSnapshot.exists) {
           phoneNumber = (documentSnapshot.data() as dynamic)['phone_number'];
         }
-        print(phoneNumber);
+        if (kDebugMode) {
+          print(phoneNumber);
+        }
         if (widget.longPressBool || phoneNumber == "+919876543210") {
           CollectionReference books =
               FirebaseFirestore.instance.collection('books');
           showDialog(
               context: context,
-              builder: (BuildContext) =>
-                  _deleteBookConfirmationPopUp(context, books));
+              builder: (_) => _deleteBookConfirmationPopUp(context, books));
         }
       },
     );

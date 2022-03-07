@@ -1,5 +1,4 @@
 import 'package:bfg/screens/login/sign_up.dart';
-import 'package:bfg/screens/bfg/bfg_home.dart';
 import 'package:bfg/screens/main_home.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';

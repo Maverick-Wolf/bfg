@@ -1,6 +1,7 @@
 import 'package:bfg/theme.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class FeedbackPage extends StatefulWidget {
@@ -19,7 +20,6 @@ User? _user;
 class _FeedbackPageState extends State<FeedbackPage> {
   @override
   Widget build(BuildContext context) {
-
     _user = _auth.currentUser;
     feedbacks = FirebaseFirestore.instance.collection('feedback');
 
@@ -32,7 +32,10 @@ class _FeedbackPageState extends State<FeedbackPage> {
           centerTitle: true,
           title: Text(
             "Send Feedback",
-            style: TextStyle(fontFamily: _theme.font, fontWeight: FontWeight.bold, color: _theme.secondaryColor),
+            style: TextStyle(
+                fontFamily: _theme.font,
+                fontWeight: FontWeight.bold,
+                color: _theme.secondaryColor),
           ),
         ),
         body: CustomScrollView(
@@ -58,17 +61,16 @@ class _FeedbackPageState extends State<FeedbackPage> {
                         labelStyle: TextStyle(color: _theme.secondaryColor),
                         enabledBorder: OutlineInputBorder(
                             borderSide:
-                            BorderSide(color: _theme.tertiaryColor)),
+                                BorderSide(color: _theme.tertiaryColor)),
                         focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(
                                 color: _theme.secondaryColor, width: 1.3)),
                       ),
                       cursorColor: _theme.secondaryColor,
                       style: TextStyle(
-                        fontFamily: _theme.font,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20
-                      ),
+                          fontFamily: _theme.font,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20),
                       keyboardType: TextInputType.text,
                       maxLength: 100,
                       maxLines: 5,
@@ -93,13 +95,21 @@ class _FeedbackPageState extends State<FeedbackPage> {
   Widget _buildSendFeedbackButton() {
     return Center(
       child: ElevatedButton(
-        onPressed: () async{
-          if(_feedback.isNotEmpty) {
+        onPressed: () async {
+          if (_feedback.isNotEmpty) {
             await sendFeedback();
-            final snackBar = SnackBar(content: Text("Thank you for your invaluable feedback >_<", style: TextStyle(color: _theme.tertiaryColor)), backgroundColor: Colors.blue,);
+            final snackBar = SnackBar(
+              content: Text("Thank you for your invaluable feedback >_<",
+                  style: TextStyle(color: _theme.tertiaryColor)),
+              backgroundColor: Colors.blue,
+            );
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
           } else {
-            final snackBar = SnackBar(content: Text("Kuch likh toh dete", style: TextStyle(color: _theme.tertiaryColor)), backgroundColor: Colors.blue,);
+            final snackBar = SnackBar(
+              content: Text("Kuch likh toh dete",
+                  style: TextStyle(color: _theme.tertiaryColor)),
+              backgroundColor: Colors.blue,
+            );
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
           }
           Navigator.pushReplacementNamed(context, '/userMenu');
@@ -122,12 +132,17 @@ class _FeedbackPageState extends State<FeedbackPage> {
   }
 
   Future<void> sendFeedback() {
-    return feedbacks.doc()
-        .set({
+    return feedbacks.doc().set({
       'feedback': _feedback,
       'user_id': _user!.uid,
-    })
-        .then((value) => print("Feedback sent"))
-        .catchError((error) => print("Failed to send feedback: $error"));
+    }).then((value) {
+      if (kDebugMode) {
+        print("Feedback sent");
+      }
+    }).catchError((error) {
+      if (kDebugMode) {
+        print("Failed to send feedback: $error");
+      }
+    });
   }
 }

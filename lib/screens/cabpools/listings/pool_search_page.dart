@@ -2,10 +2,9 @@ import 'package:bfg/screens/cabpools/listings/pool_card.dart';
 import 'package:bfg/theme.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class PoolSearchPage extends StatefulWidget {
-  PoolSearchPage({Key? key}) : super(key: key);
+  const PoolSearchPage({Key? key}) : super(key: key);
   @override
   State<PoolSearchPage> createState() => _PoolSearchPageState();
 }
@@ -19,7 +18,6 @@ class _PoolSearchPageState extends State<PoolSearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    final FirebaseAuth _auth = FirebaseAuth.instance;
     OurTheme _theme = OurTheme();
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
@@ -44,8 +42,7 @@ class _PoolSearchPageState extends State<PoolSearchPage> {
                   onPressed: () {
                     showDialog(
                       context: context,
-                      builder: (BuildContext) =>
-                          _buildInfoPopupDialogue(context),
+                      builder: (_) => _buildInfoPopupDialogue(context),
                     );
                   },
                   icon: const Icon(Icons.info),

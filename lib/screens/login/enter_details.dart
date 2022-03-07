@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../theme.dart';
@@ -17,8 +18,8 @@ class _DetailsState extends State<Details> {
   String hostelDropdown1 = "AH ";
   String hostelDropdown2 = "1";
   String _name = "";
-  String _roomNumber= "";
-  String _hostel= "";
+  String _roomNumber = "";
+  String _hostel = "";
   String contactPreference = "Whatsapp";
   late CollectionReference users;
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -26,7 +27,6 @@ class _DetailsState extends State<Details> {
 
   @override
   Widget build(BuildContext context) {
-
     _user = _auth.currentUser;
     users = FirebaseFirestore.instance.collection('users');
 
@@ -81,7 +81,7 @@ class _DetailsState extends State<Details> {
                       flex: 2,
                     ),
                     Center(
-                      child: Container(
+                      child: SizedBox(
                         width: MediaQuery.of(context).size.width / 2,
                         child: TextFormField(
                           onChanged: (value) {
@@ -130,16 +130,21 @@ class _DetailsState extends State<Details> {
   }
 
   Future<void> addUser() {
-    return users.doc(_user!.uid)
-        .set({
+    return users.doc(_user!.uid).set({
       'name': _name,
       'hostel': _hostel,
       'phone_number': _user!.phoneNumber,
       'room_number': _roomNumber,
       'contact_preference': contactPreference,
-    })
-        .then((value) => print("User Added"))
-        .catchError((error) => print("Failed to add user: $error"));
+    }).then((value) {
+      if (kDebugMode) {
+        print("User Added");
+      }
+    }).catchError((error) {
+      if (kDebugMode) {
+        print("Failed to add user: $error");
+      }
+    });
   }
 
   Widget _buildRichText() {
@@ -162,10 +167,10 @@ class _DetailsState extends State<Details> {
         Text(
           "I prefer to be contacted via ",
           style: TextStyle(
-              color: _theme.tertiaryColor,
-              fontSize: 16.0,
-              fontFamily: _theme.font,
-              fontWeight: FontWeight.w800,
+            color: _theme.tertiaryColor,
+            fontSize: 16.0,
+            fontFamily: _theme.font,
+            fontWeight: FontWeight.w800,
           ),
         ),
         DropdownButton<String>(
@@ -252,15 +257,19 @@ class _DetailsState extends State<Details> {
   Widget _buildSignUpButton() {
     return Center(
       child: ElevatedButton(
-        onPressed: (){
+        onPressed: () {
           _hostel = hostelDropdown1 + hostelDropdown2;
-          if(_name.isEmpty || _roomNumber.isEmpty) {
-            final snackBar = SnackBar(content: Text("Please fill the required fields", style: TextStyle(color: _theme.tertiaryColor)), backgroundColor: Colors.blue,);
+          if (_name.isEmpty || _roomNumber.isEmpty) {
+            final snackBar = SnackBar(
+              content: Text("Please fill the required fields",
+                  style: TextStyle(color: _theme.tertiaryColor)),
+              backgroundColor: Colors.blue,
+            );
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
           } else {
             showDialog(
               context: context,
-              builder: (BuildContext) => _buildInfoPopupDialogue(context),
+              builder: (_) => _buildInfoPopupDialogue(context),
             );
           }
         },
@@ -300,16 +309,24 @@ class _DetailsState extends State<Details> {
           const Text("Your details won't be shared unless you list a book\n\n"
               "On listing a book, your name and hostel room number will be displayed\n\n"
               "Your phone number wont be displayed in the app itself, but an interested buyer can view it in their phone app"),
-          const SizedBox(height: 25,),
+          const SizedBox(
+            height: 25,
+          ),
           TextButton(
             onPressed: () {
-              try{
+              try {
                 addUser();
                 Navigator.pushReplacementNamed(context, '/userMenu');
-                final snackBar = SnackBar(content: Text("Successfully updated info", style: TextStyle(color: _theme.tertiaryColor)), backgroundColor: Colors.blue,);
+                final snackBar = SnackBar(
+                  content: Text("Successfully updated info",
+                      style: TextStyle(color: _theme.tertiaryColor)),
+                  backgroundColor: Colors.blue,
+                );
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
-              } catch(e) {
-                print(e);
+              } catch (e) {
+                if (kDebugMode) {
+                  print(e);
+                }
               }
             },
             child: Text(
@@ -319,11 +336,11 @@ class _DetailsState extends State<Details> {
                 color: _theme.secondaryColor,
               ),
             ),
-            style: TextButton.styleFrom(backgroundColor: Colors.blue.withOpacity(0.8)),
+            style: TextButton.styleFrom(
+                backgroundColor: Colors.blue.withOpacity(0.8)),
           )
         ],
       ),
     );
   }
 }
-

@@ -2,26 +2,22 @@ import 'package:bfg/screens/bfg/listings/book_card.dart';
 import 'package:bfg/theme.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class SearchPage extends StatefulWidget {
-  SearchPage({Key? key}) : super(key: key);
+  const SearchPage({Key? key}) : super(key: key);
   @override
   State<SearchPage> createState() => _SearchPageState();
 }
 
-String? _user;
 OurTheme _theme = OurTheme();
 
 class _SearchPageState extends State<SearchPage> {
   final Stream<QuerySnapshot> _booksStream =
-  FirebaseFirestore.instance.collection('books').snapshots();
+      FirebaseFirestore.instance.collection('books').snapshots();
   String stringToBeSearched = "";
 
   @override
   Widget build(BuildContext context) {
-    final FirebaseAuth _auth = FirebaseAuth.instance;
-    _user = _auth.currentUser!.uid.toString();
     OurTheme _theme = OurTheme();
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
@@ -46,8 +42,7 @@ class _SearchPageState extends State<SearchPage> {
                   onPressed: () {
                     showDialog(
                       context: context,
-                      builder: (BuildContext) =>
-                          _buildInfoPopupDialogue(context),
+                      builder: (_) => _buildInfoPopupDialogue(context),
                     );
                   },
                   icon: const Icon(Icons.info),
@@ -96,42 +91,39 @@ class _SearchPageState extends State<SearchPage> {
           stringToBeSearched = value;
         },
         decoration: InputDecoration(
-          filled: true,
-          fillColor: _theme.tertiaryColor,
-          border: const OutlineInputBorder(),
-          labelText: "Search",
-          floatingLabelBehavior: FloatingLabelBehavior.never,
-          labelStyle: TextStyle(color: _theme.primaryColor),
-          enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: _theme.secondaryColor)),
-          focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: _theme.secondaryColor, width: 2)),
-          suffixIcon: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                color:Colors.grey.withOpacity(0.3)
+            filled: true,
+            fillColor: _theme.tertiaryColor,
+            border: const OutlineInputBorder(),
+            labelText: "Search",
+            floatingLabelBehavior: FloatingLabelBehavior.never,
+            labelStyle: TextStyle(color: _theme.primaryColor),
+            enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: _theme.secondaryColor)),
+            focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: _theme.secondaryColor, width: 2)),
+            suffixIcon: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    color: Colors.grey.withOpacity(0.3)),
+                child: IconButton(
+                  icon: const Icon(Icons.search),
+                  onPressed: () {
+                    setState(() {
+                      FocusScope.of(context).unfocus();
+                    });
+                  },
+                  splashRadius: 24,
+                  color: _theme.primaryColor,
+                ),
               ),
-              child: IconButton(
-                icon: const Icon(Icons.search),
-                onPressed: () {
-                  setState(() {
-                    FocusScope.of(context).unfocus();
-                  });
-                },
-                splashRadius: 24,
-                color: _theme.primaryColor,
-              ),
-            ),
-          )
-        ),
+            )),
         cursorColor: _theme.primaryColor,
         style: TextStyle(
-          fontFamily: _theme.font,
-          fontWeight: FontWeight.bold,
-          color: _theme.primaryColor
-        ),
+            fontFamily: _theme.font,
+            fontWeight: FontWeight.bold,
+            color: _theme.primaryColor),
       ),
     );
   }
@@ -182,6 +174,7 @@ class _SearchPageState extends State<SearchPage> {
       }
     }).toList();
   }
+
   Widget _buildInfoPopupDialogue(BuildContext context) {
     return AlertDialog(
       backgroundColor: Colors.grey,

@@ -12,7 +12,7 @@ class DonationScreen extends StatelessWidget {
     double _height = MediaQuery.of(context).size.height;
     double _width = MediaQuery.of(context).size.width;
     return Scaffold(
-        backgroundColor: Color.fromARGB(255, 20, 236, 49),
+        backgroundColor: const Color.fromARGB(255, 20, 236, 49),
         appBar: AppBar(
           centerTitle: true,
           elevation: 0.0,

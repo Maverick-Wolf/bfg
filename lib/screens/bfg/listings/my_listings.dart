@@ -42,8 +42,7 @@ class _MyListingsState extends State<MyListings> {
                   onPressed: () {
                     showDialog(
                       context: context,
-                      builder: (BuildContext) =>
-                          _buildInfoPopupDialogue(context),
+                      builder: (_) => _buildInfoPopupDialogue(context),
                     );
                   },
                   icon: const Icon(Icons.info),
@@ -102,6 +101,7 @@ class _MyListingsState extends State<MyListings> {
       }
     }).toList();
   }
+
   Widget _buildInfoPopupDialogue(BuildContext context) {
     return AlertDialog(
       backgroundColor: Colors.grey,

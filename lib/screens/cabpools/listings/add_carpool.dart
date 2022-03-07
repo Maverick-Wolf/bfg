@@ -149,7 +149,7 @@ class _AddCarpoolState extends State<AddCarpool> {
           } else {
             showDialog(
               context: context,
-              builder: (BuildContext) => _buildPopupDialogue(context),
+              builder: (_) => _buildPopupDialogue(context),
             );
           }
         },
@@ -195,33 +195,33 @@ class _AddCarpoolState extends State<AddCarpool> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _textBox("City", "The city where the pool is supposed to happen"),
-          SizedBox(
+          const SizedBox(
             height: 5,
           ),
           _textBox("From", "Starting point"),
-          SizedBox(
+          const SizedBox(
             height: 5,
           ),
           _textBox("To", "Destination"),
-          SizedBox(
+          const SizedBox(
             height: 5,
           ),
           _textBox("Max Poolmates",
               "The max number of poolmates youre comfortable with having"),
-          SizedBox(
+          const SizedBox(
             height: 5,
           ),
           _textBox("How", "Choose your suitable way of travel"),
-          SizedBox(
+          const SizedBox(
             height: 5,
           ),
           _textBox("In Goa", "This helps us filter search results later"),
-          SizedBox(
+          const SizedBox(
             height: 5,
           ),
           _textBox("Note",
               "(Optional) Any extra info, regarding the pool, or life in general"),
-          SizedBox(
+          const SizedBox(
             height: 5,
           ),
         ],
@@ -327,18 +327,18 @@ class _AddCarpoolState extends State<AddCarpool> {
           ),
           actions: <Widget>[
             Padding(
-                padding: const EdgeInsets.only(right: 16.0),
-                child: IconButton(
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext) =>
-                          _buildInfoPopupDialogue(context),
-                    );
-                  },
-                  icon: Icon(Icons.info),
-                  color: _theme.tertiaryColor,
-                )),
+              padding: const EdgeInsets.only(right: 16.0),
+              child: IconButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (_) => _buildInfoPopupDialogue(context),
+                  );
+                },
+                icon: const Icon(Icons.info),
+                color: _theme.tertiaryColor,
+              ),
+            ),
           ],
         ),
         body: SingleChildScrollView(
@@ -482,7 +482,7 @@ class _AddCarpoolState extends State<AddCarpool> {
                     ],
                   ),
                   Center(
-                    child: Container(
+                    child: SizedBox(
                       width: MediaQuery.of(context).size.width / 2,
                       child: _buildCapacityFormField(
                           "Max Poolmates", "", TextInputType.number),

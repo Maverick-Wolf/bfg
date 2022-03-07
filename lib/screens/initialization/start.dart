@@ -10,7 +10,7 @@ class Start extends StatefulWidget {
 }
 
 class _StartState extends State<Start> {
-  OurTheme _theme = OurTheme();
+  final OurTheme _theme = OurTheme();
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class _StartState extends State<Start> {
         onTap: () {
           Navigator.pushReplacementNamed(context, '/initialization');
         },
-        child: Container(
+        child: SizedBox(
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
           child: Column(
@@ -30,7 +30,7 @@ class _StartState extends State<Start> {
               const SizedBox(
                 height: 1,
               ),
-              Container(
+              SizedBox(
                 height: 300,
                 width: 150,
                 child: Image.asset('assets/images/bfg.png'),

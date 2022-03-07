@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class OurTheme {
-  Color primaryColor = const Color(0xFFFF202124);
+  // TODO: Fix this color definition
+  Color primaryColor = const Color(0xffff202124);
   Color secondaryColor = const Color(0xFFFADFCF);
   Color tertiaryColor = const Color(0xFFFFFFFF);
   String font = "Quicksand";

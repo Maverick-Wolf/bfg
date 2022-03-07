@@ -1,7 +1,6 @@
 import 'package:bfg/screens/cabpools/listings/pool_card.dart';
 import 'package:bfg/theme.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart';
@@ -15,8 +14,6 @@ class PoolListings extends StatefulWidget {
 
 class _PoolListingsState extends State<PoolListings> {
   late CollectionReference users;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  User? _user;
   late Stream<QuerySnapshot> _poolsStream;
   final OurTheme _theme = OurTheme();
   DateTime _date = DateTime.now();
@@ -30,7 +27,6 @@ class _PoolListingsState extends State<PoolListings> {
         .orderBy('date', descending: false)
         .snapshots();
 
-    _user = _auth.currentUser;
     users = FirebaseFirestore.instance.collection('users');
 
     return Scaffold(
@@ -167,138 +163,136 @@ class _PoolListingsState extends State<PoolListings> {
     String dateFilter = _dateSet;
     String goaFilter = _goaFilter;
     return StatefulBuilder(builder: (context, StateSetter setState) {
-      return Container(
-        child: Scaffold(
-          body: AlertDialog(
-            backgroundColor: Colors.grey,
-            title: Text(
-              "Filters",
-              style: TextStyle(
-                  fontSize: 24,
-                  fontFamily: _theme.font,
-                  fontWeight: FontWeight.bold,
-                  color: _theme.secondaryColor),
-              textAlign: TextAlign.center,
-            ),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    const SizedBox(
-                      width: 1.0,
-                    ),
-                    Text(
-                      "Search in :",
-                      style: TextStyle(
-                          fontFamily: _theme.font,
-                          fontSize: 16,
-                          color: _theme.secondaryColor,
-                          fontWeight: FontWeight.w600),
-                    ),
-                    DropdownButton<String>(
-                      value: goaFilter,
-                      icon: Icon(
-                        Icons.arrow_downward,
-                        color: _theme.tertiaryColor,
-                      ),
-                      iconSize: 22,
-                      elevation: 16,
-                      style: TextStyle(color: _theme.tertiaryColor),
-                      underline: Container(
-                        height: 2,
-                        color: _theme.tertiaryColor,
-                      ),
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          goaFilter = newValue!;
-                        });
-                      },
-                      items: <String>[
-                        'All',
-                        'Goa',
-                        'Other',
-                      ].map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                    ),
-                    const SizedBox(
-                      width: 1.0,
-                    ),
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          primary: _theme.secondaryColor.withOpacity(0.7),
-                          onPrimary: _theme.tertiaryColor),
-                      onPressed: () {
-                        DatePicker.showDatePicker(context,
-                            showTitleActions: true,
-                            minTime: DateTime(2022, 2, 2),
-                            theme: DatePickerTheme(
-                                headerColor: _theme.secondaryColor,
-                                backgroundColor: _theme.primaryColor,
-                                itemStyle: const TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18),
-                                doneStyle: TextStyle(
-                                    color: _theme.primaryColor,
-                                    fontSize: 16)), onChanged: (date) {
-                          _date = date;
-                          DateFormat _dateFormatter = DateFormat('yMMMd');
-                          dateFilter = _dateFormatter.format(date);
-                          setState(() {});
-                        }, onConfirm: (date) {
-                          _date = date;
-                          DateFormat _dateFormatter = DateFormat('yMMMd');
-                          dateFilter = _dateFormatter.format(date);
-                        }, currentTime: _date, locale: LocaleType.en);
-                      },
-                      child: Text(
-                        dateFilter.isEmpty ? "Choose Date" : dateFilter,
-                        style: TextStyle(
-                          fontFamily: _theme.font,
-                          fontSize: 16,
-                          color: _theme.tertiaryColor,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      )),
-                ),
-                const SizedBox(
-                  height: 25,
-                ),
-                TextButton(
-                  onPressed: () {
-                    setFilter(dateFilter, goaFilter);
-                    Navigator.pop(context);
-                    ScaffoldMessenger.of(context).hideCurrentSnackBar(
-                        reason: SnackBarClosedReason.dismiss);
-                    const snackBar = SnackBar(
-                      content: Text("Filter applied >_<"),
-                      duration: Duration(milliseconds: 700),
-                    );
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                  },
-                  child: Text(
-                    "Set Filter",
+      return Scaffold(
+        body: AlertDialog(
+          backgroundColor: Colors.grey,
+          title: Text(
+            "Filters",
+            style: TextStyle(
+                fontSize: 24,
+                fontFamily: _theme.font,
+                fontWeight: FontWeight.bold,
+                color: _theme.secondaryColor),
+            textAlign: TextAlign.center,
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  const SizedBox(
+                    width: 1.0,
+                  ),
+                  Text(
+                    "Search in :",
                     style: TextStyle(
-                      fontSize: 20,
+                        fontFamily: _theme.font,
+                        fontSize: 16,
+                        color: _theme.secondaryColor,
+                        fontWeight: FontWeight.w600),
+                  ),
+                  DropdownButton<String>(
+                    value: goaFilter,
+                    icon: Icon(
+                      Icons.arrow_downward,
                       color: _theme.tertiaryColor,
                     ),
+                    iconSize: 22,
+                    elevation: 16,
+                    style: TextStyle(color: _theme.tertiaryColor),
+                    underline: Container(
+                      height: 2,
+                      color: _theme.tertiaryColor,
+                    ),
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        goaFilter = newValue!;
+                      });
+                    },
+                    items: <String>[
+                      'All',
+                      'Goa',
+                      'Other',
+                    ].map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
                   ),
-                  style: TextButton.styleFrom(
-                      backgroundColor: Colors.blue.withOpacity(0.8)),
-                )
-              ],
-            ),
+                  const SizedBox(
+                    width: 1.0,
+                  ),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        primary: _theme.secondaryColor.withOpacity(0.7),
+                        onPrimary: _theme.tertiaryColor),
+                    onPressed: () {
+                      DatePicker.showDatePicker(context,
+                          showTitleActions: true,
+                          minTime: DateTime(2022, 2, 2),
+                          theme: DatePickerTheme(
+                              headerColor: _theme.secondaryColor,
+                              backgroundColor: _theme.primaryColor,
+                              itemStyle: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18),
+                              doneStyle: TextStyle(
+                                  color: _theme.primaryColor,
+                                  fontSize: 16)), onChanged: (date) {
+                        _date = date;
+                        DateFormat _dateFormatter = DateFormat('yMMMd');
+                        dateFilter = _dateFormatter.format(date);
+                        setState(() {});
+                      }, onConfirm: (date) {
+                        _date = date;
+                        DateFormat _dateFormatter = DateFormat('yMMMd');
+                        dateFilter = _dateFormatter.format(date);
+                      }, currentTime: _date, locale: LocaleType.en);
+                    },
+                    child: Text(
+                      dateFilter.isEmpty ? "Choose Date" : dateFilter,
+                      style: TextStyle(
+                        fontFamily: _theme.font,
+                        fontSize: 16,
+                        color: _theme.tertiaryColor,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    )),
+              ),
+              const SizedBox(
+                height: 25,
+              ),
+              TextButton(
+                onPressed: () {
+                  setFilter(dateFilter, goaFilter);
+                  Navigator.pop(context);
+                  ScaffoldMessenger.of(context).hideCurrentSnackBar(
+                      reason: SnackBarClosedReason.dismiss);
+                  const snackBar = SnackBar(
+                    content: Text("Filter applied >_<"),
+                    duration: Duration(milliseconds: 700),
+                  );
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                },
+                child: Text(
+                  "Set Filter",
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: _theme.tertiaryColor,
+                  ),
+                ),
+                style: TextButton.styleFrom(
+                    backgroundColor: Colors.blue.withOpacity(0.8)),
+              )
+            ],
           ),
         ),
       );
@@ -319,7 +313,7 @@ class _PoolListingsState extends State<PoolListings> {
           onTap: () {
             showDialog(
               context: context,
-              builder: (BuildContext) => _buildFilterPopUp(context),
+              builder: (_) => _buildFilterPopUp(context),
             );
           },
           child: Column(
@@ -369,7 +363,7 @@ class _PoolListingsState extends State<PoolListings> {
   Widget detailsCard(
           DocumentSnapshot document, Map data, String contactPreference) =>
       Padding(
-          padding: EdgeInsets.only(bottom: 3.0, top: 7.0),
+          padding: const EdgeInsets.only(bottom: 3.0, top: 7.0),
           child: PoolDetailsCard(
             documentID: document.id,
             longPressBool: false,
